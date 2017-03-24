@@ -32,7 +32,6 @@ namespace DotSDL.Graphics {
 
         private void BaseDraw() {
             Render.LockTexture(_texture, IntPtr.Zero, out var pixels, out var pitch);
-            Console.WriteLine(pitch.ToString());
             OnDraw();  // Call the overridden Draw function.
             Render.UnlockTexture(_texture);
 
