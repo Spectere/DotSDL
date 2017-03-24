@@ -11,6 +11,9 @@ namespace DotSDL.Sdl {
         /// </summary>
         [Flags]
         internal enum WindowFlags : uint {
+            /// <summary>No special flags.</summary>
+            None = 0x00000000,
+
             /// <summary>Fullscreen window.</summary>
             Fullscreen = 0x00000001,
 
@@ -72,20 +75,6 @@ namespace DotSDL.Sdl {
             PopupMenu = 0x00080000
         }
 
-        internal const uint WindowPosUndefinedMask = 0x1FFF0000;
-        /// <summary>Indicates that the window manager should place the window..</summary>
-        internal const uint WindowPosUndefined = WindowPosUndefinedMask;
-        internal static uint WindowPosUndefinedDisplay(uint x) {
-            return WindowPosUndefinedMask | x;
-        }
-
-        internal const uint WindowPosCenteredMask = 0x2FFF0000;
-        /// <summary>Indicates that the window should be in the center of the screen.</summary>
-        internal const uint WindowPosCentered = WindowPosCenteredMask;
-        internal static uint WindowPosCenteredDisplay(uint x) {
-            return WindowPosCenteredMask | x;
-        }
-
         /// <summary>
         /// Creates a window with the specified position, dimensions, and flags.
         /// </summary>
@@ -98,5 +87,12 @@ namespace DotSDL.Sdl {
         /// <returns>The window that was created, or NULL on failure.</returns>
         [DllImport(Meta.DllName, EntryPoint = "SDL_CreateWindow", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr CreateWindow(string title, int x, int y, int w, int h, WindowFlags flags);
+
+        /// <summary>
+        /// Shows an SDL window.
+        /// </summary>
+        /// <param name="window">The window to show.</param>
+        [DllImport(Meta.DllName, EntryPoint = "SDL_ShowWindow", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void ShowWindow(IntPtr window);
     }
 }
