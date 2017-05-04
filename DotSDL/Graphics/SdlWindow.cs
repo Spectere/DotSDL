@@ -3,7 +3,7 @@ using DotSDL.Sdl;
 
 namespace DotSDL.Graphics {
     /// <summary>
-    /// Represents an SDL window.  TODO: Support other pixel formats.
+    /// Represents an SDL window.
     /// </summary>
     public class SdlWindow {
         private readonly IntPtr _window;
@@ -11,6 +11,11 @@ namespace DotSDL.Graphics {
         private readonly IntPtr _texture;
 
         private bool _running;
+
+        public int Width { get; private set; }
+        public int Height { get; private set; }
+
+        private Color[] _pixels;
 
         /// <summary>Indicates that the window manager should position the window.</summary>
         public const int WindowPosUndefined = 0x1FFF0000;
@@ -28,12 +33,21 @@ namespace DotSDL.Graphics {
             _window = Video.CreateWindow(name, position.X, position.Y, width, height, Video.WindowFlags.Hidden);
             _renderer = Render.CreateRenderer(_window, -1, Render.RendererFlags.Accelerated);
             _texture = Render.CreateTexture(_renderer, Pixels.PixelFormatArgb8888, Render.TextureAccess.Streaming, width, height);
+
+            // TODO: Support other pixel formats.
+            _pixels = new Color[width * height];
+
+            Width = width;
+            Height = height;
         }
 
-        private void BaseDraw() {
-            Render.LockTexture(_texture, IntPtr.Zero, out var pixels, out var pitch);
-            OnDraw();  // Call the overridden Draw function.
-            Render.UnlockTexture(_texture);
+        private unsafe void BaseDraw() {
+            OnDraw(ref _pixels);  // Call the overridden Draw function.
+
+            fixed(void* pixelsPtr = _pixels) {
+                var ptr = (IntPtr)pixelsPtr;
+                Render.UpdateTexture(_texture, IntPtr.Zero, ptr, Width * 4);
+            }
 
             Render.RenderCopy(_renderer, _texture, IntPtr.Zero, IntPtr.Zero);
             Render.RenderPresent(_renderer);
@@ -59,17 +73,17 @@ namespace DotSDL.Graphics {
         /// <summary>
         /// Fired every time the window is drawn to.
         /// </summary>
-        public virtual void OnDraw() {}
+        protected virtual void OnDraw(ref Color[] pixels) {}
 
         /// <summary>
         /// Fired before the window is shown.
         /// </summary>
-        public virtual void OnLoad() {}
+        protected virtual void OnLoad() {}
 
         /// <summary>
         /// Fired every time the application logic update runs.
         /// </summary>
-        public virtual void OnUpdate() {}
+        protected virtual void OnUpdate() {}
 
         /// <summary>
         /// Displays the window and begins executing code that's associated with it.
