@@ -63,20 +63,6 @@ namespace DotSDL.Sdl {
         internal static extern IntPtr CreateTexture(IntPtr renderer, uint format, TextureAccess access, int w, int h);
 
         /// <summary>
-        /// Lock a portion of the texture for write-only pixel access.
-        /// </summary>
-        /// <param name="texture">The texture to lock for access, which was created with <see cref="TextureAccess.Streaming"/>.</param>
-        /// <param name="rect">The rectangle to lock for access. If the rect is NULL, the entire texture will be locked.</param>
-        /// <param name="pixels">This is filled in with an <see cref="IntPtr"/> to the locked pixels, appropriately offset
-        /// by the locked area.</param>
-        /// <param name="pitch">This is filled in with the pitch of the locked pixels.</param>
-        /// <returns>0 on success, or -1 if the texture is not valid or was not created with <see cref="TextureAccess.Streaming"/>.</returns>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_LockTexture", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int LockTexture(IntPtr texture, Rect.SdlRect rect, out IntPtr pixels, out int pitch);
-        [DllImport(Meta.DllName, EntryPoint = "SDL_LockTexture", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int LockTexture(IntPtr texture, IntPtr rect, out IntPtr pixels, out int pitch);
-
-        /// <summary>
         /// Clear the current rendering target with the drawing color.
         /// 
         /// This function clears the entire rendering target, ignoring the viewport and the clip rectangle.
@@ -107,10 +93,25 @@ namespace DotSDL.Sdl {
         internal static extern void RenderPresent(IntPtr renderer);
 
         /// <summary>
-        /// Unlock a texture, uploading the changes to video memory, if needed.
+        /// Update the given texture rectangle with new pixel data.
         /// </summary>
-        /// <param name="texture">The texture to unlock.</param>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_UnlockTexture", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void UnlockTexture(IntPtr texture);
+        /// <param name="texture">The texture to update.</param>
+        /// <param name="rect">A rectangle of pixels to update, or NULL to update the entire texture.</param>
+        /// <param name="pixels">The raw pixel data.</param>
+        /// <param name="pitch">The number of bytes in a row of pixel data, including padding between lines.</param>
+        /// <returns>0 on success, or -1 if the texture is not valid.</returns>
+        [DllImport(Meta.DllName, EntryPoint = "SDL_UpdateTexture", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int UpdateTexture(IntPtr texture, IntPtr rect, IntPtr pixels, int pitch);
+
+        /// <summary>
+        /// Update the given texture rectangle with new pixel data.
+        /// </summary>
+        /// <param name="texture">The texture to update.</param>
+        /// <param name="rect">A rectangle of pixels to update, or NULL to update the entire texture.</param>
+        /// <param name="pixels">The raw pixel data.</param>
+        /// <param name="pitch">The number of bytes in a row of pixel data, including padding between lines.</param>
+        /// <returns>0 on success, or -1 if the texture is not valid.</returns>
+        [DllImport(Meta.DllName, EntryPoint = "SDL_UpdateTexture", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int UpdateTexture(IntPtr texture, Rect.SdlRect rect, IntPtr pixels, int pitch);
     }
 }
