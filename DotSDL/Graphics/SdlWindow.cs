@@ -6,6 +6,8 @@ namespace DotSDL.Graphics {
     /// Represents an SDL window.
     /// </summary>
     public class SdlWindow {
+        private readonly SdlInit sdlInit = SdlInit.Instance;
+
         private readonly IntPtr _window;
         private readonly IntPtr _renderer;
         private readonly IntPtr _texture;
@@ -15,7 +17,7 @@ namespace DotSDL.Graphics {
         public int Width { get; }
         public int Height { get; }
 
-        private Color[] _pixels;
+        private Canvas _canvas;
 
         /// <summary>Indicates that the window manager should position the window.</summary>
         public const int WindowPosUndefined = 0x1FFF0000;
@@ -30,21 +32,22 @@ namespace DotSDL.Graphics {
         }
 
         public SdlWindow(string name, Point position, int width, int height) {
+            sdlInit.InitSubsystem(Init.SubsystemFlags.Video);
+
             _window = Video.CreateWindow(name, position.X, position.Y, width, height, Video.WindowFlags.Hidden);
             _renderer = Render.CreateRenderer(_window, -1, Render.RendererFlags.Accelerated);
             _texture = Render.CreateTexture(_renderer, Pixels.PixelFormatArgb8888, Render.TextureAccess.Streaming, width, height);
 
-            // TODO: Support other pixel formats.
-            _pixels = new Color[width * height];
+            _canvas = new Canvas(width, height);
 
             Width = width;
             Height = height;
         }
 
         private unsafe void BaseDraw() {
-            OnDraw(ref _pixels);  // Call the overridden Draw function.
+            OnDraw(ref _canvas);  // Call the overridden Draw function.
 
-            fixed(void* pixelsPtr = _pixels) {
+            fixed(void* pixelsPtr = _canvas.Pixels) {
                 var ptr = (IntPtr)pixelsPtr;
                 Render.UpdateTexture(_texture, IntPtr.Zero, ptr, Width * 4);
             }
@@ -73,7 +76,7 @@ namespace DotSDL.Graphics {
         /// <summary>
         /// Fired every time the window is drawn to.
         /// </summary>
-        protected virtual void OnDraw(ref Color[] pixels) {}
+        protected virtual void OnDraw(ref Canvas canvas) {}
 
         /// <summary>
         /// Fired before the window is shown.

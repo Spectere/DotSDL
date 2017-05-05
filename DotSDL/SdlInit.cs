@@ -10,6 +10,11 @@ namespace DotSDL {
         private static readonly Lazy<SdlInit> Singleton = new Lazy<SdlInit>(() => new SdlInit());
         internal static SdlInit Instance => Singleton.Value;
 
+        // Subsystem initialization is ref counted in SDL2, and there really
+        // isn't much point in shutting down a specific subsystem after it's
+        // been started. We'll use a stack to ensure that everything is taken
+        // down in the order that it's been brought up and that QuitSubsystem
+        // has been called the appropriate number of times.
         private readonly Stack<Init.SubsystemFlags> _subsystems = new Stack<Init.SubsystemFlags>();
 
         private SdlInit() {

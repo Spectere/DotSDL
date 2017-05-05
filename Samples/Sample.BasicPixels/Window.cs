@@ -87,13 +87,13 @@ namespace DotSDL.Sample.BasicPixels {
             return (Width * y) + x;
         }
 
-        protected override void OnDraw(ref Color[] pixels) {
+        protected override void OnDraw(ref Canvas canvas) {
             const byte min = 128, max = 255;
             const int offsetX = 96, offsetY = 80;
 
-            DrawBackground(ref pixels);
+            DrawBackground(ref canvas.Pixels);
             // D
-            DrawSequence(ref pixels, RandomColor(min, max),
+            DrawSequence(ref canvas.Pixels, RandomColor(min, max),
                 new Line { Start = new Point { X = offsetX, Y = offsetY + 96 }, End = new Point { X = offsetX, Y = offsetY } },
                 new Line { Start = new Point { X = offsetX, Y = offsetY }, End = new Point { X = offsetX + 32, Y = offsetY } },
                 new Line { Start = new Point { X = offsetX + 32, Y = offsetY }, End = new Point { X = offsetX + 48, Y = offsetY + 16 } },
@@ -102,7 +102,7 @@ namespace DotSDL.Sample.BasicPixels {
                 new Line { Start = new Point { X = offsetX + 32, Y = offsetY + 96 }, End = new Point { X = offsetX, Y = offsetY + 96 } }
             );
             // o
-            DrawSequence(ref pixels, RandomColor(min, max),
+            DrawSequence(ref canvas.Pixels, RandomColor(min, max),
                 new Line { Start = new Point { X = offsetX + 64, Y = offsetY + 88}, End = new Point { X = offsetX + 64, Y = offsetY + 56 } },
                 new Line { Start = new Point { X = offsetX + 64, Y = offsetY + 56}, End = new Point { X = offsetX + 72, Y = offsetY + 48 } },
                 new Line { Start = new Point { X = offsetX + 72, Y = offsetY + 48}, End = new Point { X = offsetX + 80, Y = offsetY + 48 } },
@@ -113,13 +113,13 @@ namespace DotSDL.Sample.BasicPixels {
                 new Line { Start = new Point { X = offsetX + 72, Y = offsetY + 96}, End = new Point { X = offsetX + 64, Y = offsetY + 88 } }
             );
             // t
-            DrawSequence(ref pixels, RandomColor(min, max), 
+            DrawSequence(ref canvas.Pixels, RandomColor(min, max), 
                 new Line { Start = new Point { X = offsetX + 104 + 12, Y = offsetY + 24}, End = new Point { X = offsetX + 104 + 12, Y = offsetY + 96 } },
                 new Line { Start = new Point { X = offsetX + 104, Y = offsetY + 48}, End = new Point { X = offsetX + 104 + 24, Y = offsetY + 48 } }
             );
 
             // S
-            DrawSequence(ref pixels, RandomColor(min, max),
+            DrawSequence(ref canvas.Pixels, RandomColor(min, max),
                 new Line { Start = new Point { X = offsetX + 144 + 48, Y = offsetY }, End = new Point { X = offsetX + 144, Y = offsetY } },
                 new Line { Start = new Point { X = offsetX + 144, Y = offsetY }, End = new Point { X = offsetX + 144, Y = offsetY + 48 } },
                 new Line { Start = new Point { X = offsetX + 144, Y = offsetY + 48 }, End = new Point { X = offsetX + 144 + 48 , Y = offsetY + 48 } },
@@ -127,7 +127,7 @@ namespace DotSDL.Sample.BasicPixels {
                 new Line { Start = new Point { X = offsetX + 144 + 48, Y = offsetY + 96 }, End = new Point { X = offsetX + 144, Y = offsetY + 96 } }
             );
             // D
-            DrawSequence(ref pixels, RandomColor(min, max),
+            DrawSequence(ref canvas.Pixels, RandomColor(min, max),
                 new Line { Start = new Point { X = offsetX + 208, Y = offsetY + 96 }, End = new Point { X = offsetX + 208, Y = offsetY } },
                 new Line { Start = new Point { X = offsetX + 208, Y = offsetY }, End = new Point { X = offsetX + 208 + 32, Y = offsetY } },
                 new Line { Start = new Point { X = offsetX + 208 + 32, Y = offsetY }, End = new Point { X = offsetX + 208 + 48, Y = offsetY + 16 } },
@@ -136,7 +136,7 @@ namespace DotSDL.Sample.BasicPixels {
                 new Line { Start = new Point { X = offsetX + 208 + 32, Y = offsetY + 96 }, End = new Point { X = offsetX + 208, Y = offsetY + 96 } }
             );
             // L
-            DrawSequence(ref pixels, RandomColor(min, max),
+            DrawSequence(ref canvas.Pixels, RandomColor(min, max),
                 new Line { Start = new Point { X = offsetX + 272, Y = offsetY }, End = new Point { X = offsetX + 272, Y = offsetY + 96} },
                 new Line { Start = new Point { X = offsetX + 272, Y = offsetY + 96 }, End = new Point { X = offsetX + 272 + 48, Y = offsetY + 96} }
             );
