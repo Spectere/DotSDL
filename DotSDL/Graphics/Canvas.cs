@@ -31,6 +31,89 @@ namespace DotSDL.Graphics {
         }
 
         /// <summary>
+        /// Draws a circle onto the <see cref="Canvas"/>.
+        /// </summary>
+        /// <param name="color">The color of the circle.</param>
+        /// <param name="center">A <see cref="Point"/> indicating the center of the circle.</param>
+        /// <param name="radius">The radius of the drawn circle, in pixels.</param>
+        public void DrawCircle(Color color, Point center, int radius) {
+            var x = radius;
+            var y = 0;
+            var err = 0;
+
+            while(x >= y) {
+                PlotMirroredPoints(color, center, x, y);
+                PlotMirroredPoints(color, center, y, x);
+
+                y += 1;
+                if(err <= 0) {
+                    err += 2 * y + 1;
+                }
+
+                if(err > 0) {
+                    x -= 1;
+                    err -= 2 * x + 1;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Draws an ellipse onto the <see cref="Canvas"/>.
+        /// </summary>
+        /// <param name="color">The color of the ellipse.</param>
+        /// <param name="center">A <see cref="Point"/> indicating the center of the ellipse.</param>
+        /// <param name="width">The radius when measured horizontally, in pixels.</param>
+        /// <param name="height">The radius when measured vertically, in pixels.</param>
+        public void DrawEllipse(Color color, Point center, int width, int height) {
+            var rxSq = width * width;
+            var rySq = height * height;
+            var x = 0;
+            var y = height;
+            int p;
+            var px = 0;
+            var py = 2 * rxSq * y;
+
+            PlotMirroredPoints(color, center, x, y);
+
+            // Region 1
+            p = (int)(rySq - (rxSq * height) + (0.25 * rxSq));
+            while(px < py) {
+                x++;
+                px = px + 2 * rySq;
+                if(p < 0) {
+                    p = p + rySq + px;
+                } else {
+                    y--;
+                    py = py - 2 * rxSq;
+                    p = p + rySq + px - py;
+                }
+                PlotMirroredPoints(color, center, x, y);
+            }
+            
+            // Region 2
+            p = (int)(rySq * (x + 0.5) * (x + 0.5) + rxSq * (y - 1) * (y - 1) - rxSq * rySq);
+            while(y > 0) {
+                y--;
+                py = py - 2 * rxSq;
+                if(p > 0) {
+                    p = p + rxSq - py;
+                } else {
+                    x++;
+                    px = px + 2 * rySq;
+                    p = p + rxSq - py + px;
+                }
+                PlotMirroredPoints(color, center, x, y);
+            }
+        }
+
+        private void PlotMirroredPoints(Color color, Point center, int rX, int rY) {
+            Pixels[GetIndex(center.X + rX, center.Y + rY)] = color;
+            Pixels[GetIndex(center.X + rX, center.Y - rY)] = color;
+            Pixels[GetIndex(center.X - rX, center.Y + rY)] = color;
+            Pixels[GetIndex(center.X - rX, center.Y - rY)] = color;
+        }
+
+        /// <summary>
         /// Plots a line on the <see cref="Canvas"/>.
         /// </summary>
         /// <param name="color">The color of the line.</param>
