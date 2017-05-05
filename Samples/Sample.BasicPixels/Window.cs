@@ -46,46 +46,38 @@ namespace DotSDL.Sample.BasicPixels {
             const int offsetX = 96, offsetY = 80;
 
             DrawBackground(ref canvas.Pixels);
+            var color = RandomColor(min, max);
             // D
-            canvas.DrawLines(RandomColor(min, max),
-                new Line { Start = new Point { X = offsetX, Y = offsetY + 96 }, End = new Point { X = offsetX, Y = offsetY } },
-                new Line { Start = new Point { X = offsetX, Y = offsetY }, End = new Point { X = offsetX + 32, Y = offsetY } },
-                new Line { Start = new Point { X = offsetX + 32, Y = offsetY }, End = new Point { X = offsetX + 48, Y = offsetY + 16 } },
-                new Line { Start = new Point { X = offsetX + 48, Y = offsetY + 16 }, End = new Point { X = offsetX + 48, Y = offsetY + 80 } },
-                new Line { Start = new Point { X = offsetX + 48, Y = offsetY + 80 }, End = new Point { X = offsetX + 32, Y = offsetY + 96 } },
-                new Line { Start = new Point { X = offsetX + 32, Y = offsetY + 96 }, End = new Point { X = offsetX, Y = offsetY + 96 } }
+            canvas.DrawLines(color,
+                new Line { Start = new Point { X = offsetX, Y = offsetY + 96 }, End = new Point { X = offsetX, Y = offsetY }},
+                new Line { Start = new Point { X = offsetX, Y = offsetY }, End = new Point { X = offsetX + 24, Y = offsetY }},
+                new Line { Start = new Point { X = offsetX, Y = offsetY + 96 }, End = new Point { X = offsetX + 24, Y = offsetY + 96 }}
             );
+            canvas.DrawArc(color, new Point { X = offsetX + 24, Y = offsetY + 48 }, 48);
 
             // o
-            canvas.DrawEllipse(RandomColor(min, max), new Point { X = offsetX + 76, Y = offsetY + 72 }, 12, 24);
+            canvas.DrawEllipse(color, new Point { X = offsetX + 76, Y = offsetY + 72 }, 12, 24);
 
             // t
-            canvas.DrawLines(RandomColor(min, max),
+            canvas.DrawLines(color,
                 new Line { Start = new Point { X = offsetX + 104 + 12, Y = offsetY + 24}, End = new Point { X = offsetX + 104 + 12, Y = offsetY + 96 } },
                 new Line { Start = new Point { X = offsetX + 104, Y = offsetY + 48}, End = new Point { X = offsetX + 104 + 24, Y = offsetY + 48 } }
             );
 
             // S
-            canvas.DrawLines(RandomColor(min, max),
-                new Line { Start = new Point { X = offsetX + 144 + 48, Y = offsetY }, End = new Point { X = offsetX + 144, Y = offsetY } },
-                new Line { Start = new Point { X = offsetX + 144, Y = offsetY }, End = new Point { X = offsetX + 144, Y = offsetY + 48 } },
-                new Line { Start = new Point { X = offsetX + 144, Y = offsetY + 48 }, End = new Point { X = offsetX + 144 + 48 , Y = offsetY + 48 } },
-                new Line { Start = new Point { X = offsetX + 144 + 48, Y = offsetY + 48 }, End = new Point { X = offsetX + 144 + 48 , Y = offsetY + 96 } },
-                new Line { Start = new Point { X = offsetX + 144 + 48, Y = offsetY + 96 }, End = new Point { X = offsetX + 144, Y = offsetY + 96 } }
+            canvas.DrawLines(color,
+                new Line { Start = new Point { X = offsetX + 144 + 24, Y = offsetY }, End = new Point { X = offsetX + 144 + 48, Y = offsetY } },
+                new Line { Start = new Point { X = offsetX + 144, Y = offsetY + 96 }, End = new Point { X = offsetX + 144 + 24, Y = offsetY + 96 } }
             );
+            canvas.DrawArc(color, new Point { X = offsetX + 144 + 24, Y = offsetY + 24 }, -24);
+            canvas.DrawArc(color, new Point { X = offsetX + 144 + 24, Y = offsetY + 72 }, 24);
 
             // D
-            canvas.DrawLines(RandomColor(min, max),
-                new Line { Start = new Point { X = offsetX + 208, Y = offsetY + 96 }, End = new Point { X = offsetX + 208, Y = offsetY } },
-                new Line { Start = new Point { X = offsetX + 208, Y = offsetY }, End = new Point { X = offsetX + 208 + 32, Y = offsetY } },
-                new Line { Start = new Point { X = offsetX + 208 + 32, Y = offsetY }, End = new Point { X = offsetX + 208 + 48, Y = offsetY + 16 } },
-                new Line { Start = new Point { X = offsetX + 208 + 48, Y = offsetY + 16 }, End = new Point { X = offsetX + 208 + 48, Y = offsetY + 80 } },
-                new Line { Start = new Point { X = offsetX + 208 + 48, Y = offsetY + 80 }, End = new Point { X = offsetX + 208 + 32, Y = offsetY + 96 } },
-                new Line { Start = new Point { X = offsetX + 208 + 32, Y = offsetY + 96 }, End = new Point { X = offsetX + 208, Y = offsetY + 96 } }
-            );
+            canvas.DrawLine(color, new Line { Start = new Point { X = offsetX + 208, Y = offsetY + 96 }, End = new Point { X = offsetX + 208, Y = offsetY } });
+            canvas.DrawArc(color, new Point { X = offsetX + 208, Y = offsetY + 48 }, 48);
 
             // L
-            canvas.DrawLines(RandomColor(min, max),
+            canvas.DrawLines(color,
                 new Line { Start = new Point { X = offsetX + 272, Y = offsetY }, End = new Point { X = offsetX + 272, Y = offsetY + 96} },
                 new Line { Start = new Point { X = offsetX + 272, Y = offsetY + 96 }, End = new Point { X = offsetX + 272 + 48, Y = offsetY + 96} }
             );
