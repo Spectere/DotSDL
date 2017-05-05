@@ -31,6 +31,45 @@ namespace DotSDL.Graphics {
         }
 
         /// <summary>
+        /// Draws an arc onto the <see cref="Canvas"/>.
+        /// </summary>
+        /// <param name="color">The color of the arc.</param>
+        /// <param name="center">A <see cref="Point"/> indicating the origin of the arc.</param>
+        /// <param name="radius">The radius of the arc, in pixels. Use negative values to create a left-facing arc.</param>
+        public void DrawArc(Color color, Point center, int radius) {
+            // TODO: Replace this with a more versatile spline function! This can only do left/right-facing arcs (which sucks).
+            var x = Math.Abs(radius);
+            var y = 0;
+            var err = 0;
+            var flip = radius < 0;
+
+            while(x >= y) {
+                PlotMirroredPointsY(color, center, x, y, flip);
+
+                y += 1;
+                if(err <= 0) {
+                    err += 2 * y + 1;
+                }
+
+                if(err > 0) {
+                    x -= 1;
+                    err -= 2 * x + 1;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Draws an arc onto the <see cref="Canvas"/>.
+        /// </summary>
+        /// <param name="color">The color of the arc.</param>
+        /// <param name="center">A <see cref="Point"/> indicating the origin of the arc.</param>
+        /// <param name="width">The radius of the arc, in pixels. Use negative values to create a left-facing arc.</param>
+        /// <param name="height">The radius of the arc, in pixels. Use negative values to create a left-facing arc.</param>
+        public void DrawArc(Color color, Point center, int width, int height) {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Draws a circle onto the <see cref="Canvas"/>.
         /// </summary>
         /// <param name="color">The color of the circle.</param>
@@ -42,8 +81,8 @@ namespace DotSDL.Graphics {
             var err = 0;
 
             while(x >= y) {
-                PlotMirroredPoints(color, center, x, y);
-                PlotMirroredPoints(color, center, y, x);
+                PlotMirroredPointsQuad(color, center, x, y);
+                PlotMirroredPointsQuad(color, center, y, x);
 
                 y += 1;
                 if(err <= 0) {
@@ -73,7 +112,7 @@ namespace DotSDL.Graphics {
             var px = 0;
             var py = 2 * rxSq * y;
 
-            PlotMirroredPoints(color, center, x, y);
+            PlotMirroredPointsQuad(color, center, x, y);
 
             // Region 1
             p = (int)(rySq - (rxSq * height) + (0.25 * rxSq));
@@ -87,7 +126,7 @@ namespace DotSDL.Graphics {
                     py = py - 2 * rxSq;
                     p = p + rySq + px - py;
                 }
-                PlotMirroredPoints(color, center, x, y);
+                PlotMirroredPointsQuad(color, center, x, y);
             }
             
             // Region 2
@@ -102,11 +141,25 @@ namespace DotSDL.Graphics {
                     px = px + 2 * rySq;
                     p = p + rxSq - py + px;
                 }
-                PlotMirroredPoints(color, center, x, y);
+                PlotMirroredPointsQuad(color, center, x, y);
             }
         }
 
-        private void PlotMirroredPoints(Color color, Point center, int rX, int rY) {
+        private void PlotMirroredPointsY(Color color, Point center, int x, int y, bool flip) {
+            if(flip) {
+                Pixels[GetIndex(center.X - x, center.Y + y)] = color;
+                Pixels[GetIndex(center.X - x, center.Y - y)] = color;
+                Pixels[GetIndex(center.X - y, center.Y + x)] = color;
+                Pixels[GetIndex(center.X - y, center.Y - x)] = color;
+            } else {
+                Pixels[GetIndex(center.X + x, center.Y + y)] = color;
+                Pixels[GetIndex(center.X + x, center.Y - y)] = color;
+                Pixels[GetIndex(center.X + y, center.Y + x)] = color;
+                Pixels[GetIndex(center.X + y, center.Y - x)] = color;
+            }
+        }
+
+        private void PlotMirroredPointsQuad(Color color, Point center, int rX, int rY) {
             Pixels[GetIndex(center.X + rX, center.Y + rY)] = color;
             Pixels[GetIndex(center.X + rX, center.Y - rY)] = color;
             Pixels[GetIndex(center.X - rX, center.Y + rY)] = color;
