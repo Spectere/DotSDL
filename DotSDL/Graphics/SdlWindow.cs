@@ -12,8 +12,8 @@ namespace DotSDL.Graphics {
 
         private bool _running;
 
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public int Width { get; }
+        public int Height { get; }
 
         private Color[] _pixels;
 
