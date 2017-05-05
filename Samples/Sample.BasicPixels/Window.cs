@@ -55,17 +55,10 @@ namespace DotSDL.Sample.BasicPixels {
                 new Line { Start = new Point { X = offsetX + 48, Y = offsetY + 80 }, End = new Point { X = offsetX + 32, Y = offsetY + 96 } },
                 new Line { Start = new Point { X = offsetX + 32, Y = offsetY + 96 }, End = new Point { X = offsetX, Y = offsetY + 96 } }
             );
+
             // o
-            canvas.DrawLines(RandomColor(min, max),
-                new Line { Start = new Point { X = offsetX + 64, Y = offsetY + 88}, End = new Point { X = offsetX + 64, Y = offsetY + 56 } },
-                new Line { Start = new Point { X = offsetX + 64, Y = offsetY + 56}, End = new Point { X = offsetX + 72, Y = offsetY + 48 } },
-                new Line { Start = new Point { X = offsetX + 72, Y = offsetY + 48}, End = new Point { X = offsetX + 80, Y = offsetY + 48 } },
-                new Line { Start = new Point { X = offsetX + 80, Y = offsetY + 48}, End = new Point { X = offsetX + 88, Y = offsetY + 56 } },
-                new Line { Start = new Point { X = offsetX + 88, Y = offsetY + 56}, End = new Point { X = offsetX + 88, Y = offsetY + 88 } },
-                new Line { Start = new Point { X = offsetX + 88, Y = offsetY + 88}, End = new Point { X = offsetX + 80, Y = offsetY + 96 } },
-                new Line { Start = new Point { X = offsetX + 80, Y = offsetY + 96}, End = new Point { X = offsetX + 72, Y = offsetY + 96 } },
-                new Line { Start = new Point { X = offsetX + 72, Y = offsetY + 96}, End = new Point { X = offsetX + 64, Y = offsetY + 88 } }
-            );
+            canvas.DrawEllipse(RandomColor(min, max), new Point { X = offsetX + 76, Y = offsetY + 72 }, 12, 24);
+
             // t
             canvas.DrawLines(RandomColor(min, max),
                 new Line { Start = new Point { X = offsetX + 104 + 12, Y = offsetY + 24}, End = new Point { X = offsetX + 104 + 12, Y = offsetY + 96 } },
@@ -80,6 +73,7 @@ namespace DotSDL.Sample.BasicPixels {
                 new Line { Start = new Point { X = offsetX + 144 + 48, Y = offsetY + 48 }, End = new Point { X = offsetX + 144 + 48 , Y = offsetY + 96 } },
                 new Line { Start = new Point { X = offsetX + 144 + 48, Y = offsetY + 96 }, End = new Point { X = offsetX + 144, Y = offsetY + 96 } }
             );
+
             // D
             canvas.DrawLines(RandomColor(min, max),
                 new Line { Start = new Point { X = offsetX + 208, Y = offsetY + 96 }, End = new Point { X = offsetX + 208, Y = offsetY } },
@@ -89,6 +83,7 @@ namespace DotSDL.Sample.BasicPixels {
                 new Line { Start = new Point { X = offsetX + 208 + 48, Y = offsetY + 80 }, End = new Point { X = offsetX + 208 + 32, Y = offsetY + 96 } },
                 new Line { Start = new Point { X = offsetX + 208 + 32, Y = offsetY + 96 }, End = new Point { X = offsetX + 208, Y = offsetY + 96 } }
             );
+
             // L
             canvas.DrawLines(RandomColor(min, max),
                 new Line { Start = new Point { X = offsetX + 272, Y = offsetY }, End = new Point { X = offsetX + 272, Y = offsetY + 96} },
