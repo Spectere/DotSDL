@@ -31,42 +31,48 @@ namespace DotSDL.Graphics {
         }
 
         /// <summary>
-        /// Draws an arc onto the <see cref="Canvas"/>.
+        /// An internal function that gets the point on a specific section of a Beziér curve.
         /// </summary>
-        /// <param name="color">The color of the arc.</param>
-        /// <param name="center">A <see cref="Point"/> indicating the origin of the arc.</param>
-        /// <param name="radius">The radius of the arc, in pixels. Use negative values to create a left-facing arc.</param>
-        public void DrawArc(Color color, Point center, int radius) {
-            // TODO: Replace this with a more versatile spline function! This can only do left/right-facing arcs (which sucks).
-            var x = Math.Abs(radius);
-            var y = 0;
-            var err = 0;
-            var flip = radius < 0;
+        /// <param name="points">A list of control points.</param>
+        /// <param name="t">The section of the curve to return a point for.</param>
+        /// <returns>The requested point on the curve.</returns>
+        private Point BezierGetPoint(Point[] points, double t) {
+            while(true) {
+                if(points.Length == 1)
+                    return points[0];
 
-            while(x >= y) {
-                PlotMirroredPointsY(color, center, x, y, flip);
-
-                y += 1;
-                if(err <= 0) {
-                    err += 2 * y + 1;
+                var newPoints = new Point[points.Length - 1];
+                for(var i = 0; i < points.Length - 1; i++) {
+                    newPoints[i] = new Point {
+                        X = (int)Math.Round((1 - t) * points[i].X + t * points[i + 1].X),
+                        Y = (int)Math.Round((1 - t) * points[i].Y + t * points[i + 1].Y)
+                    };
                 }
-
-                if(err > 0) {
-                    x -= 1;
-                    err -= 2 * x + 1;
-                }
+                points = newPoints;
             }
         }
 
         /// <summary>
-        /// Draws an arc onto the <see cref="Canvas"/>.
+        /// Draws a Beziér curve onto the <see cref="Canvas"/>.
         /// </summary>
-        /// <param name="color">The color of the arc.</param>
-        /// <param name="center">A <see cref="Point"/> indicating the origin of the arc.</param>
-        /// <param name="width">The radius of the arc, in pixels. Use negative values to create a left-facing arc.</param>
-        /// <param name="height">The radius of the arc, in pixels. Use negative values to create a left-facing arc.</param>
-        public void DrawArc(Color color, Point center, int width, int height) {
-            throw new NotImplementedException();
+        /// <param name="color">The color of the Beziér curve.(r</param>
+        /// <param name="segments">The number of segments in the drawn curve.</param>
+        /// <param name="points">A collection of points for the Beziér curve. If fewer than two points are specified, an exception will be thrown.</param>
+        public void DrawBezier(Color color, int segments, params Point[] points) {
+            if(points.Length < 2) throw new ArgumentException("Too few points specified.", nameof(points));
+            if(points.Length == 2) // Just draw a line.
+                DrawLine(color, new Line { Start = points[0], End = points[1] });
+
+            var d = 1.0 / segments;
+            var newPoints = new Point[segments + 1];
+            var i = 0;
+            for(var t = 0.0; i < segments; t += d, i++)
+                newPoints[i] = BezierGetPoint(points, t);
+
+            // Always make sure that the end point is represented.
+            newPoints[segments] = BezierGetPoint(points, 1);
+
+            DrawLines(color, newPoints);
         }
 
         /// <summary>
@@ -210,6 +216,17 @@ namespace DotSDL.Graphics {
         public void DrawLines(Color color, params Line[] lines) {
             foreach(var line in lines)
                 DrawLine(color, line);
+        }
+
+        /// <summary>
+        /// Plots a sequence of lines on the <see cref="Canvas"/>.
+        /// </summary>
+        /// <param name="color">The color of the lines.</param>
+        /// <param name="points">A list of points to draw. There must be at least two points specified.</param>
+        public void DrawLines(Color color, params Point[] points) {
+            if(points.Length < 2) throw new ArgumentException("Too few points specified.", nameof(points));
+            for(var i = 0; i < points.Length - 1; i++)
+                DrawLine(color, new Line { Start = points[i], End = points[i + 1] });
         }
 
         /// <summary>
