@@ -14,8 +14,11 @@ namespace DotSDL.Graphics {
 
         private bool _running;
 
-        public int Width { get; }
-        public int Height { get; }
+        public int WindowWidth { get; }
+        public int WindowHeight { get; }
+
+        public int TextureWidth { get; }
+        public int TextureHeight { get; }
 
         private Canvas _canvas;
 
@@ -31,17 +34,22 @@ namespace DotSDL.Graphics {
             return (int)(WindowPosCentered | x);
         }
 
-        public SdlWindow(string name, Point position, int width, int height) {
+        public SdlWindow(string name, Point position, int windowWidth, int windowHeight) : this(name, position, windowWidth, windowHeight, windowWidth, windowHeight) {}
+
+        public SdlWindow(string name, Point position, int windowWidth, int windowHeight, int textureWidth, int textureHeight) {
             sdlInit.InitSubsystem(Init.SubsystemFlags.Video);
 
-            _window = Video.CreateWindow(name, position.X, position.Y, width, height, Video.WindowFlags.Hidden);
+            _window = Video.CreateWindow(name, position.X, position.Y, windowWidth, windowHeight, Video.WindowFlags.Hidden);
             _renderer = Render.CreateRenderer(_window, -1, Render.RendererFlags.Accelerated);
-            _texture = Render.CreateTexture(_renderer, Pixels.PixelFormatArgb8888, Render.TextureAccess.Streaming, width, height);
+            _texture = Render.CreateTexture(_renderer, Pixels.PixelFormatArgb8888, Render.TextureAccess.Streaming, textureWidth, textureHeight);
 
-            _canvas = new Canvas(width, height);
+            _canvas = new Canvas(textureWidth, textureHeight);
 
-            Width = width;
-            Height = height;
+            WindowWidth = windowWidth;
+            WindowHeight = windowHeight;
+
+            TextureWidth = textureWidth;
+            TextureHeight = textureHeight;
         }
 
         private unsafe void BaseDraw() {
@@ -49,7 +57,7 @@ namespace DotSDL.Graphics {
 
             fixed(void* pixelsPtr = _canvas.Pixels) {
                 var ptr = (IntPtr)pixelsPtr;
-                Render.UpdateTexture(_texture, IntPtr.Zero, ptr, Width * 4);
+                Render.UpdateTexture(_texture, IntPtr.Zero, ptr, TextureWidth * 4);
             }
 
             Render.RenderCopy(_renderer, _texture, IntPtr.Zero, IntPtr.Zero);
