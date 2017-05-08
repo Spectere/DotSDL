@@ -15,6 +15,9 @@ namespace DotSDL.Graphics {
         private Canvas _canvas;
         private bool _running;
 
+        private uint _nextVideoUpdate;
+        private uint _nextGameUpdate;
+
         /// <summary>The width of the user window.</summary>
         public int WindowWidth { get; }
         /// <summary>The height of the user window.</summary>
@@ -24,6 +27,13 @@ namespace DotSDL.Graphics {
         public int TextureWidth { get; }
         /// <summary>The height of the internal texture used by this <see cref="SdlWindow"/>.</summary>
         public int TextureHeight { get; }
+
+        /// <summary>The amount of time, in milliseconds, from when the application was started.</summary>
+        public uint TicksElapsed => Timer.GetTicks();
+        /// <summary>Gets or sets the amount of time, in milliseconds, between video updates.</summary>
+        public uint VideoUpdateTicks { get; set; }
+        /// <summary>Gets or sets the amount of time, in milliseconds, between game (logic) updates.</summary>
+        public uint GameUpdateTicks { get; set; }
 
         /// <summary>
         /// Indicates that the window manager should position the window. To place the window on a specific display, use the <see cref="WindowPosCenteredDisplay"/> function.
