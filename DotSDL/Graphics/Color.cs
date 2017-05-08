@@ -1,6 +1,9 @@
 ﻿using System.Runtime.InteropServices;
 
 namespace DotSDL.Graphics {
+    /// <summary>
+    /// A structure representing a 32-bit ARGB color value.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct Color {
         /// <summary>
