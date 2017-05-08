@@ -151,20 +151,13 @@ namespace DotSDL.Graphics {
             }
         }
 
-        private void PlotMirroredPointsY(Color color, Point center, int x, int y, bool flip) {
-            if(flip) {
-                Pixels[GetIndex(center.X - x, center.Y + y)] = color;
-                Pixels[GetIndex(center.X - x, center.Y - y)] = color;
-                Pixels[GetIndex(center.X - y, center.Y + x)] = color;
-                Pixels[GetIndex(center.X - y, center.Y - x)] = color;
-            } else {
-                Pixels[GetIndex(center.X + x, center.Y + y)] = color;
-                Pixels[GetIndex(center.X + x, center.Y - y)] = color;
-                Pixels[GetIndex(center.X + y, center.Y + x)] = color;
-                Pixels[GetIndex(center.X + y, center.Y - x)] = color;
-            }
-        }
-
+        /// <summary>
+        /// Used to reduce the number of calculations needed to plot a circle or ellipse.
+        /// </summary>
+        /// <param name="color">The color of the shape.</param>
+        /// <param name="center">A <see cref="Point"/> representing the center of the shape.</param>
+        /// <param name="rX">The relative X coordinate of the pixel to color.</param>
+        /// <param name="rY">The relative Y coordinate of the pixel to color.</param>
         private void PlotMirroredPointsQuad(Color color, Point center, int rX, int rY) {
             Pixels[GetIndex(center.X + rX, center.Y + rY)] = color;
             Pixels[GetIndex(center.X + rX, center.Y - rY)] = color;

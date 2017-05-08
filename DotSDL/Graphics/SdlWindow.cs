@@ -6,40 +6,75 @@ namespace DotSDL.Graphics {
     /// Represents an SDL window.
     /// </summary>
     public class SdlWindow {
-        private readonly SdlInit sdlInit = SdlInit.Instance;
+        private readonly SdlInit _sdlInit = SdlInit.Instance;
 
         private readonly IntPtr _window;
         private readonly IntPtr _renderer;
         private readonly IntPtr _texture;
 
+        private Canvas _canvas;
         private bool _running;
 
+        /// <summary>The width of the user window.</summary>
         public int WindowWidth { get; }
+        /// <summary>The height of the user window.</summary>
         public int WindowHeight { get; }
 
+        /// <summary>The width of the internal texture used by this <see cref="SdlWindow"/>.</summary>
         public int TextureWidth { get; }
+        /// <summary>The height of the internal texture used by this <see cref="SdlWindow"/>.</summary>
         public int TextureHeight { get; }
 
-        private Canvas _canvas;
-
-        /// <summary>Indicates that the window manager should position the window.</summary>
+        /// <summary>
+        /// Indicates that the window manager should position the window. To place the window on a specific display, use the <see cref="WindowPosCenteredDisplay"/> function.
+        /// </summary>
         public const int WindowPosUndefined = 0x1FFF0000;
-        public static int WindowPosUndefinedDisplay(uint x) {
-            return (int)(WindowPosUndefined | x);
+
+        /// <summary>
+        /// Calculates a value that allows the window to be placed on a specific display, with its exact position determined by the window manager.
+        /// </summary>
+        /// <param name="display">The index of the display to place the window on.</param>
+        /// <returns>A coordinate value that should be passed to the <see cref="SdlWindow"/> constructor.</returns>
+        public static int WindowPosUndefinedDisplay(uint display) {
+            return (int)(WindowPosUndefined | display);
         }
 
-        /// <summary>Indicates that the window should be in the center of the screen.</summary>
+        /// <summary>
+        /// Indicates that the window should be in the center of the screen. To center the window on a specific display, use the <see cref="WindowPosCenteredDisplay"/> function.
+        /// </summary>
         public const int WindowPosCentered = 0x2FFF0000;
-        internal static int WindowPosCenteredDisplay(uint x) {
-            return (int)(WindowPosCentered | x);
+
+        /// <summary>
+        /// Calculates a value that allows the window to be placed in the center of a specified display.
+        /// </summary>
+        /// <param name="display">The index of the display to place the window on.</param>
+        /// <returns>A coordinate value that should be passed to the <see cref="SdlWindow"/> constructor.</returns>
+        public static int WindowPosCenteredDisplay(uint display) {
+            return (int)(WindowPosCentered | display);
         }
 
-        public SdlWindow(string name, Point position, int windowWidth, int windowHeight) : this(name, position, windowWidth, windowHeight, windowWidth, windowHeight) {}
+        /// <summary>
+        /// Creates a new <see cref="SdlWindow"/>.
+        /// </summary>
+        /// <param name="title">The text that is displayed on the window's title bar.</param>
+        /// <param name="position">A <see cref="Point"/> representing the starting position of the window. The X and Y coordinates of the Point can be set to <see cref="WindowPosUndefined"/> or <see cref="WindowPosCentered"/>.</param>
+        /// <param name="windowWidth">The width of the window.</param>
+        /// <param name="windowHeight">The height of the window.</param>
+        public SdlWindow(string title, Point position, int windowWidth, int windowHeight) : this(title, position, windowWidth, windowHeight, windowWidth, windowHeight) {}
 
-        public SdlWindow(string name, Point position, int windowWidth, int windowHeight, int textureWidth, int textureHeight) {
-            sdlInit.InitSubsystem(Init.SubsystemFlags.Video);
+        /// <summary>
+        /// Creates a new <see cref="SdlWindow"/>.
+        /// </summary>
+        /// <param name="title">The text that is displayed on the window's title bar.</param>
+        /// <param name="position">A <see cref="Point"/> representing the starting position of the window. The X and Y coordinates of the Point can be set to <see cref="WindowPosUndefined"/> or <see cref="WindowPosCentered"/>.</param>
+        /// <param name="windowWidth">The width of the window.</param>
+        /// <param name="windowHeight">The height of the window.</param>
+        /// <param name="textureWidth">The width of the window's texture.</param>
+        /// <param name="textureHeight">The height of the window's texture.</param>
+        public SdlWindow(string title, Point position, int windowWidth, int windowHeight, int textureWidth, int textureHeight) {
+            _sdlInit.InitSubsystem(Init.SubsystemFlags.Video);
 
-            _window = Video.CreateWindow(name, position.X, position.Y, windowWidth, windowHeight, Video.WindowFlags.Hidden);
+            _window = Video.CreateWindow(title, position.X, position.Y, windowWidth, windowHeight, Video.WindowFlags.Hidden);
             _renderer = Render.CreateRenderer(_window, -1, Render.RendererFlags.Accelerated);
             _texture = Render.CreateTexture(_renderer, Pixels.PixelFormatArgb8888, Render.TextureAccess.Streaming, textureWidth, textureHeight);
 
@@ -52,6 +87,9 @@ namespace DotSDL.Graphics {
             TextureHeight = textureHeight;
         }
 
+        /// <summary>
+        /// Handles calling the user draw function and passing the CLR objects to SDL2.
+        /// </summary>
         private unsafe void BaseDraw() {
             OnDraw(ref _canvas);  // Call the overridden Draw function.
 
@@ -64,26 +102,36 @@ namespace DotSDL.Graphics {
             Render.RenderPresent(_renderer);
         }
 
+        /// <summary>
+        /// Handles setting up the <see cref="SdlWindow"/>.
+        /// </summary>
         private void BaseLoad() {
             OnLoad();  // Call the overridden Load function.
         }
 
+        /// <summary>
+        /// Handles updating the application logic for the <see cref="SdlWindow"/>.
+        /// </summary>
         private void BaseUpdate() {
             OnUpdate();  // Call the overridden Update function.
         }
 
+        /// <summary>
+        /// A game loop that calls the <see cref="SdlWindow"/> update and draw functions.
+        /// </summary>
         private void Loop() {
             _running = true;
 
             while(_running) {
-                BaseDraw();
                 BaseUpdate();
+                BaseDraw();
             }
         }
 
         /// <summary>
         /// Fired every time the window is drawn to.
         /// </summary>
+        /// <param name="canvas">The active canvas for the window.</param>
         protected virtual void OnDraw(ref Canvas canvas) {}
 
         /// <summary>
