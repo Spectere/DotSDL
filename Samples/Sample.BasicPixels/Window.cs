@@ -49,12 +49,12 @@ namespace DotSDL.Sample.BasicPixels {
             var color = RandomColor(min, max);
 
             // D
-            canvas.DrawLines(color,
+            Plotting.DrawLines(ref canvas, color,
                 new Line { Start = new Point { X = offsetX, Y = offsetY + 96 }, End = new Point { X = offsetX, Y = offsetY }},
                 new Line { Start = new Point { X = offsetX, Y = offsetY }, End = new Point { X = offsetX + 10, Y = offsetY }},
                 new Line { Start = new Point { X = offsetX, Y = offsetY + 96 }, End = new Point { X = offsetX + 10, Y = offsetY + 96 }}
             );
-            canvas.DrawBezier(color, 100,
+            Plotting.DrawBezier(ref canvas, color, 100,
                 new Point { X = offsetX + 8, Y = offsetY },
                 new Point { X = offsetX + 48, Y = offsetY },
                 new Point { X = offsetX + 48, Y = offsetY + 96 },
@@ -62,16 +62,16 @@ namespace DotSDL.Sample.BasicPixels {
             );
 
             // o
-            canvas.DrawEllipse(color, new Point { X = offsetX + 76, Y = offsetY + 72 }, 12, 24);
+            Plotting.DrawEllipse(ref canvas, color, new Point { X = offsetX + 76, Y = offsetY + 72 }, 12, 24);
 
             // t
-            canvas.DrawLines(color,
+            Plotting.DrawLines(ref canvas, color,
                 new Line { Start = new Point { X = offsetX + 104 + 12, Y = offsetY + 24}, End = new Point { X = offsetX + 104 + 12, Y = offsetY + 96 } },
                 new Line { Start = new Point { X = offsetX + 104, Y = offsetY + 48}, End = new Point { X = offsetX + 104 + 24, Y = offsetY + 48 } }
             );
 
             // S
-            canvas.DrawBezier(color, 100,
+            Plotting.DrawBezier(ref canvas, color, 100,
                 new Point { X = offsetX + 144 + 48, Y = offsetY },
                 new Point { X = offsetX + 144 - 24, Y = offsetY },
                 new Point { X = offsetX + 144, Y = offsetY + 48 },
@@ -81,12 +81,12 @@ namespace DotSDL.Sample.BasicPixels {
             );
 
             // D
-            canvas.DrawLines(color,
+            Plotting.DrawLines(ref canvas, color,
                 new Line { Start = new Point { X = offsetX + 208, Y = offsetY + 96 }, End = new Point { X = offsetX + 208, Y = offsetY } },
                 new Line { Start = new Point { X = offsetX + 208, Y = offsetY }, End = new Point { X = offsetX + 208 + 10, Y = offsetY } },
                 new Line { Start = new Point { X = offsetX + 208, Y = offsetY + 96 }, End = new Point { X = offsetX + 208 + 10, Y = offsetY + 96 } }
             );
-            canvas.DrawBezier(color, 100,
+            Plotting.DrawBezier(ref canvas, color, 100,
                 new Point { X = offsetX + 208 + 8, Y = offsetY },
                 new Point { X = offsetX + 208 + 48, Y = offsetY },
                 new Point { X = offsetX + 208 + 48, Y = offsetY + 96 },
@@ -94,7 +94,7 @@ namespace DotSDL.Sample.BasicPixels {
             );
 
             // L
-            canvas.DrawLines(color,
+            Plotting.DrawLines(ref canvas, color,
                 new Line { Start = new Point { X = offsetX + 272, Y = offsetY }, End = new Point { X = offsetX + 272, Y = offsetY + 96} },
                 new Line { Start = new Point { X = offsetX + 272, Y = offsetY + 96 }, End = new Point { X = offsetX + 272 + 48, Y = offsetY + 96} }
             );
