@@ -15,8 +15,8 @@ namespace DotSDL.Graphics {
         private Canvas _canvas;
         private bool _running;
 
-        private uint _nextVideoUpdate;
-        private uint _nextGameUpdate;
+        private uint _nextVideoUpdate = 0;
+        private uint _nextGameUpdate = 0;
 
         /// <summary>The width of the user window.</summary>
         public int WindowWidth { get; }
@@ -133,8 +133,23 @@ namespace DotSDL.Graphics {
             _running = true;
 
             while(_running) {
-                BaseUpdate();
-                BaseDraw();
+                var ticks = TicksElapsed;
+
+                if(ticks > _nextGameUpdate || GameUpdateTicks == 0) {
+                    _nextGameUpdate = ticks + GameUpdateTicks;
+                    BaseUpdate();
+                }
+
+                if(ticks > _nextVideoUpdate || VideoUpdateTicks == 0) {
+                    _nextVideoUpdate = ticks + VideoUpdateTicks;
+                    BaseDraw();
+                }
+
+                if(VideoUpdateTicks <= 0 && GameUpdateTicks <= 0) continue;  // Cook the CPU!
+
+                var updateTicks = (long)(_nextGameUpdate > _nextVideoUpdate ? _nextVideoUpdate : _nextGameUpdate) - TicksElapsed;
+                if(updateTicks > 0)
+                    Timer.Delay((uint)updateTicks);
             }
         }
 
@@ -158,6 +173,26 @@ namespace DotSDL.Graphics {
         /// Displays the window and begins executing code that's associated with it.
         /// </summary>
         public void Start() {
+            Start(0, 0);
+        }
+
+        /// <summary>
+        /// Displays the window and begins executing code that's associated with it.
+        /// </summary>
+        /// <param name="updateRate">The desired number of milliseconds between frames and game logic updates. 0 causes the display and game to be continuously updated.</param>
+        public void Start(uint updateRate) {
+            Start(updateRate, updateRate);
+        }
+
+        /// <summary>
+        /// Displays the window and begins executing code that's associated with it.
+        /// </summary>
+        /// <param name="drawRate">The desired number of milliseconds between draw calls. 0 causes the display to be continuously updated.</param>
+        /// <param name="updateRate">The desired number of milliseconds between game logic updates. 0 causes the game to be continuously updated.</param>
+        public void Start(uint drawRate, uint updateRate) {
+            VideoUpdateTicks = drawRate;
+            GameUpdateTicks = updateRate;
+
             BaseLoad();
             Video.ShowWindow(_window);
             Loop();
