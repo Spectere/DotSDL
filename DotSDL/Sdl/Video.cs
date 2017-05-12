@@ -79,8 +79,8 @@ namespace DotSDL.Sdl {
         /// Creates a window with the specified position, dimensions, and flags.
         /// </summary>
         /// <param name="title">The title of the window, in UTF-8 encoding.</param>
-        /// <param name="x">The x position of the window, <see cref="WindowPosCentered"/>, or <see cref="WindowPosUndefined"/>.</param>
-        /// <param name="y">The y position of the window, <see cref="WindowPosCentered"/>, or <see cref="WindowPosUndefined"/>.</param>
+        /// <param name="x">The x position of the window, <see cref="Graphics.SdlWindow.WindowPosCentered"/>, or <see cref="Graphics.SdlWindow.WindowPosUndefined"/>.</param>
+        /// <param name="y">The y position of the window, <see cref="Graphics.SdlWindow.WindowPosCentered"/>, or <see cref="Graphics.SdlWindow.WindowPosUndefined"/>.</param>
         /// <param name="w">The width of the window, in screen coordinates.</param>
         /// <param name="h">The height of the window, in screen coordinates.</param>
         /// <param name="flags">One or more <see cref="WindowFlags"/> OR'd together.</param>
