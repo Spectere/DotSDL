@@ -89,6 +89,14 @@ namespace DotSDL.Sdl {
         internal static extern IntPtr CreateWindow(string title, int x, int y, int w, int h, WindowFlags flags);
 
         /// <summary>
+        /// Gets the numberic ID of a window.
+        /// </summary>
+        /// <param name="window">The window to query.</param>
+        /// <returns>The ID of the window.</returns>
+        [DllImport(Meta.DllName, EntryPoint = "SDL_GetWindowID", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern uint GetWindowId(IntPtr window);
+
+        /// <summary>
         /// Shows an SDL window.
         /// </summary>
         /// <param name="window">The window to show.</param>
