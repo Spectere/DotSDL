@@ -15,8 +15,8 @@ namespace DotSDL.Graphics {
         private Canvas _canvas;
         private bool _running;
 
-        private uint _nextVideoUpdate = 0;
-        private uint _nextGameUpdate = 0;
+        private uint _nextVideoUpdate;
+        private uint _nextGameUpdate;
 
         /// <summary>The width of the user window.</summary>
         public int WindowWidth { get; }
@@ -83,6 +83,7 @@ namespace DotSDL.Graphics {
         /// <param name="textureHeight">The height of the window's texture.</param>
         public SdlWindow(string title, Point position, int windowWidth, int windowHeight, int textureWidth, int textureHeight) {
             _sdlInit.InitSubsystem(Init.SubsystemFlags.Video);
+            _sdlInit.InitSubsystem(Init.SubsystemFlags.Timer);
 
             _window = Video.CreateWindow(title, position.X, position.Y, windowWidth, windowHeight, Video.WindowFlags.Hidden);
             _renderer = Render.CreateRenderer(_window, -1, Render.RendererFlags.Accelerated);
