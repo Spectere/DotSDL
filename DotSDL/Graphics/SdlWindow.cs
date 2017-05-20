@@ -1,12 +1,13 @@
-﻿using System;
-using DotSDL.Sdl;
+﻿using DotSDL.Sdl;
+using System;
 
 namespace DotSDL.Graphics {
     /// <summary>
     /// Represents an SDL window.
     /// </summary>
-    public class SdlWindow {
+    public class SdlWindow : IResourceObject {
         private readonly SdlInit _sdlInit = SdlInit.Instance;
+        private readonly ResourceManager _resources = ResourceManager.Instance;
 
         private readonly IntPtr _window;
         private readonly IntPtr _renderer;
@@ -17,6 +18,9 @@ namespace DotSDL.Graphics {
 
         private uint _nextVideoUpdate;
         private uint _nextGameUpdate;
+
+        /// <summary><c>true</c> if this <see cref="SdlWindow"/> instance has been destroyed, othersize <c>false</c>.</summary>
+        public bool IsDestroyed { get; set; }
 
         /// <summary>The width of the user window.</summary>
         public int WindowWidth { get; }
@@ -96,12 +100,24 @@ namespace DotSDL.Graphics {
 
             TextureWidth = textureWidth;
             TextureHeight = textureHeight;
+
+            IsDestroyed = false;
+            _resources.RegisterResource(this);
+        }
+
+        /// <summary>
+        /// Releases resources used by the <see cref="SdlWindow"/> instance.
+        /// </summary>
+        ~SdlWindow() {
+            DestroyObject();
+            _resources.UnregisterResource(this);
         }
 
         /// <summary>
         /// Handles calling the user draw function and passing the CLR objects to SDL2.
         /// </summary>
         private unsafe void BaseDraw() {
+            if(IsDestroyed) return;
             OnDraw(ref _canvas);  // Call the overridden Draw function.
 
             fixed(void* pixelsPtr = _canvas.Pixels) {
@@ -124,7 +140,24 @@ namespace DotSDL.Graphics {
         /// Handles updating the application logic for the <see cref="SdlWindow"/>.
         /// </summary>
         private void BaseUpdate() {
+            if(IsDestroyed) return;
             OnUpdate();  // Call the overridden Update function.
+        }
+
+        /// <summary>
+        /// Destroys this <see cref="SdlWindow"/>.
+        /// </summary>
+        public void DestroyObject() {
+            Video.DestroyWindow(_window);
+            IsDestroyed = true;
+        }
+
+        /// <summary>
+        /// Retrieves the SDL resource ID for this <see cref="SdlWindow"/>.
+        /// </summary>
+        /// <returns></returns>
+        public uint GetResourceId() {
+            return Video.GetWindowId(_window);
         }
 
         /// <summary>
