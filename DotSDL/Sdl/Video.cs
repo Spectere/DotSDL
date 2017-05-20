@@ -89,6 +89,13 @@ namespace DotSDL.Sdl {
         internal static extern IntPtr CreateWindow(string title, int x, int y, int w, int h, WindowFlags flags);
 
         /// <summary>
+        /// Destroys an SDL window.
+        /// </summary>
+        /// <param name="window">The window to destroy.</param>
+        [DllImport(Meta.DllName, EntryPoint = "SDL_DestroyWindow", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void DestroyWindow(IntPtr window);
+
+        /// <summary>
         /// Gets the numberic ID of a window.
         /// </summary>
         /// <param name="window">The window to query.</param>
