@@ -87,7 +87,6 @@ namespace DotSDL.Graphics {
         /// <param name="textureHeight">The height of the window's texture.</param>
         public SdlWindow(string title, Point position, int windowWidth, int windowHeight, int textureWidth, int textureHeight) {
             _sdlInit.InitSubsystem(Init.SubsystemFlags.Video);
-            _sdlInit.InitSubsystem(Init.SubsystemFlags.Timer);
 
             _window = Video.CreateWindow(title, position.X, position.Y, windowWidth, windowHeight, Video.WindowFlags.Hidden);
             _renderer = Render.CreateRenderer(_window, -1, Render.RendererFlags.Accelerated);
