@@ -28,16 +28,6 @@ namespace DotSDL {
         }
 
         /// <summary>
-        /// Retrieves all resources matching a given type.
-        /// </summary>
-        /// <param name="type">The <see cref="ResourceType"/> that should be returned.</param>
-        /// <returns>A collection of <see cref="Resource"/>s matching the type given in <paramref name="type"/>.</returns>
-        internal IEnumerable<IResourceObject> GetResourceByType(string type) {
-            //return _resources.Where(e => e is typeof(type));
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
         /// Registers a resource with the <see cref="ResourceManager"/>.
         /// </summary>
         /// <param name="resource">The resource to register.</param>
