@@ -2,7 +2,7 @@
     /// <summary>
     /// Indicates a specific type of resource.
     /// </summary>
-    internal enum ResourceType {
+    public enum ResourceType {
         /// <summary>
         /// An SDL_Window resource.
         /// </summary>

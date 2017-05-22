@@ -22,6 +22,8 @@ namespace DotSDL.Graphics {
         /// <summary><c>true</c> if this <see cref="SdlWindow"/> instance has been destroyed, othersize <c>false</c>.</summary>
         public bool IsDestroyed { get; set; }
 
+        public ResourceType ResourceType => ResourceType.Window;
+
         /// <summary>The width of the user window.</summary>
         public int WindowWidth { get; }
         /// <summary>The height of the user window.</summary>
