@@ -4,7 +4,7 @@
     /// </summary>
     internal interface IResourceObject {
         /// <summary>
-        /// <c>true</c> if the underlying <see cref="IResourceObject"/> has been destoryed, otherwise <c>false</c>.
+        /// <c>true</c> if the underlying <see cref="IResourceObject"/> has been destroyed, otherwise <c>false</c>.
         /// </summary>
         bool IsDestroyed { get; set; }
 
