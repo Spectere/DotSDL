@@ -142,6 +142,8 @@ namespace DotSDL.Graphics {
         /// </summary>
         private void BaseUpdate() {
             if(IsDestroyed) return;
+
+            Events.EventDispatcher.ProcessEvents();
             OnUpdate();  // Call the overridden Update function.
         }
 
