@@ -124,7 +124,7 @@ namespace DotSDL.Sdl {
             /// <summary>The window manager requests that the window be closed.</summary>
             Close,
 
-            /// <summary>Window is being offered a focus (should SetWindowInputFocus() in itself).</summary>
+            /// <summary>Window is being offered a focus (should SetWindowInputFocus() on itself or a subwindow, or ignore).</summary>
             TakeFocus,
 
             /// <summary>Window had a hit test that wasn't SDL_HITTEST_NORMAL.</summary>
