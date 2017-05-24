@@ -1,10 +1,24 @@
-﻿using System.Runtime.InteropServices;
+﻿using ControllerButton = DotSDL.Input.Controller.Button;
+using DotSDL.Input.Controller;
+using DotSDL.Input.Joystick;
+using DotSDL.Input.Mouse;
+using MouseButton = DotSDL.Input.Mouse.Button;
+using System;
+using System.Runtime.InteropServices;
 
 namespace DotSDL.Sdl {
     /// <summary>
     /// Contains the necessary constants and function imports from SDL_events.h.
     /// </summary>
     internal static class Events {
+        /// <summary>
+        /// Indicates the state of a keyboard, mouse, joystick, or controller button.
+        /// </summary>
+        internal enum ButtonState : byte {
+            Released = 0,
+            Pressed = 1
+        }
+
         /// <summary>
         /// Indicates the type of event.
         /// </summary>
@@ -209,6 +223,68 @@ namespace DotSDL.Sdl {
             LastEvent = 0x0000FFFF
         }
 
+        [StructLayout(LayoutKind.Sequential, Size = 56)]
+        internal struct AudioDeviceEvent {
+            internal EventType Type;
+            internal uint Timestamp;
+            internal uint Which;
+            internal byte IsCapture;
+            internal byte Padding1;
+            internal byte Padding2;
+            internal byte Padding3;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Size = 56)]
+        internal struct ControllerAxisEvent {
+            internal EventType Type;
+            internal uint Timestamp;
+            internal uint Which;
+            internal Axis Axis;
+            internal byte Padding1;
+            internal byte Padding2;
+            internal byte Padding3;
+            internal short Value;
+            internal ushort Padding4;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Size = 56)]
+        internal struct ControllerButtonEvent {
+            internal EventType Type;
+            internal uint Timestamp;
+            internal uint Which;
+            internal ControllerButton Button;
+            internal ButtonState State;
+            internal byte Padding1;
+            internal byte Padding2;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Size = 56)]
+        internal struct ControllerDeviceEvent {
+            internal EventType Type;
+            internal uint Timestamp;
+            internal uint Which;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Size = 56)]
+        internal struct DollarGestureEvent {
+            internal EventType Type;
+            internal uint Timestamp;
+            internal long TouchId;
+            internal long GestureId;
+            internal uint NumFingers;
+            internal float Error;
+            internal float X;
+            internal float Y;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Size = 56)]
+        internal struct DropEvent {
+            internal EventType Type;
+            internal uint Timestamp;
+            internal string File;
+            internal uint WindowId;
+        }
+
         /// <summary>
         /// General event structure.
         /// </summary>
@@ -220,6 +296,61 @@ namespace DotSDL.Sdl {
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
+        internal struct JoyAxisEvent {
+            internal EventType Type;
+            internal uint Timestamp;
+            internal uint Which;
+            internal byte Axis;
+            internal byte Padding1;
+            internal byte Padding2;
+            internal byte Padding3;
+            internal short Value;
+            internal ushort Padding4;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Size = 56)]
+        internal struct JoyBallEvent {
+            internal EventType Type;
+            internal uint Timestamp;
+            internal uint Which;
+            internal byte Ball;
+            internal byte Padding1;
+            internal byte Padding2;
+            internal byte Padding3;
+            internal short XRel;
+            internal short YRel;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Size = 56)]
+        internal struct JoyButtonEvent {
+            internal EventType Type;
+            internal uint Timestamp;
+            internal uint Which;
+            internal byte Button;
+            internal ButtonState State;
+            internal byte Padding1;
+            internal byte Padding2;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Size = 56)]
+        internal struct JoyDeviceEvent {
+            internal EventType Type;
+            internal uint Timestamp;
+            internal uint Which;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Size = 56)]
+        internal struct JoyHatEvent {
+            internal EventType Type;
+            internal uint Timestamp;
+            internal uint Which;
+            internal byte Hat;
+            internal HatPosition Value;
+            internal byte Padding1;
+            internal byte Padding2;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Size = 56)]
         internal struct KeyboardEvent {
             internal EventType Type;
             internal uint Timestamp;
@@ -228,6 +359,118 @@ namespace DotSDL.Sdl {
             internal byte Repeat;
             internal byte Padding2;
             internal byte Padding3;
+            internal Keyboard.Keysym Keysym;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Size = 56)]
+        internal struct MouseButtonEvent {
+            internal EventType Type;
+            internal uint Timestamp;
+            internal uint WindowId;
+            internal uint Which;
+            internal MouseButton Button;
+            internal ButtonState State;
+            internal byte Clicks;
+            internal byte Padding1;
+            internal int X;
+            internal int Y;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Size = 56)]
+        internal struct MouseMotionEvent {
+            internal EventType Type;
+            internal uint Timestamp;
+            internal uint WindowId;
+            internal uint Which;
+            internal ButtonState State;
+            internal int X;
+            internal int Y;
+            internal int XRel;
+            internal int YRel;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Size = 56)]
+        internal struct MouseWheelEvent {
+            internal EventType Type;
+            internal uint Timestamp;
+            internal uint WindowId;
+            internal uint Which;
+            internal int X;
+            internal int Y;
+            internal WheelDirection Direction;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Size = 56)]
+        internal struct MultiGestureEvent {
+            internal EventType Type;
+            internal uint Timestamp;
+            internal long TouchId;
+            internal float DTheta;
+            internal float DDist;
+            internal float X;
+            internal float Y;
+            internal ushort NumFingers;
+            internal ushort Padding;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Size = 56)]
+        internal struct OsEvent {
+            internal EventType Type;
+            internal uint Timestamp;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Size = 56)]
+        internal struct QuitEvent {
+            internal EventType Type;
+            internal uint Timestamp;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Size = 56)]
+        internal struct SysWmEvent {
+            internal EventType Type;
+            internal uint Timestamp;
+            internal IntPtr Msg;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Size = 56)]
+        internal unsafe struct TextEditingEvent {
+            internal EventType Type;
+            internal uint Timestamp;
+            internal uint WindowId;
+            internal fixed byte Text[32];
+            internal int Start;
+            internal int Length;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Size = 56)]
+        internal unsafe struct TextInputEvent {
+            internal EventType Type;
+            internal uint Timestamp;
+            internal uint WindowId;
+            internal fixed byte Text[32];
+        }
+
+        [StructLayout(LayoutKind.Sequential, Size = 56)]
+        internal struct TouchFingerEvent {
+            internal EventType Type;
+            internal uint Timestamp;
+            internal long TouchId;
+            internal long FingerId;
+            internal float X;
+            internal float Y;
+            internal float DX;
+            internal float DY;
+            internal float Pressure;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Size = 56)]
+        internal struct UserEvent {
+            internal EventType Type;
+            internal uint Timestamp;
+            internal uint WindowId;
+            internal int Code;
+            internal IntPtr Data1;
+            internal IntPtr Data2;
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
@@ -242,5 +485,13 @@ namespace DotSDL.Sdl {
             internal int Data1;
             internal int Data2;
         }
+
+        /// <summary>
+        /// Polls for currently pending events.
+        /// </summary>
+        /// <param name="sdlEvent">An object to store event data into. If this is not NULL, the event is removed from the queue and stored into the object.</param>
+        /// <returns>1 if there are any pending events, or 0 if there are none available.</returns>
+        [DllImport(Meta.DllName, EntryPoint = "SDL_PollEvent", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int PollEvent(object sdlEvent);
     }
 }
