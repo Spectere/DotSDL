@@ -224,7 +224,7 @@ namespace DotSDL.Sdl {
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal struct AudioDeviceEvent {
+        internal struct SdlAudioDeviceEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal uint Which;
@@ -235,7 +235,7 @@ namespace DotSDL.Sdl {
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal struct ControllerAxisEvent {
+        internal struct SdlControllerAxisEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal uint Which;
@@ -248,7 +248,7 @@ namespace DotSDL.Sdl {
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal struct ControllerButtonEvent {
+        internal struct SdlControllerButtonEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal uint Which;
@@ -259,14 +259,14 @@ namespace DotSDL.Sdl {
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal struct ControllerDeviceEvent {
+        internal struct SdlControllerDeviceEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal uint Which;
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal struct DollarGestureEvent {
+        internal struct SdlDollarGestureEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal long TouchId;
@@ -278,7 +278,7 @@ namespace DotSDL.Sdl {
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal struct DropEvent {
+        internal struct SdlDropEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal string File;
@@ -289,14 +289,14 @@ namespace DotSDL.Sdl {
         /// General event structure.
         /// </summary>
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal unsafe struct Event {
+        internal unsafe struct SdlEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal fixed byte Padding[48];
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal struct JoyAxisEvent {
+        internal struct SdlJoyAxisEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal uint Which;
@@ -309,7 +309,7 @@ namespace DotSDL.Sdl {
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal struct JoyBallEvent {
+        internal struct SdlJoyBallEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal uint Which;
@@ -322,7 +322,7 @@ namespace DotSDL.Sdl {
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal struct JoyButtonEvent {
+        internal struct SdlJoyButtonEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal uint Which;
@@ -333,14 +333,14 @@ namespace DotSDL.Sdl {
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal struct JoyDeviceEvent {
+        internal struct SdlJoyDeviceEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal uint Which;
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal struct JoyHatEvent {
+        internal struct SdlJoyHatEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal uint Which;
@@ -351,7 +351,7 @@ namespace DotSDL.Sdl {
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal struct KeyboardEvent {
+        internal struct SdlKeyboardEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal uint WindowId;
@@ -363,7 +363,7 @@ namespace DotSDL.Sdl {
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal struct MouseButtonEvent {
+        internal struct SdlMouseButtonEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal uint WindowId;
@@ -377,7 +377,7 @@ namespace DotSDL.Sdl {
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal struct MouseMotionEvent {
+        internal struct SdlMouseMotionEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal uint WindowId;
@@ -390,7 +390,7 @@ namespace DotSDL.Sdl {
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal struct MouseWheelEvent {
+        internal struct SdlMouseWheelEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal uint WindowId;
@@ -401,7 +401,7 @@ namespace DotSDL.Sdl {
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal struct MultiGestureEvent {
+        internal struct SdlMultiGestureEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal long TouchId;
@@ -414,26 +414,26 @@ namespace DotSDL.Sdl {
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal struct OsEvent {
+        internal struct SdlOsEvent {
             internal EventType Type;
             internal uint Timestamp;
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal struct QuitEvent {
+        internal struct SdlQuitEvent {
             internal EventType Type;
             internal uint Timestamp;
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal struct SysWmEvent {
+        internal struct SdlSysWmEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal IntPtr Msg;
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal unsafe struct TextEditingEvent {
+        internal unsafe struct SdlTextEditingEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal uint WindowId;
@@ -443,7 +443,7 @@ namespace DotSDL.Sdl {
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal unsafe struct TextInputEvent {
+        internal unsafe struct SdlTextInputEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal uint WindowId;
@@ -451,7 +451,7 @@ namespace DotSDL.Sdl {
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal struct TouchFingerEvent {
+        internal struct SdlTouchFingerEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal long TouchId;
@@ -464,7 +464,7 @@ namespace DotSDL.Sdl {
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal struct UserEvent {
+        internal struct SdlUserEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal uint WindowId;
@@ -474,7 +474,7 @@ namespace DotSDL.Sdl {
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 56)]
-        internal struct WindowEvent {
+        internal struct SdlWindowEvent {
             internal EventType Type;
             internal uint Timestamp;
             internal uint WindowId;
