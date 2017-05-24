@@ -1,6 +1,6 @@
 ﻿namespace DotSDL.Sdl {
     /// <summary>
-    /// Contains .NET constants to assist with making calls to the SDL library..
+    /// Contains .NET constants to assist with making calls to the SDL library.
     /// </summary>
     internal static class Meta {
         /// <summary>
