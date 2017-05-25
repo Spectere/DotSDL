@@ -22,6 +22,9 @@ namespace DotSDL.Graphics {
 
         /// <summary><c>true</c> if this <see cref="SdlWindow"/> instance has been destroyed, othersize <c>false</c>.</summary>
         public bool IsDestroyed { get; set; }
+        
+        /// <summary><c>true</c> if this <see cref="SdlWindow"/> has been minimized, othersize <c>false</c>.</summary>
+        public bool IsMinimized { get; set; }
 
         public ResourceType ResourceType => ResourceType.Window;
 
@@ -60,8 +63,6 @@ namespace DotSDL.Graphics {
         /// Indicates that the window should be in the center of the screen. To center the window on a specific display, use the <see cref="WindowPosCenteredDisplay"/> function.
         /// </summary>
         public const int WindowPosCentered = 0x2FFF0000;
-
-        public event EventHandler<WindowEvent> Close;
 
         /// <summary>
         /// Calculates a value that allows the window to be placed in the center of a specified display.
@@ -121,7 +122,7 @@ namespace DotSDL.Graphics {
         /// Handles calling the user draw function and passing the CLR objects to SDL2.
         /// </summary>
         private unsafe void BaseDraw() {
-            if(IsDestroyed) return;
+            if(IsDestroyed || IsMinimized) return;
             OnDraw(ref _canvas);  // Call the overridden Draw function.
 
             fixed(void* pixelsPtr = _canvas.Pixels) {
@@ -173,7 +174,13 @@ namespace DotSDL.Graphics {
         internal void HandleEvent(WindowEvent ev) {
             switch(ev.Event) {
                 case WindowEventType.Close:
-                    Close?.Invoke(this, ev);
+                    OnClose();
+                    break;
+                case WindowEventType.Minimized:
+                    OnMinimize();
+                    break;
+                case WindowEventType.Restored:
+                    OnRestore();
                     break;
             }
         }
@@ -206,18 +213,39 @@ namespace DotSDL.Graphics {
         }
 
         /// <summary>
-        /// Fired every time the window is drawn to.
+        /// Called when the window's close button is clicked.
+        /// </summary>
+        protected virtual void OnClose() {
+            Stop();
+        }
+
+        /// <summary>
+        /// Called every time the window is drawn to.
         /// </summary>
         /// <param name="canvas">The active canvas for the window.</param>
         protected virtual void OnDraw(ref Canvas canvas) {}
 
         /// <summary>
-        /// Fired before the window is shown.
+        /// Called before the window is shown.
         /// </summary>
-        protected virtual void OnLoad() {}
+        protected virtual void OnLoad() { }
 
         /// <summary>
-        /// Fired every time the application logic update runs.
+        /// Called when the window is minimized.
+        /// </summary>
+        protected virtual void OnMinimize() {
+            IsMinimized = true;
+        }
+
+        /// <summary>
+        /// Called when the window is restored.
+        /// </summary>
+        protected virtual void OnRestore() {
+            IsMinimized = false;
+        }
+
+        /// <summary>
+        /// Called every time the application logic update runs.
         /// </summary>
         protected virtual void OnUpdate() {}
 
