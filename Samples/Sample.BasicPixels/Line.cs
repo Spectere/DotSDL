@@ -1,4 +1,6 @@
-﻿namespace DotSDL.Graphics {
+﻿using DotSDL.Graphics;
+
+namespace DotSDL.Sample.BasicPixels {
     /// <summary>
     /// Defines a line.
     /// </summary>
