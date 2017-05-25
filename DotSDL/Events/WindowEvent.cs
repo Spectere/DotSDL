@@ -12,7 +12,7 @@
         /// <summary>
         /// The event that was triggered.
         /// </summary>
-        public WindowEvent Event { get; set; }
+        public WindowEventType Event { get; set; }
 
         /// <summary>
         /// When Event is WindowEventType.Moved, this contains the new X coordinate

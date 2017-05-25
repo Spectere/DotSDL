@@ -1,5 +1,6 @@
 ﻿using DotSDL.Sdl;
 using System;
+using DotSDL.Events;
 
 namespace DotSDL.Graphics {
     /// <summary>
@@ -59,6 +60,8 @@ namespace DotSDL.Graphics {
         /// Indicates that the window should be in the center of the screen. To center the window on a specific display, use the <see cref="WindowPosCenteredDisplay"/> function.
         /// </summary>
         public const int WindowPosCentered = 0x2FFF0000;
+
+        public event EventHandler<WindowEvent> Close;
 
         /// <summary>
         /// Calculates a value that allows the window to be placed in the center of a specified display.
@@ -164,6 +167,18 @@ namespace DotSDL.Graphics {
         }
 
         /// <summary>
+        /// Triggers this window to handle a specified event.
+        /// </summary>
+        /// <param name="ev">The event to handle</param>
+        internal void HandleEvent(WindowEvent ev) {
+            switch(ev.Event) {
+                case WindowEventType.Close:
+                    Close?.Invoke(this, ev);
+                    break;
+            }
+        }
+
+        /// <summary>
         /// A game loop that calls the <see cref="SdlWindow"/> update and draw functions.
         /// </summary>
         private void Loop() {
@@ -233,6 +248,14 @@ namespace DotSDL.Graphics {
             BaseLoad();
             Video.ShowWindow(_window);
             Loop();
+        }
+
+        /// <summary>
+        /// Stops executing the game loop and destroys the window.
+        /// </summary>
+        public void Stop() {
+            _running = false;
+            DestroyObject();
         }
     }
 }

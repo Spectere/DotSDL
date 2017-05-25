@@ -7,8 +7,6 @@ namespace DotSDL.Events {
     /// Handles dispatching events to objects that can receive them.
     /// </summary>
     internal static class EventHandler {
-        private static readonly ResourceManager Resources = ResourceManager.Instance;
-
         /// <summary>
         /// An incredibly unsafe function that forcibly casts one type to
         /// another. This is used to convert between SDL2 events, since C# has
@@ -31,17 +29,10 @@ namespace DotSDL.Events {
         private static IEvent ConvertEvent(SdlEvents.SdlEvent sdlEvent) {
             switch(sdlEvent.Type) {
                 case SdlEvents.EventType.WindowEvent:
-                    var sdlWindowEvent = CastEvent<SdlEvents.SdlWindowEvent>(sdlEvent);
-                    break;
+                    var e = CastEvent<SdlEvents.SdlWindowEvent>(sdlEvent);
+                    return EventConversion.Convert(e);
             }
             return null;
-        }
-
-        /// <summary>
-        /// Dispatches an <see cref="IEvent"/> to the appropriate <see cref="IResourceObject"/>.
-        /// </summary>
-        /// <param name="newEvent">The <see cref="IEvent"/> to dispatch.</param>
-        private static void DispatchEvent(IEvent newEvent) {
         }
 
         /// <summary>
@@ -54,7 +45,7 @@ namespace DotSDL.Events {
                 var newEvent = ConvertEvent(inEvent);
                 if(newEvent is null) continue;
                 if(newEvent.Resource != null)
-                    DispatchEvent(newEvent);
+                    EventDispatcher.Dispatch(newEvent);
             }
         }
     }
