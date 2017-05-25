@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using SdlEvents = DotSDL.Sdl.Events;
 
@@ -30,9 +29,10 @@ namespace DotSDL.Events {
         /// <param name="sdlEvent">The <see cref="SdlEvents.SdlEvent"/> to process.</param>
         /// <returns>An <see cref="IEvent"/> that can be passed to an application.</returns>
         private static IEvent ConvertEvent(SdlEvents.SdlEvent sdlEvent) {
-            if(sdlEvent.Type == SdlEvents.EventType.WindowEvent) {
-                var ohgod = CastEvent<SdlEvents.SdlWindowEvent>(sdlEvent);
-                Debug.WriteLine(ohgod.EventId);
+            switch(sdlEvent.Type) {
+                case SdlEvents.EventType.WindowEvent:
+                    var sdlWindowEvent = CastEvent<SdlEvents.SdlWindowEvent>(sdlEvent);
+                    break;
             }
             return null;
         }
