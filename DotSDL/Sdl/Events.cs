@@ -5,6 +5,7 @@ using DotSDL.Input.Mouse;
 using MouseButton = DotSDL.Input.Mouse.Button;
 using System;
 using System.Runtime.InteropServices;
+using DotSDL.Events;
 
 namespace DotSDL.Sdl {
     /// <summary>
@@ -478,7 +479,7 @@ namespace DotSDL.Sdl {
             internal EventType Type;
             internal uint Timestamp;
             internal uint WindowId;
-            internal byte EventId;
+            internal WindowEventType EventId;
             internal byte Padding1;
             internal byte Padding2;
             internal byte Padding3;
@@ -492,6 +493,6 @@ namespace DotSDL.Sdl {
         /// <param name="sdlEvent">An object to store event data into. If this is not NULL, the event is removed from the queue and stored into the object.</param>
         /// <returns>1 if there are any pending events, or 0 if there are none available.</returns>
         [DllImport(Meta.DllName, EntryPoint = "SDL_PollEvent", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int PollEvent(object sdlEvent);
+        internal static extern int PollEvent(ref SdlEvent sdlEvent);
     }
 }

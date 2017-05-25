@@ -2,7 +2,7 @@
     /// <summary>
     /// Specifies an object that contains a resource.
     /// </summary>
-    internal interface IResourceObject {
+    public interface IResourceObject {
         /// <summary>
         /// <c>true</c> if the underlying <see cref="IResourceObject"/> has been destroyed, otherwise <c>false</c>.
         /// </summary>
