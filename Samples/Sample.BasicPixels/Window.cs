@@ -3,7 +3,9 @@ using System;
 
 namespace DotSDL.Sample.BasicPixels {
     internal class Window : SdlWindow {
-        public Window(int width, int height) : base("Basic Pixels", new Point { X = WindowPosUndefined, Y = WindowPosUndefined }, width, height) {}
+        public Window(int width, int height) : base("Basic Pixels", new Point { X = WindowPosUndefined, Y = WindowPosUndefined }, width, height) {
+            Close += Window_Close;
+        }
 
         private void DrawBackground(ref Color[] pixels) {
             byte d = 0;
@@ -110,6 +112,10 @@ namespace DotSDL.Sample.BasicPixels {
             color.B = (byte)rng.Next(min, max);
 
             return color;
+        }
+
+        private void Window_Close(object sender, Events.WindowEvent e) {
+            Stop();
         }
     }
 }
