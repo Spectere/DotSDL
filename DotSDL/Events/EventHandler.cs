@@ -4,7 +4,7 @@ namespace DotSDL.Events {
     /// <summary>
     /// Handles dispatching events to objects that can receive them.
     /// </summary>
-    internal static class EventDispatcher {
+    internal static class EventHandler {
         private static readonly ResourceManager Resources = ResourceManager.Instance;
 
         /// <summary>
