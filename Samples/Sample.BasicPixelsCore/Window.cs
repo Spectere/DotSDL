@@ -3,7 +3,7 @@ using System;
 
 namespace Sample.BasicPixelsCore {
     internal class Window : SdlWindow {
-        public Window(int width, int height) : base("Basic Pixels", new Point { X = WindowPosUndefined, Y = WindowPosUndefined }, width, height) { }
+        public Window(int width, int height) : base("Basic Pixels (.NET Core)", new Point { X = WindowPosUndefined, Y = WindowPosUndefined }, width, height) { }
 
         private void DrawBackground(ref Color[] pixels) {
             byte d = 0;
