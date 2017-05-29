@@ -1,9 +1,12 @@
 ﻿using DotSDL.Graphics;
+using DotSDL.Input.Keyboard;
 using System;
 
 namespace Sample.BasicPixelsCore {
     internal class Window : SdlWindow {
-        public Window(int width, int height) : base("Basic Pixels (.NET Core)", new Point { X = WindowPosUndefined, Y = WindowPosUndefined }, width, height) { }
+        public Window(int width, int height) : base("Basic Pixels (.NET Core)", new Point { X = WindowPosUndefined, Y = WindowPosUndefined }, width, height) {
+            KeyPressed += Window_KeyPressed;
+        }
 
         private void DrawBackground(ref Color[] pixels) {
             byte d = 0;
@@ -110,6 +113,11 @@ namespace Sample.BasicPixelsCore {
             color.B = (byte)rng.Next(min, max);
 
             return color;
+        }
+
+        private void Window_KeyPressed(object sender, DotSDL.Events.KeyboardEvent e) {
+            if(e.Keycode == Keycode.Escape)
+                Stop();
         }
     }
 }
