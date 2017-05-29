@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using SdlEvents = DotSDL.Sdl.Events;
 
@@ -16,8 +17,8 @@ namespace DotSDL.Events {
         /// <param name="sdlEvent">The event that should be converted.</param>
         /// <returns>A structure of type T, containing the data in <paramref name="sdlEvent"/>.</returns>
         private static unsafe T CastEvent<T>(SdlEvents.SdlEvent sdlEvent) {
-            var sdlEventIntPtr = new IntPtr(&sdlEvent);
-            return Marshal.PtrToStructure<T>(sdlEventIntPtr);
+            var sdlEventPtr = new IntPtr(&sdlEvent);
+            return Marshal.PtrToStructure<T>(sdlEventPtr);
         }
 
         /// <summary>
@@ -28,9 +29,16 @@ namespace DotSDL.Events {
         /// <returns>An <see cref="IEvent"/> that can be passed to an application.</returns>
         private static IEvent ConvertEvent(SdlEvents.SdlEvent sdlEvent) {
             switch(sdlEvent.Type) {
+                case SdlEvents.EventType.KeyDown:
+                case SdlEvents.EventType.KeyUp:
+                    var kbd = CastEvent<SdlEvents.SdlKeyboardEvent>(sdlEvent);
+                    return EventConversion.Convert(kbd);
                 case SdlEvents.EventType.WindowEvent:
-                    var e = CastEvent<SdlEvents.SdlWindowEvent>(sdlEvent);
-                    return EventConversion.Convert(e);
+                    var wnd = CastEvent<SdlEvents.SdlWindowEvent>(sdlEvent);
+                    return EventConversion.Convert(wnd);
+                default:
+                    Debug.WriteLine(sdlEvent.Type);
+                    break;
             }
             return null;
         }

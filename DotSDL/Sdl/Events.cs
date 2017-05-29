@@ -1,25 +1,18 @@
 ﻿using ControllerButton = DotSDL.Input.Controller.Button;
+using DotSDL.Events;
+using DotSDL.Input;
 using DotSDL.Input.Controller;
 using DotSDL.Input.Joystick;
 using DotSDL.Input.Mouse;
 using MouseButton = DotSDL.Input.Mouse.Button;
 using System;
 using System.Runtime.InteropServices;
-using DotSDL.Events;
 
 namespace DotSDL.Sdl {
     /// <summary>
     /// Contains the necessary constants and function imports from SDL_events.h.
     /// </summary>
     internal static class Events {
-        /// <summary>
-        /// Indicates the state of a keyboard, mouse, joystick, or controller button.
-        /// </summary>
-        internal enum ButtonState : byte {
-            Released = 0,
-            Pressed = 1
-        }
-
         /// <summary>
         /// Indicates the type of event.
         /// </summary>
@@ -356,7 +349,7 @@ namespace DotSDL.Sdl {
             internal EventType Type;
             internal uint Timestamp;
             internal uint WindowId;
-            internal byte State;
+            internal ButtonState State;
             internal byte Repeat;
             internal byte Padding2;
             internal byte Padding3;

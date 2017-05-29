@@ -1,6 +1,7 @@
-﻿using DotSDL.Sdl;
+﻿using DotSDL.Events;
+using DotSDL.Sdl;
 using System;
-using DotSDL.Events;
+using DotSDL.Input;
 
 namespace DotSDL.Graphics {
     /// <summary>
@@ -49,6 +50,16 @@ namespace DotSDL.Graphics {
         /// Indicates that the window manager should position the window. To place the window on a specific display, use the <see cref="WindowPosCenteredDisplay"/> function.
         /// </summary>
         public const int WindowPosUndefined = 0x1FFF0000;
+
+        /// <summary>
+        /// Fired when a key is pressed.
+        /// </summary>
+        public event EventHandler<KeyboardEvent> KeyPressed;
+
+        /// <summary>
+        /// Fired when a key is released.
+        /// </summary>
+        public event EventHandler<KeyboardEvent> KeyReleased;
 
         /// <summary>
         /// Calculates a value that allows the window to be placed on a specific display, with its exact position determined by the window manager.
@@ -168,9 +179,24 @@ namespace DotSDL.Graphics {
         }
 
         /// <summary>
-        /// Triggers this window to handle a specified event.
+        /// Triggers this window to handle a specified <see cref="KeyboardEvent"/>.
         /// </summary>
-        /// <param name="ev">The event to handle</param>
+        /// <param name="ev">The <see cref="KeyboardEvent"/> to handle.</param>
+        internal void HandleEvent(KeyboardEvent ev) {
+            switch(ev.State) {
+                case ButtonState.Pressed:
+                    KeyPressed?.Invoke(this, ev);
+                    break;
+                case ButtonState.Released:
+                    KeyReleased?.Invoke(this, ev);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Triggers this window to handle a specified <see cref="WindowEvent"/>.
+        /// </summary>
+        /// <param name="ev">The <see cref="WindowEvent"/> to handle.</param>
         internal void HandleEvent(WindowEvent ev) {
             switch(ev.Event) {
                 case WindowEventType.Close:
