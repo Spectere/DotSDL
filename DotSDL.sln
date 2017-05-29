@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.BasicPixels", "Sampl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.BasicPixelsCore", "Samples\Sample.BasicPixelsCore\Sample.BasicPixelsCore.csproj", "{51055215-1F3D-436F-B88C-02A5C58C6989}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Audio", "Samples\Sample.Audio\Sample.Audio.csproj", "{FFE65F50-D4CB-4246-9FCB-E7E3E0FA2730}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -48,6 +50,14 @@ Global
 		{51055215-1F3D-436F-B88C-02A5C58C6989}.Release|x64.Build.0 = Release|x64
 		{51055215-1F3D-436F-B88C-02A5C58C6989}.Release|x86.ActiveCfg = Release|x86
 		{51055215-1F3D-436F-B88C-02A5C58C6989}.Release|x86.Build.0 = Release|x86
+		{FFE65F50-D4CB-4246-9FCB-E7E3E0FA2730}.Debug|x64.ActiveCfg = Debug|x64
+		{FFE65F50-D4CB-4246-9FCB-E7E3E0FA2730}.Debug|x64.Build.0 = Debug|x64
+		{FFE65F50-D4CB-4246-9FCB-E7E3E0FA2730}.Debug|x86.ActiveCfg = Debug|x86
+		{FFE65F50-D4CB-4246-9FCB-E7E3E0FA2730}.Debug|x86.Build.0 = Debug|x86
+		{FFE65F50-D4CB-4246-9FCB-E7E3E0FA2730}.Release|x64.ActiveCfg = Release|x64
+		{FFE65F50-D4CB-4246-9FCB-E7E3E0FA2730}.Release|x64.Build.0 = Release|x64
+		{FFE65F50-D4CB-4246-9FCB-E7E3E0FA2730}.Release|x86.ActiveCfg = Release|x86
+		{FFE65F50-D4CB-4246-9FCB-E7E3E0FA2730}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,5 +65,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C1CCAC4E-6914-4BC1-B81F-BDFB68B476F6} = {70DA3135-B76E-421D-B9CF-E49CD6440B0A}
 		{51055215-1F3D-436F-B88C-02A5C58C6989} = {70DA3135-B76E-421D-B9CF-E49CD6440B0A}
+		{FFE65F50-D4CB-4246-9FCB-E7E3E0FA2730} = {70DA3135-B76E-421D-B9CF-E49CD6440B0A}
 	EndGlobalSection
 EndGlobal
