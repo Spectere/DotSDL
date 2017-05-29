@@ -10,10 +10,16 @@ namespace DotSDL.Events {
         /// </summary>
         /// <param name="ev">The event to process.</param>
         internal static void Dispatch(IEvent ev) {
+            SdlWindow window;
+
             switch(ev) {
-                case WindowEvent e:
-                    var window = (SdlWindow)e.Resource;
-                    window.HandleEvent(e);
+                case KeyboardEvent kbd:
+                    window = (SdlWindow)kbd.Resource;
+                    window.HandleEvent(kbd);
+                    break;
+                case WindowEvent wnd:
+                    window = (SdlWindow)wnd.Resource;
+                    window.HandleEvent(wnd);
                     break;
             }
         }

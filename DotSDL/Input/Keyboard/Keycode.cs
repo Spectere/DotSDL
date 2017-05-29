@@ -12,7 +12,7 @@
     public enum Keycode {
         Unknown = 0,
         Return = '\r',
-        Escape = 0x27,
+        Escape = 0x1B,
         Backspace = '\b',
         Tab = '\t',
         Space = ' ',
