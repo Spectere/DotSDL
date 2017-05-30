@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using SdlEvents = DotSDL.Sdl.Events;
 
@@ -36,9 +35,6 @@ namespace DotSDL.Events {
                 case SdlEvents.EventType.WindowEvent:
                     var wnd = CastEvent<SdlEvents.SdlWindowEvent>(sdlEvent);
                     return EventConversion.Convert(wnd);
-                default:
-                    Debug.WriteLine(sdlEvent.Type);
-                    break;
             }
             return null;
         }
