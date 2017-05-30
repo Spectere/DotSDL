@@ -44,6 +44,16 @@ namespace DotSDL.Audio {
         public ushort BufferSizeSamples { get; }
 
         /// <summary>
+        /// <c>true</c> if the audio format is floating-point, otherwise <c>false</c>.
+        /// </summary>
+        public bool FloatingPoint { get; }
+
+        /// <summary>
+        /// <c>true</c> if the audio format is little-endian, otherwise <c>false</c>.
+        /// </summary>
+        public bool LittleEndian { get; }
+
+        /// <summary>
         /// Fired when the audio device is requesting more data.
         /// </summary>
         public event EventHandler<AudioBuffer> BufferEmpty;
@@ -88,6 +98,8 @@ namespace DotSDL.Audio {
             BufferSizeSamples = actual.Samples;
             BufferSizeBytes = actual.Size;
             BitSize = SdlAudio.BitSize((ushort)actual.Format);
+            FloatingPoint = SdlAudio.IsFloat((ushort)actual.Format);
+            LittleEndian = !SdlAudio.IsBigEndian((ushort)actual.Format);
 
             _sdlAudioSpec = actual;
         }
