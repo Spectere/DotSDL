@@ -32,10 +32,12 @@ namespace Sample.Audio {
             KeyPressed += Window_KeyPressed;
             KeyReleased += Window_KeyReleased;
 
-            _audio = new Playback(44100, AudioFormat.Integer16, 1);
+            _audio = new Playback(48000, AudioFormat.Integer16, 1);
             _audioFreq = _audio.Frequency;
 
-            Console.WriteLine($"Audio opened: {_audioFreq}hz, {_audio.BitSize}-bit, {_audio.Channels} channels, {_audio.BufferSizeSamples} sample buffer, {_audio.BufferSizeBytes} byte buffer");
+            var floatingPointText = _audio.FloatingPoint ? "floating-point, " : "";
+            var endianText = _audio.LittleEndian ? "little-endian" : "big-endian";
+            Console.WriteLine($"Audio opened: {_audioFreq}hz, {_audio.BitSize}-bit ({floatingPointText}{endianText}), {_audio.Channels} channels, {_audio.BufferSizeSamples} sample buffer, {_audio.BufferSizeBytes} byte buffer.");
             _audio.BufferEmpty += Audio_BufferEmpty;
 
             _maxFreq = _audioFreq / 2;
