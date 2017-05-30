@@ -1,9 +1,9 @@
 # DotSDL
 
-_DotSDL_ is a .NET Standard library designed to allow easy access to the SDL2
+DotSDL is a .NET Standard library designed to allow easy access to the SDL2
 library using either the .NET Framework or .NET Core.
 
-Unlike SDL2#, _DotSDL_ is not a direct SDL wrapper. It attempts to add some
+Unlike SDL2#, DotSDL is not a direct SDL wrapper. It attempts to add some
 additional functionality to make writing SDL applications easier.
 
 ### Current Features
