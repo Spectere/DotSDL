@@ -11,7 +11,7 @@ namespace Sample.Audio {
 
         private int _freq = 440;
         private int _minFreq = 1;
-        private int _maxFreq = 22050;
+        private readonly int _maxFreq;
 
         private const int DrawX = 1;
         private const int SpacingX = 5;
@@ -19,11 +19,11 @@ namespace Sample.Audio {
 
         private const byte OnDelta = 24;
         private const byte OffColor = 72;
-        private readonly Color TextColor = new Color { A = 255, R = 159, G = 159, B = 159 };
+        private readonly Color _textColor = new Color { A = 255, R = 159, G = 159, B = 159 };
 
-        private Playback _audio;
+        private readonly Playback _audio;
         private ulong _time;
-        private int _audioFreq;
+        private readonly int _audioFreq;
 
         public Window(int width, int height) : base("DotSDL Audio Example",
                                                     new Point{ X = WindowPosUndefined, Y = WindowPosUndefined },
@@ -32,7 +32,7 @@ namespace Sample.Audio {
             KeyPressed += Window_KeyPressed;
             KeyReleased += Window_KeyReleased;
 
-            _audio = new Playback(48000, AudioFormat.Integer16, 1);
+            _audio = new Playback(44100, AudioFormat.Integer16, 1);
             _audioFreq = _audio.Frequency;
 
             var floatingPointText = _audio.FloatingPoint ? "floating-point, " : "";
@@ -42,6 +42,10 @@ namespace Sample.Audio {
 
             _maxFreq = _audioFreq / 2;
             _audio.Play();
+        }
+
+        ~Window() {
+            _audio.Close();
         }
 
         private void Audio_BufferEmpty(object sender, AudioBuffer e) {
@@ -59,7 +63,7 @@ namespace Sample.Audio {
                     if(!glyph[y, x]) continue;
                     var index = canvas.GetIndex(x + xPixel, y + DrawY);
 
-                    canvas.Pixels[index] = TextColor;
+                    canvas.Pixels[index] = c;
                 }
             }
         }
@@ -70,14 +74,14 @@ namespace Sample.Audio {
                 canvas.Pixels[i].R = canvas.Pixels[i].G = canvas.Pixels[i].B = 0;
 
             // hz Text
-            DrawGlyph(ref canvas, 'h', 5, TextColor);
-            DrawGlyph(ref canvas, 'z', 6, TextColor);
+            DrawGlyph(ref canvas, 'h', 5, _textColor);
+            DrawGlyph(ref canvas, 'z', 6, _textColor);
 
             // Number
             var freqText = _freq.ToString();
             var textPos = 5 - freqText.Length;
             for(int x = 0; x < freqText.Length; x++)
-                DrawGlyph(ref canvas, freqText[x], textPos + x, TextColor);
+                DrawGlyph(ref canvas, freqText[x], textPos + x, _textColor);
 
             // Background/highlighting.
             var component = 0;
