@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{53C506CE-9D99-4306-A304-D4B09924A883}"
 	ProjectSection(SolutionItems) = preProject
@@ -18,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.BasicPixelsCore", "Samples\Sample.BasicPixelsCore\Sample.BasicPixelsCore.csproj", "{51055215-1F3D-436F-B88C-02A5C58C6989}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Audio", "Samples\Sample.Audio\Sample.Audio.csproj", "{FFE65F50-D4CB-4246-9FCB-E7E3E0FA2730}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Doodle", "Samples\Sample.Doodle\Sample.Doodle.csproj", "{05C4735D-89CD-4501-88EC-B332A15D425E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,14 @@ Global
 		{FFE65F50-D4CB-4246-9FCB-E7E3E0FA2730}.Release|x64.Build.0 = Release|x64
 		{FFE65F50-D4CB-4246-9FCB-E7E3E0FA2730}.Release|x86.ActiveCfg = Release|x86
 		{FFE65F50-D4CB-4246-9FCB-E7E3E0FA2730}.Release|x86.Build.0 = Release|x86
+		{05C4735D-89CD-4501-88EC-B332A15D425E}.Debug|x64.ActiveCfg = Debug|x64
+		{05C4735D-89CD-4501-88EC-B332A15D425E}.Debug|x64.Build.0 = Debug|x64
+		{05C4735D-89CD-4501-88EC-B332A15D425E}.Debug|x86.ActiveCfg = Debug|x86
+		{05C4735D-89CD-4501-88EC-B332A15D425E}.Debug|x86.Build.0 = Debug|x86
+		{05C4735D-89CD-4501-88EC-B332A15D425E}.Release|x64.ActiveCfg = Release|x64
+		{05C4735D-89CD-4501-88EC-B332A15D425E}.Release|x64.Build.0 = Release|x64
+		{05C4735D-89CD-4501-88EC-B332A15D425E}.Release|x86.ActiveCfg = Release|x86
+		{05C4735D-89CD-4501-88EC-B332A15D425E}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,5 +77,6 @@ Global
 		{C1CCAC4E-6914-4BC1-B81F-BDFB68B476F6} = {70DA3135-B76E-421D-B9CF-E49CD6440B0A}
 		{51055215-1F3D-436F-B88C-02A5C58C6989} = {70DA3135-B76E-421D-B9CF-E49CD6440B0A}
 		{FFE65F50-D4CB-4246-9FCB-E7E3E0FA2730} = {70DA3135-B76E-421D-B9CF-E49CD6440B0A}
+		{05C4735D-89CD-4501-88EC-B332A15D425E} = {70DA3135-B76E-421D-B9CF-E49CD6440B0A}
 	EndGlobalSection
 EndGlobal
