@@ -18,6 +18,7 @@ namespace DotSDL {
         private readonly Stack<Init.SubsystemFlags> _subsystems = new Stack<Init.SubsystemFlags>();
 
         private SdlInit() {
+            Meta.InitializeDotSdl();
             Init.Initialize(Init.SubsystemFlags.None);
         }
 

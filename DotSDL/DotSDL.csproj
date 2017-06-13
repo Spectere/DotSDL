@@ -19,4 +19,14 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Binaries\SDL2_x86_32.dll" />
+    <None Remove="Binaries\SDL2_x86_64.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Binaries\SDL2_x86_32.dll" />
+    <EmbeddedResource Include="Binaries\SDL2_x86_64.dll" />
+  </ItemGroup>
+
 </Project>
