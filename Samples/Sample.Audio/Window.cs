@@ -80,7 +80,7 @@ namespace Sample.Audio {
             // Number
             var freqText = _freq.ToString();
             var textPos = 5 - freqText.Length;
-            for(int x = 0; x < freqText.Length; x++)
+            for(var x = 0; x < freqText.Length; x++)
                 DrawGlyph(ref canvas, freqText[x], textPos + x, _textColor);
 
             // Background/highlighting.

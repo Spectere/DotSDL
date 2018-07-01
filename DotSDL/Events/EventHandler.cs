@@ -47,8 +47,7 @@ namespace DotSDL.Events {
 
             while(SdlEvents.PollEvent(ref inEvent) != 0) {
                 var newEvent = ConvertEvent(inEvent);
-                if(newEvent is null) continue;
-                if(newEvent.Resource != null)
+                if(newEvent?.Resource != null)
                     EventDispatcher.Dispatch(newEvent);
             }
         }

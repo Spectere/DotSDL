@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DotSDL.Graphics {
+﻿namespace DotSDL.Graphics {
     /// <summary>
     /// A representation of the contents of the SDL window, with a number of
     /// helper routines.
