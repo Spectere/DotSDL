@@ -91,7 +91,7 @@ namespace DotSDL.Graphics {
         /// <param name="position">A <see cref="Point"/> representing the starting position of the window. The X and Y coordinates of the Point can be set to <see cref="WindowPosUndefined"/> or <see cref="WindowPosCentered"/>.</param>
         /// <param name="windowWidth">The width of the window.</param>
         /// <param name="windowHeight">The height of the window.</param>
-        public SdlWindow(string title, Point position, int windowWidth, int windowHeight) : this(title, position, windowWidth, windowHeight, windowWidth, windowHeight) {}
+        public SdlWindow(string title, Point position, int windowWidth, int windowHeight) : this(title, position, windowWidth, windowHeight, windowWidth, windowHeight) { }
 
         /// <summary>
         /// Creates a new <see cref="SdlWindow"/>.
@@ -249,7 +249,7 @@ namespace DotSDL.Graphics {
         /// Called every time the window is drawn to.
         /// </summary>
         /// <param name="canvas">The active canvas for the window.</param>
-        protected virtual void OnDraw(ref Canvas canvas) {}
+        protected virtual void OnDraw(ref Canvas canvas) { }
 
         /// <summary>
         /// Called before the window is shown.
@@ -273,7 +273,7 @@ namespace DotSDL.Graphics {
         /// <summary>
         /// Called every time the application logic update runs.
         /// </summary>
-        protected virtual void OnUpdate() {}
+        protected virtual void OnUpdate() { }
 
         /// <summary>
         /// Displays the window and begins executing code that's associated with it.

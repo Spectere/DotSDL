@@ -7,7 +7,7 @@ namespace Sample.Audio {
 
         // Probably not particularly efficient (and definitely not elegant),
         // but this *is* just a quick sample project. :)
-        internal static Dictionary<char, bool[,]> Glyph = new Dictionary<char, bool[,]> {
+        internal static readonly Dictionary<char, bool[,]> Glyph = new Dictionary<char, bool[,]> {
             {
                 '0', new[,] {
                     {  true,  true,  true,  true },
