@@ -46,20 +46,23 @@ namespace DotSDL.Graphics {
         /// <summary>Gets or sets the amount of time, in milliseconds, between game (logic) updates.</summary>
         public uint GameUpdateTicks { get; set; }
 
-        /// <summary>
-        /// Indicates that the window manager should position the window. To place the window on a specific display, use the <see cref="WindowPosCenteredDisplay"/> function.
-        /// </summary>
+        /// <summary>Indicates that the window manager should position the window. To place the window on a specific display, use the <see cref="WindowPosCenteredDisplay"/> function.</summary>
         public const int WindowPosUndefined = 0x1FFF0000;
 
-        /// <summary>
-        /// Fired when a key is pressed.
-        /// </summary>
+        /// <summary>Fired when the window's close button is clicked.</summary>
+        public event EventHandler<WindowEvent> Closed;
+
+        /// <summary>Fired when a key is pressed.</summary>
         public event EventHandler<KeyboardEvent> KeyPressed;
 
-        /// <summary>
-        /// Fired when a key is released.
-        /// </summary>
+        /// <summary>Fired when a key is released.</summary>
         public event EventHandler<KeyboardEvent> KeyReleased;
+
+        /// <summary>Fired when the window's minimize button is clicked.</summary>
+        public event EventHandler<WindowEvent> Minimized;
+
+        /// <summary>Fired when the window is restored.</summary>
+        public event EventHandler<WindowEvent> Restored;
 
         /// <summary>
         /// Calculates a value that allows the window to be placed on a specific display, with its exact position determined by the window manager.
@@ -200,13 +203,13 @@ namespace DotSDL.Graphics {
         internal void HandleEvent(WindowEvent ev) {
             switch(ev.Event) {
                 case WindowEventType.Close:
-                    OnClose();
+                    OnClose(ev);
                     break;
                 case WindowEventType.Minimized:
-                    OnMinimize();
+                    OnMinimize(ev);
                     break;
                 case WindowEventType.Restored:
-                    OnRestore();
+                    OnRestore(ev);
                     break;
             }
         }
@@ -241,8 +244,9 @@ namespace DotSDL.Graphics {
         /// <summary>
         /// Called when the window's close button is clicked.
         /// </summary>
-        protected virtual void OnClose() {
-            Stop();
+        private void OnClose(WindowEvent ev) {
+            if(Closed is null) Stop();
+            else Closed(this, ev);
         }
 
         /// <summary>
@@ -259,15 +263,17 @@ namespace DotSDL.Graphics {
         /// <summary>
         /// Called when the window is minimized.
         /// </summary>
-        protected virtual void OnMinimize() {
+        private void OnMinimize(WindowEvent ev) {
             IsMinimized = true;
+            Minimized?.Invoke(this, ev);
         }
 
         /// <summary>
         /// Called when the window is restored.
         /// </summary>
-        protected virtual void OnRestore() {
+        private void OnRestore(WindowEvent ev) {
             IsMinimized = false;
+            Restored?.Invoke(this, ev);
         }
 
         /// <summary>
