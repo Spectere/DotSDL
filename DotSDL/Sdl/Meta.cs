@@ -6,6 +6,6 @@
         /// <summary>
         /// Contains the name of the SDL library.
         /// </summary>
-        internal const string DllName = "SDL2.dll";
+        internal const string DllName = "SDL2";
     }
 }

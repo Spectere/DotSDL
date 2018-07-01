@@ -1,9 +1,8 @@
 ﻿using DotSDL.Graphics;
-using System;
-using System.Diagnostics;
 using DotSDL.Input.Keyboard;
+using System;
 
-namespace DotSDL.Sample.BasicPixels {
+namespace Sample.BasicPixels {
     internal class Window : SdlWindow {
         public Window(int width, int height) : base("Basic Pixels", new Point { X = WindowPosUndefined, Y = WindowPosUndefined }, width, height) {
             KeyPressed += Window_KeyPressed;
@@ -54,9 +53,9 @@ namespace DotSDL.Sample.BasicPixels {
 
             // D
             Plotting.DrawLines(ref canvas, color,
-                new Line { Start = new Point { X = offsetX, Y = offsetY + 96 }, End = new Point { X = offsetX, Y = offsetY }},
-                new Line { Start = new Point { X = offsetX, Y = offsetY }, End = new Point { X = offsetX + 10, Y = offsetY }},
-                new Line { Start = new Point { X = offsetX, Y = offsetY + 96 }, End = new Point { X = offsetX + 10, Y = offsetY + 96 }}
+                new Line { Start = new Point { X = offsetX, Y = offsetY + 96 }, End = new Point { X = offsetX, Y = offsetY } },
+                new Line { Start = new Point { X = offsetX, Y = offsetY }, End = new Point { X = offsetX + 10, Y = offsetY } },
+                new Line { Start = new Point { X = offsetX, Y = offsetY + 96 }, End = new Point { X = offsetX + 10, Y = offsetY + 96 } }
             );
             Plotting.DrawBezier(ref canvas, color, 100,
                 new Point { X = offsetX + 8, Y = offsetY },
@@ -70,8 +69,8 @@ namespace DotSDL.Sample.BasicPixels {
 
             // t
             Plotting.DrawLines(ref canvas, color,
-                new Line { Start = new Point { X = offsetX + 104 + 12, Y = offsetY + 24}, End = new Point { X = offsetX + 104 + 12, Y = offsetY + 96 } },
-                new Line { Start = new Point { X = offsetX + 104, Y = offsetY + 48}, End = new Point { X = offsetX + 104 + 24, Y = offsetY + 48 } }
+                new Line { Start = new Point { X = offsetX + 104 + 12, Y = offsetY + 24 }, End = new Point { X = offsetX + 104 + 12, Y = offsetY + 96 } },
+                new Line { Start = new Point { X = offsetX + 104, Y = offsetY + 48 }, End = new Point { X = offsetX + 104 + 24, Y = offsetY + 48 } }
             );
 
             // S
@@ -99,8 +98,8 @@ namespace DotSDL.Sample.BasicPixels {
 
             // L
             Plotting.DrawLines(ref canvas, color,
-                new Line { Start = new Point { X = offsetX + 272, Y = offsetY }, End = new Point { X = offsetX + 272, Y = offsetY + 96} },
-                new Line { Start = new Point { X = offsetX + 272, Y = offsetY + 96 }, End = new Point { X = offsetX + 272 + 48, Y = offsetY + 96} }
+                new Line { Start = new Point { X = offsetX + 272, Y = offsetY }, End = new Point { X = offsetX + 272, Y = offsetY + 96 } },
+                new Line { Start = new Point { X = offsetX + 272, Y = offsetY + 96 }, End = new Point { X = offsetX + 272 + 48, Y = offsetY + 96 } }
             );
         }
 
@@ -116,7 +115,7 @@ namespace DotSDL.Sample.BasicPixels {
             return color;
         }
 
-        private void Window_KeyPressed(object sender, Events.KeyboardEvent e) {
+        private void Window_KeyPressed(object sender, DotSDL.Events.KeyboardEvent e) {
             if(e.Keycode == Keycode.Escape)
                 Stop();
         }

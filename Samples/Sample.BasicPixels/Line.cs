@@ -1,6 +1,6 @@
 ﻿using DotSDL.Graphics;
 
-namespace DotSDL.Sample.BasicPixels {
+namespace Sample.BasicPixels {
     /// <summary>
     /// Defines a line.
     /// </summary>

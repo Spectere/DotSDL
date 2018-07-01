@@ -1,7 +1,7 @@
 ﻿using DotSDL.Graphics;
 using System;
 
-namespace DotSDL.Sample.BasicPixels {
+namespace Sample.BasicPixels {
     internal static class Plotting {
         /// <summary>
         /// An internal function that gets the point on a specific section of a Beziér curve.
