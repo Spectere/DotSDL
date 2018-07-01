@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.BasicPixels", "Sampl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Audio", "Samples\Sample.Audio\Sample.Audio.csproj", "{B71D69F1-3BB1-4CC8-AB6A-2A0F2DAE9FE5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Power", "Samples\Sample.Power\Sample.Power.csproj", "{45E8AA1C-97DC-4889-B64E-2874BCAC6D40}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -49,6 +51,14 @@ Global
 		{B71D69F1-3BB1-4CC8-AB6A-2A0F2DAE9FE5}.Release|x64.Build.0 = Release|Any CPU
 		{B71D69F1-3BB1-4CC8-AB6A-2A0F2DAE9FE5}.Release|x86.ActiveCfg = Release|Any CPU
 		{B71D69F1-3BB1-4CC8-AB6A-2A0F2DAE9FE5}.Release|x86.Build.0 = Release|Any CPU
+		{45E8AA1C-97DC-4889-B64E-2874BCAC6D40}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{45E8AA1C-97DC-4889-B64E-2874BCAC6D40}.Debug|x64.Build.0 = Debug|Any CPU
+		{45E8AA1C-97DC-4889-B64E-2874BCAC6D40}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{45E8AA1C-97DC-4889-B64E-2874BCAC6D40}.Debug|x86.Build.0 = Debug|Any CPU
+		{45E8AA1C-97DC-4889-B64E-2874BCAC6D40}.Release|x64.ActiveCfg = Release|Any CPU
+		{45E8AA1C-97DC-4889-B64E-2874BCAC6D40}.Release|x64.Build.0 = Release|Any CPU
+		{45E8AA1C-97DC-4889-B64E-2874BCAC6D40}.Release|x86.ActiveCfg = Release|Any CPU
+		{45E8AA1C-97DC-4889-B64E-2874BCAC6D40}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,5 +66,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{51055215-1F3D-436F-B88C-02A5C58C6989} = {70DA3135-B76E-421D-B9CF-E49CD6440B0A}
 		{B71D69F1-3BB1-4CC8-AB6A-2A0F2DAE9FE5} = {70DA3135-B76E-421D-B9CF-E49CD6440B0A}
+		{45E8AA1C-97DC-4889-B64E-2874BCAC6D40} = {70DA3135-B76E-421D-B9CF-E49CD6440B0A}
 	EndGlobalSection
 EndGlobal

@@ -18,6 +18,8 @@ At this time, DotSDL supports the following features:
   * Window events.
 * Graphics
   * A single 32-bit ARGB canvas (useful for simple pixel plotting).
+* Power
+  * Battery state.
 
 ### How To Use DotSDL
 
