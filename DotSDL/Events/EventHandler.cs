@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using SdlEvents = DotSDL.Sdl.Events;
+using SdlEvents = DotSDL.Interop.Core.Events;
 
 namespace DotSDL.Events {
     /// <summary>

@@ -1,6 +1,6 @@
-﻿using DotSDL.Sdl;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using DotSDL.Interop.Core;
 
 namespace DotSDL {
     /// <summary>

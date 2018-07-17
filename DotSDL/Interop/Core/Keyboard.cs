@@ -1,6 +1,6 @@
 ﻿using DotSDL.Input.Keyboard;
 
-namespace DotSDL.Sdl {
+namespace DotSDL.Interop.Core {
     /// <summary>
     /// Contains the necessary constants and function imports from SDL_keyboard.h.
     /// </summary>

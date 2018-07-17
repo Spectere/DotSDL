@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace DotSDL.Sdl {
+namespace DotSDL.Interop.Core {
     /// <summary>
     /// Contains the necessary constants and function imports from SDL_render.h.
     /// </summary>
@@ -46,7 +46,7 @@ namespace DotSDL.Sdl {
         /// to initialize the first one supporting the requested flags.</param>
         /// <param name="flags">The requested flags for the renderer.</param>
         /// <returns>A valid rendering context or NULL if there was an error.</returns>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_CreateRenderer", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_CreateRenderer", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr CreateRenderer(IntPtr window, int index, RendererFlags flags);
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace DotSDL.Sdl {
         /// <param name="h">The height of the texture in pixels.</param>
         /// <returns>The created texture is returned, or NULL if no rendering context was
         /// active, the foramt was unsupported, or the width or height were out of range.</returns>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_CreateTexture", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_CreateTexture", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr CreateTexture(IntPtr renderer, uint format, TextureAccess access, int w, int h);
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace DotSDL.Sdl {
         /// </summary>
         /// <param name="renderer">The renderer to clear.</param>
         /// <returns>0 on success, -1 on error.</returns>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_RenderClear", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_RenderClear", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int RenderClear(IntPtr renderer);
 
         /// <summary>
@@ -80,16 +80,16 @@ namespace DotSDL.Sdl {
         /// <param name="srcRect">The source rectangle, or NULL for the entire texture.</param>
         /// <param name="dstRect">The destination rectangle, or NULL For the entire rendering target.</param>
         /// <returns>0 on success, or -1 on error.</returns>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_RenderCopy", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_RenderCopy", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int RenderCopy(IntPtr renderer, IntPtr texture, Rect.SdlRect srcRect, Rect.SdlRect dstRect);
-        [DllImport(Meta.DllName, EntryPoint = "SDL_RenderCopy", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_RenderCopy", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int RenderCopy(IntPtr renderer, IntPtr texture, IntPtr srcRect, IntPtr dstRect);
 
         /// <summary>
         /// Update the screen with the rendering performed.
         /// </summary>
         /// <param name="renderer">The renderer to update.</param>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_RenderPresent", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_RenderPresent", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void RenderPresent(IntPtr renderer);
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace DotSDL.Sdl {
         /// <param name="pixels">The raw pixel data.</param>
         /// <param name="pitch">The number of bytes in a row of pixel data, including padding between lines.</param>
         /// <returns>0 on success, or -1 if the texture is not valid.</returns>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_UpdateTexture", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_UpdateTexture", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UpdateTexture(IntPtr texture, IntPtr rect, IntPtr pixels, int pitch);
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace DotSDL.Sdl {
         /// <param name="pixels">The raw pixel data.</param>
         /// <param name="pitch">The number of bytes in a row of pixel data, including padding between lines.</param>
         /// <returns>0 on success, or -1 if the texture is not valid.</returns>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_UpdateTexture", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_UpdateTexture", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UpdateTexture(IntPtr texture, Rect.SdlRect rect, IntPtr pixels, int pitch);
     }
 }

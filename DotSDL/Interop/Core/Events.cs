@@ -1,14 +1,14 @@
-﻿using ControllerButton = DotSDL.Input.Controller.Button;
+﻿using System;
+using System.Runtime.InteropServices;
 using DotSDL.Events;
 using DotSDL.Input;
 using DotSDL.Input.Controller;
 using DotSDL.Input.Joystick;
 using DotSDL.Input.Mouse;
+using ControllerButton = DotSDL.Input.Controller.Button;
 using MouseButton = DotSDL.Input.Mouse.Button;
-using System;
-using System.Runtime.InteropServices;
 
-namespace DotSDL.Sdl {
+namespace DotSDL.Interop.Core {
     /// <summary>
     /// Contains the necessary constants and function imports from SDL_events.h.
     /// </summary>
@@ -485,7 +485,7 @@ namespace DotSDL.Sdl {
         /// </summary>
         /// <param name="sdlEvent">An object to store event data into. If this is not NULL, the event is removed from the queue and stored into the object.</param>
         /// <returns>1 if there are any pending events, or 0 if there are none available.</returns>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_PollEvent", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_PollEvent", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int PollEvent(ref SdlEvent sdlEvent);
     }
 }

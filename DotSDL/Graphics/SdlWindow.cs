@@ -1,7 +1,7 @@
 ﻿using DotSDL.Events;
 using DotSDL.Input;
-using DotSDL.Sdl;
 using System;
+using DotSDL.Interop.Core;
 
 namespace DotSDL.Graphics {
     /// <summary>

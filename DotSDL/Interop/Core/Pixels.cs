@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace DotSDL.Sdl {
+namespace DotSDL.Interop.Core {
     /// <summary>
     /// Contains the necessary constants and function imports from SDL_pixels.h.
     /// </summary>

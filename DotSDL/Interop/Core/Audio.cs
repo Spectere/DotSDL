@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace DotSDL.Sdl {
+namespace DotSDL.Interop.Core {
     /// <summary>
     /// Contains the necessary constants and function imports from SDL_audio.h.
     /// </summary>
@@ -165,7 +165,7 @@ namespace DotSDL.Sdl {
         /// Shuts down audio processing and closes the audio device.
         /// </summary>
         /// <param name="dev">An audio device previously opened by <see cref="OpenAudioDevice"/>.</param>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_CloseAudioDevice", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_CloseAudioDevice", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void CloseAudioDevice(uint dev);
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace DotSDL.Sdl {
         /// <param name="allowedChanges"></param>
         /// <returns>A non-zero value on success or zero on failure. This will never
         /// return 1, since SDL reserves that ID for the SDL_OpenAudio() function.</returns>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_OpenAudioDevice", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_OpenAudioDevice", CallingConvention = CallingConvention.Cdecl)]
         internal static extern uint OpenAudioDevice(IntPtr device, int isCapture, ref AudioSpec desired, out AudioSpec obtained, AllowedChanges allowedChanges);
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace DotSDL.Sdl {
         /// <param name="allowedChanges"></param>
         /// <returns>A non-zero value on success or zero on failure. This will never
         /// return 1, since SDL reserves that ID for the SDL_OpenAudio() function.</returns>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_OpenAudioDevice", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_OpenAudioDevice", CallingConvention = CallingConvention.Cdecl)]
         internal static extern uint OpenAudioDevice(string device, int isCapture, ref AudioSpec desired, out AudioSpec obtained, AllowedChanges allowedChanges);
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace DotSDL.Sdl {
         /// </summary>
         /// <param name="dev">The audio device to change.</param>
         /// <param name="pauseOn">The <see cref="AudioState"/> to switch to.</param>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_PauseAudioDevice", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_PauseAudioDevice", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void PauseAudioDevice(uint dev, AudioState pauseOn);
     }
 }

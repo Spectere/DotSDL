@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace DotSDL.Sdl {
+namespace DotSDL.Interop.Core {
     /// <summary>
     /// Contains the necessary constants and function imports from SDL_video.h.
     /// </summary>
@@ -85,14 +85,14 @@ namespace DotSDL.Sdl {
         /// <param name="h">The height of the window, in screen coordinates.</param>
         /// <param name="flags">One or more <see cref="WindowFlags"/> OR'd together.</param>
         /// <returns>The window that was created, or NULL on failure.</returns>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_CreateWindow", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_CreateWindow", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr CreateWindow(string title, int x, int y, int w, int h, WindowFlags flags);
 
         /// <summary>
         /// Destroys an SDL window.
         /// </summary>
         /// <param name="window">The window to destroy.</param>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_DestroyWindow", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_DestroyWindow", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void DestroyWindow(IntPtr window);
 
         /// <summary>
@@ -100,14 +100,14 @@ namespace DotSDL.Sdl {
         /// </summary>
         /// <param name="window">The window to query.</param>
         /// <returns>The ID of the window.</returns>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_GetWindowID", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_GetWindowID", CallingConvention = CallingConvention.Cdecl)]
         internal static extern uint GetWindowId(IntPtr window);
 
         /// <summary>
         /// Shows an SDL window.
         /// </summary>
         /// <param name="window">The window to show.</param>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_ShowWindow", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_ShowWindow", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void ShowWindow(IntPtr window);
     }
 }

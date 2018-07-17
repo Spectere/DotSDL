@@ -1,5 +1,5 @@
 ﻿using System;
-using SdlAudio = DotSDL.Sdl.Audio;
+using SdlAudio = DotSDL.Interop.Core.Audio;
 
 namespace DotSDL.Audio {
     /// <summary>

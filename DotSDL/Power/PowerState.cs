@@ -13,7 +13,7 @@ namespace DotSDL.Power {
         /// </summary>
         public static PowerStatus CurrentPowerState {
             get {
-                var state = Sdl.Power.GetPowerInfo(out var secs, out var pct);
+                var state = Interop.Core.Power.GetPowerInfo(out var secs, out var pct);
                 return new PowerStatus {
                     BatteryStatus = state,
                     BatteryPercent = pct,

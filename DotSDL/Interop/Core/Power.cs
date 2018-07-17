@@ -1,7 +1,7 @@
-﻿using DotSDL.Power;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
+using DotSDL.Power;
 
-namespace DotSDL.Sdl {
+namespace DotSDL.Interop.Core {
     /// <summary>
     /// Contains the necessary constants and function imports from SDL_power.h.
     /// </summary>
@@ -16,7 +16,7 @@ namespace DotSDL.Sdl {
         /// You can pass a NULL here if you don't care. Will return -1 if we
         /// can't determine a value, or we're not running on a battery.</param>
         /// <returns>The state of the battery (if any).</returns>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_GetPowerInfo", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_GetPowerInfo", CallingConvention = CallingConvention.Cdecl)]
         internal static extern BatteryStatus GetPowerInfo(out int secs, out int pct);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace DotSDL.Sdl {
+namespace DotSDL.Interop.Core {
     /// <summary>
     /// Contains the necessary constants and function imports from SDL.h.
     /// </summary>
@@ -44,7 +44,7 @@ namespace DotSDL.Sdl {
         /// </summary>
         /// <param name="flags">Flags indicating which subsystem or subsystems to initialize.</param>
         /// <returns>0 on success or a negative error code on failure.</returns>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_Init", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_Init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int Initialize(SubsystemFlags flags);
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace DotSDL.Sdl {
         /// </summary>
         /// <param name="flags">Flags indicating which subsystem or subsystems to initialize.</param>
         /// <returns>0 on success or a negative error code on failure.</returns>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_InitSubSystem", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_InitSubSystem", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int InitSubSystem(SubsystemFlags flags);
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace DotSDL.Sdl {
         /// </summary>
         /// <param name="flags">Flags indicating which subsystem or subsystems to quit.</param>
         /// <returns>0 on success or a negative error code on failure.</returns>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_QuitSubSystem", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_QuitSubSystem", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int QuitSubSystem(SubsystemFlags flags);
 
         /// <summary>
@@ -77,14 +77,14 @@ namespace DotSDL.Sdl {
         /// </summary>
         /// <param name="flags">Flags indicating which subsystem or subsystems to query.</param>
         /// <returns>A set of all initialized subsystems.</returns>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_WasInit", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_WasInit", CallingConvention = CallingConvention.Cdecl)]
         internal static extern SubsystemFlags WasInit(SubsystemFlags flags);
 
         /// <summary>
         /// This function cleans up all initialized subsystems. You should call it upon all
         /// exit conditions.
         /// </summary>
-        [DllImport(Meta.DllName, EntryPoint = "SDL_Quit", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_Quit", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void Quit();
     }
 }

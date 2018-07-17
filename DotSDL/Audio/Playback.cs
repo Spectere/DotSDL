@@ -1,7 +1,7 @@
-﻿using DotSDL.Sdl;
-using SdlAudio = DotSDL.Sdl.Audio;
+﻿using SdlAudio = DotSDL.Interop.Core.Audio;
 using System;
 using System.Runtime.InteropServices;
+using DotSDL.Interop.Core;
 
 namespace DotSDL.Audio {
     /// <summary>

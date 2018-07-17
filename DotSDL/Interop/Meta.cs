@@ -1,4 +1,4 @@
-﻿namespace DotSDL.Sdl {
+﻿namespace DotSDL.Interop {
     /// <summary>
     /// Contains .NET constants to assist with making calls to the SDL library.
     /// </summary>
@@ -6,6 +6,6 @@
         /// <summary>
         /// Contains the name of the SDL library.
         /// </summary>
-        internal const string DllName = "SDL2";
+        internal const string CoreLib = "SDL2";
     }
 }
