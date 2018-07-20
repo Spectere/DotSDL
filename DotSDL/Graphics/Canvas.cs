@@ -48,7 +48,8 @@
         }
 
         /// <summary>
-        /// Resizes the <see cref="Canvas"/>.
+        /// Resizes the <see cref="Canvas"/>. Please note that this will also clear the canvas of
+        /// its existing contents.
         /// </summary>
         /// <param name="width">The new width of the <see cref="Canvas"/>.</param>
         /// <param name="height">The new height of the <see cref="Canvas"/>.</param>
