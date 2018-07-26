@@ -77,9 +77,17 @@ namespace DotSDL.Audio {
                     samples = buffer.Samples[Channel.Mono];
                     break;
                 case ChannelCount.Stereo:
-                    throw new NotImplementedException();
+                    for(var i = 0; i < buffer.Length; i++)
+                        samples[i] = (buffer.Samples[Channel.StereoLeft][i]
+                                    + buffer.Samples[Channel.StereoRight][i]) / 2;
+                    break;
                 case ChannelCount.Quadraphonic:
-                    throw new NotImplementedException();
+                    for(var i = 0; i < buffer.Length; i++)
+                        samples[i] = (buffer.Samples[Channel.QuadFrontLeft][i]
+                                    + buffer.Samples[Channel.QuadFrontRight][i]
+                                    + buffer.Samples[Channel.QuadRearLeft][i]
+                                    + buffer.Samples[Channel.QuadRearRight][i]) / 4;
+                    break;
                 case ChannelCount.FiveOne:
                     throw new NotImplementedException();
                 default:
@@ -110,7 +118,13 @@ namespace DotSDL.Audio {
                     }
                     break;
                 case ChannelCount.Quadraphonic:
-                    throw new NotImplementedException();
+                    for(var i = 0; i < buffer.Length; i++) {
+                        samples[i * ch] = (buffer.Samples[Channel.QuadFrontLeft][i]
+                                         + buffer.Samples[Channel.QuadRearLeft][i]) / 2;
+                        samples[i * ch + 1] = (buffer.Samples[Channel.QuadFrontRight][i]
+                                             + buffer.Samples[Channel.QuadRearRight][i]) / 2;
+                    }
+                    break;
                 case ChannelCount.FiveOne:
                     throw new NotImplementedException();
                 default:
