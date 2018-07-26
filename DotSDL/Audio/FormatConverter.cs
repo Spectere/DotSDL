@@ -69,7 +69,6 @@ namespace DotSDL.Audio {
         /// <param name="buffer">An <see cref="AudioBuffer"/> to process.</param>
         /// <param name="samples">The double array to write the converted data to.</param>
         private static void ToMono(ref AudioBuffer buffer, out double[] samples) {
-            var ch = (int)ChannelCount.Mono;
             samples = new double[buffer.Length * (int)ChannelCount.Mono];
 
             switch(buffer.Channels) {
@@ -101,7 +100,7 @@ namespace DotSDL.Audio {
         /// <param name="buffer">An <see cref="AudioBuffer"/> to process.</param>
         /// <param name="samples">The double array to write the converted data to</param>
         private static void ToStereo(ref AudioBuffer buffer, out double[] samples) {
-            var ch = (int)ChannelCount.Stereo;
+            const int ch = (int)ChannelCount.Stereo;
             samples = new double[buffer.Length * (int)ChannelCount.Stereo];
 
             switch(buffer.Channels) {
@@ -138,7 +137,7 @@ namespace DotSDL.Audio {
         /// <param name="buffer">An <see cref="AudioBuffer"/> to process.</param>
         /// <param name="samples">The double array to write the converted data to.</param>
         private static void ToQuadraphonic(ref AudioBuffer buffer, out double[] samples) {
-            var ch = (int)ChannelCount.Quadraphonic;
+            const int ch = (int)ChannelCount.Quadraphonic;
             samples = new double[buffer.Length * (int)ChannelCount.Quadraphonic];
 
             switch(buffer.Channels) {
@@ -179,7 +178,7 @@ namespace DotSDL.Audio {
         /// <param name="buffer">An <see cref="AudioBuffer"/> to process.</param>
         /// <param name="samples">The double array to write the converted data to.</param>
         private static void ToFiveOne(ref AudioBuffer buffer, out double[] samples) {
-            var ch = (int)ChannelCount.FiveOne;
+            const int ch = (int)ChannelCount.FiveOne;
             samples = new double[buffer.Length * (int)ChannelCount.FiveOne];
 
             // TODO: Improve upmixing.
