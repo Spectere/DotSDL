@@ -21,7 +21,7 @@
                 InitializeBuffer();
             }
         }
-        
+
         /// <summary>
         /// Returns the number of samples represented by this <see cref="AudioBuffer"/>.
         /// </summary>
