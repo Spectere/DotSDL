@@ -32,7 +32,7 @@ namespace Sample.Audio {
             KeyPressed += Window_KeyPressed;
             KeyReleased += Window_KeyReleased;
 
-            _audio = new Playback(44100, AudioFormat.Integer16, 1);
+            _audio = new Playback(44100, AudioFormat.Integer16, ChannelCount.Mono);
             _audioFreq = _audio.Frequency;
 
             var floatingPointText = _audio.FloatingPoint ? "floating-point, " : "";
@@ -50,8 +50,8 @@ namespace Sample.Audio {
 
         private void Audio_BufferEmpty(object sender, AudioBuffer e) {
             var t = (Math.PI * 2.0 * _freq) / _audioFreq;
-            for(var i = 0; i < e.Samples.Length; i++)
-                e.Samples[i] = Math.Sin(_time++ * t);
+            for(var i = 0; i < e.Length; i++)
+                e.Samples[Channel.Mono][i] = Math.Sin(_time++ * t);
         }
 
         private void DrawGlyph(ref Canvas canvas, char ch, int xPos, Color c) {
