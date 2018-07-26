@@ -168,13 +168,38 @@ namespace DotSDL.Audio {
             var ch = (int)ChannelCount.FiveOne;
             samples = new double[buffer.Length * (int)ChannelCount.Quadraphonic];
 
+            // TODO: Improve upmixing.
             switch(buffer.Channels) {
                 case ChannelCount.Mono:
-                    throw new NotImplementedException();
+                    for(var i = 0; i < buffer.Length; i++) {
+                        samples[i * ch] = buffer.Samples[Channel.Mono][i];
+                        samples[i * ch + 1] = buffer.Samples[Channel.Mono][i];
+                        samples[i * ch + 2] = 0;  // Center channel.
+                        samples[i * ch + 3] = 0;  // LFE.
+                        samples[i * ch + 4] = buffer.Samples[Channel.Mono][i];
+                        samples[i * ch + 5] = buffer.Samples[Channel.Mono][i];
+                    }
+                    break;
                 case ChannelCount.Stereo:
-                    throw new NotImplementedException();
+                    for(var i = 0; i < buffer.Length; i++) {
+                        samples[i * ch] = buffer.Samples[Channel.StereoLeft][i];
+                        samples[i * ch + 1] = buffer.Samples[Channel.StereoRight][i];
+                        samples[i * ch + 2] = 0;  // Center channel.
+                        samples[i * ch + 3] = 0;  // LFE.
+                        samples[i * ch + 4] = buffer.Samples[Channel.StereoLeft][i];
+                        samples[i * ch + 5] = buffer.Samples[Channel.StereoRight][i];
+                    }
+                    break;
                 case ChannelCount.Quadraphonic:
-                    throw new NotImplementedException();
+                    for(var i = 0; i < buffer.Length; i++) {
+                        samples[i * ch] = buffer.Samples[Channel.QuadFrontLeft][i];
+                        samples[i * ch + 1] = buffer.Samples[Channel.QuadFrontRight][i];
+                        samples[i * ch + 2] = 0;  // Center channel.
+                        samples[i * ch + 3] = 0;  // LFE.
+                        samples[i * ch + 4] = buffer.Samples[Channel.QuadRearLeft][i];
+                        samples[i * ch + 5] = buffer.Samples[Channel.QuadRearRight][i];
+                    }
+                    break;
                 case ChannelCount.FiveOne:
                     for(var i = 0; i < buffer.Length; i++) {
                         samples[i * ch] = buffer.Samples[Channel.FiveOneFrontLeft][i];
