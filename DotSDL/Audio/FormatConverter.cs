@@ -166,7 +166,7 @@ namespace DotSDL.Audio {
         /// <param name="samples">The double array to write the converted data to.</param>
         private static void ToFiveOne(ref AudioBuffer buffer, out double[] samples) {
             var ch = (int)ChannelCount.FiveOne;
-            samples = new double[buffer.Length * (int)ChannelCount.Quadraphonic];
+            samples = new double[buffer.Length * (int)ChannelCount.FiveOne];
 
             // TODO: Improve upmixing.
             switch(buffer.Channels) {
