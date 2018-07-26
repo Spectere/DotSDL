@@ -12,12 +12,14 @@ At this time, DotSDL supports the following features:
 
 * Audio
   * Support for all audio formats supported by SDL.
-  * Mono output.
+  * Full upmixing and downmixing for mono, stereo, and quadraphonic audio.
+    * 5.1 audio is supported, but upmixing and downmixing support for it is
+      currently limited.
 * Input
   * Keyboard input.
   * Window events.
 * Graphics
-  * A single 32-bit ARGB canvas (useful for simple pixel plotting).
+  * A single 32-bit ARGB canvas (useful for pixel plotting).
 * Power
   * Battery state.
 
@@ -29,5 +31,7 @@ the sample/test projects and to read over the XMLDocs on the classes and
 methods.
 
 If you would still like to play around with DotSDL, the project can be built
-using Microsoft Visual Studio 2017. You will also need a SDL2.dll binary for
-each architecture that you plan to build your project against.
+using the .NET Core SDK or any IDE that support .NET Standard projects. You
+will also need a native SDL2 library for each architecture that you plan to
+build your project against.
+
