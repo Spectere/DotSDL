@@ -8,7 +8,7 @@ namespace DotSDL.Audio {
     /// Represents a streaming audio playback engine.
     /// </summary>
     public class Playback {
-        private const ushort DefaultBufferSize = 4096;
+        private const ushort DefaultBufferSize = 1024;
 
         private readonly SdlInit _sdlInit = SdlInit.Instance;
         private readonly uint _deviceId;
@@ -31,7 +31,7 @@ namespace DotSDL.Audio {
         /// <summary>
         /// The number of sound channels for the open audio device.
         /// </summary>
-        public byte Channels { get; }
+        public ChannelCount Channels { get; }
 
         /// <summary>
         /// The buffer size for the open audio device, in bytes.
@@ -59,12 +59,17 @@ namespace DotSDL.Audio {
         public event EventHandler<AudioBuffer> BufferEmpty;
 
         /// <summary>
+        /// The number of channels that the application is using.
+        /// </summary>
+        private ChannelCount RequestedChannels { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the audio engine.
         /// </summary>
         /// <param name="freqency">The desired frequency, in hertz.</param>
         /// <param name="format">The desired audio format.</param>
         /// <param name="channels">The desired number of channels.</param>
-        public Playback(int freqency, AudioFormat format, byte channels)
+        public Playback(int freqency, AudioFormat format, ChannelCount channels)
             : this(freqency, format, channels, DefaultBufferSize) { }
 
         /// <summary>
@@ -74,14 +79,15 @@ namespace DotSDL.Audio {
         /// <param name="format">The desired audio format.</param>
         /// <param name="channels">The desired number of channels.</param>
         /// <param name="buffer">The desired buffer size, in samples.</param>
-        public Playback(int freqency, AudioFormat format, byte channels, ushort buffer) {
+        public Playback(int freqency, AudioFormat format, ChannelCount channels, ushort buffer) {
             _sdlInit.InitSubsystem(Init.SubsystemFlags.Audio);
 
-            SdlAudio.AudioSpec actual;
+            RequestedChannels = channels;
+
             var desired = new SdlAudio.AudioSpec {
                 Freq = freqency,
                 Format = GetBestAudioFormat(format),
-                Channels = channels,
+                Channels = (byte)channels,
                 Silence = 0,
                 Samples = buffer,
                 Padding = 0,
@@ -90,11 +96,11 @@ namespace DotSDL.Audio {
                 Userdata = IntPtr.Zero
             };
 
-            _deviceId = SdlAudio.OpenAudioDevice(IntPtr.Zero, 0, ref desired, out actual, SdlAudio.AllowedChanges.AllowAnyChange);
+            _deviceId = SdlAudio.OpenAudioDevice(IntPtr.Zero, 0, ref desired, out SdlAudio.AudioSpec actual, SdlAudio.AllowedChanges.AllowAnyChange);
 
             // Populate the obtained values in the object properties.
             Frequency = actual.Freq;
-            Channels = actual.Channels;
+            Channels = (ChannelCount)actual.Channels;
             BufferSizeSamples = actual.Samples;
             BufferSizeBytes = actual.Size;
             BitSize = SdlAudio.BitSize((ushort)actual.Format);
@@ -120,11 +126,11 @@ namespace DotSDL.Audio {
         private void Callback(IntPtr userdata, IntPtr stream, int len) {
             if(BufferEmpty == null) return;
 
-            var buffer = new AudioBuffer { Samples = new double[BufferSizeSamples] };
+            var buffer = new AudioBuffer { Channels = RequestedChannels, Length = BufferSizeSamples };
             BufferEmpty(this, buffer);
 
             var newStream = new byte[len];
-            FormatConverter.ConvertFormat(buffer, ref newStream, _sdlAudioSpec.Format);
+            FormatConverter.ConvertFormat(ref buffer, ref newStream, _sdlAudioSpec.Format, Channels);
 
             Marshal.Copy(newStream, 0, stream, len);
         }
