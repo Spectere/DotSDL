@@ -8,6 +8,7 @@
     <Copyright>(c) 2017 Ian Burgmyer</Copyright>
     <Authors>Ian Burgmyer</Authors>
     <Company>The DotSDL Team</Company>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
