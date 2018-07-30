@@ -8,6 +8,7 @@ namespace DotSDL.Graphics {
         public Vector2 Position { get; set; }
         public Vector2 Scale { get; set; }
         public int ZOrder { get; set; }
+        public bool Shown { get; set; }
 
         /// <summary>
         /// Initializes a new <see cref="Sprite"/>.
@@ -67,6 +68,7 @@ namespace DotSDL.Graphics {
             Position = position;
             Scale    = scale;
             ZOrder   = zorder;
+            Shown    = false;
         }
     }
 }

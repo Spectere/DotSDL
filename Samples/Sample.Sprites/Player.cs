@@ -8,6 +8,8 @@ namespace Sample.Sprites {
         public Player(Color color, int speed) : base(64, 64) {
             _color = color;
             _speed = speed;
+
+            Shown = true;
         }
     }
 }

@@ -1,7 +1,8 @@
 ﻿using DotSDL.Events;
 using DotSDL.Input;
-using System;
 using DotSDL.Interop.Core;
+using System;
+using System.Collections.Generic;
 
 namespace DotSDL.Graphics {
     /// <summary>
@@ -45,6 +46,9 @@ namespace DotSDL.Graphics {
         public uint VideoUpdateTicks { get; set; }
         /// <summary>Gets or sets the amount of time, in milliseconds, between game (logic) updates.</summary>
         public uint GameUpdateTicks { get; set; }
+
+        /// <summary>The list of active <see cref="Sprite"/> objects.</summary>
+        public List<Sprite> Sprites { get; }
 
         /// <summary>Indicates that the window manager should position the window. To place the window on a specific display, use the <see cref="WindowPosCenteredDisplay"/> function.</summary>
         public const int WindowPosUndefined = 0x1FFF0000;
@@ -120,6 +124,8 @@ namespace DotSDL.Graphics {
 
             TextureWidth = textureWidth;
             TextureHeight = textureHeight;
+
+            Sprites = new List<Sprite>();
 
             IsDestroyed = false;
             _resources.RegisterResource(this);
