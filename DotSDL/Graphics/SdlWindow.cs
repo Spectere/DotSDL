@@ -176,6 +176,14 @@ namespace DotSDL.Graphics {
         }
 
         /// <summary>
+        /// Plots the sprites stored in <see cref="Sprites"/> to the screen. Please note that this method is called by
+        /// DotSDL's drawing routines and does not need to be called manually. You usually do not need to override this
+        /// method.
+        /// </summary>
+        public virtual void DrawSprites() {
+        }
+
+        /// <summary>
         /// Gets an <see cref="IntPtr"/> that points to what should be displayed on the window's background. You usually
         /// do not need to override this method.
         /// </summary>

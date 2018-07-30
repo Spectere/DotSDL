@@ -5,9 +5,25 @@ namespace DotSDL.Graphics {
     /// Represents a graphical, two-dimensional object in a program.
     /// </summary>
     public class Sprite : Canvas {
+        /// <summary>
+        /// The position on the screen where the <see cref="Sprite"/> should be drawn.
+        /// </summary>
         public Vector2 Position { get; set; }
+
+        /// <summary>
+        /// The scale of the <see cref="Sprite"/>. 1.0f is 100%.
+        /// </summary>
         public Vector2 Scale { get; set; }
+
+        /// <summary>
+        /// The order in which the sprite is drawn. Lower numbered <see cref="Sprite"/> instances are drawn first
+        /// and will appear on the bottom.
+        /// </summary>
         public int ZOrder { get; set; }
+
+        /// <summary>
+        /// <c>true</c> if the sprite should be drawn to the screen, otherwise <c>false</c>.
+        /// </summary>
         public bool Shown { get; set; }
 
         /// <summary>
@@ -63,8 +79,6 @@ namespace DotSDL.Graphics {
         /// <param name="zorder">A value indicating the order in which this <see cref="Sprite"/> is drawn. Higher numbered
         /// sprites are drawn on top of other sprites and, thus, will appear above them.</param>
         public Sprite(int width, int height, Vector2 position, Vector2 scale, int zorder) : base(width, height) {
-            SetSize(width, height);
-
             Position = position;
             Scale    = scale;
             ZOrder   = zorder;

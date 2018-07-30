@@ -1,31 +1,70 @@
-﻿namespace DotSDL.Graphics {
+﻿using System;
+
+namespace DotSDL.Graphics {
     /// <summary>
     /// A representation of the contents of the SDL window, with a number of
     /// helper routines.
     /// </summary>
     public class Canvas {
+        private int _width, _height;
+
         /// <summary>
         /// The raw pixels in the <see cref="Canvas"/>.
         /// </summary>
         public Color[] Pixels;
 
         /// <summary>
-        /// Gets the width of the <see cref="Canvas"/>.
+        /// Gets or sets the width of the <see cref="Canvas"/> texture.
         /// </summary>
-        public int Width { get; private set; }
+        public int Width {
+            get => _width;
+            set {
+                if(value <= 0) throw new ArgumentException("Width must be greater than 0.");
+
+                _width = value;
+                Resize();
+            }
+        }
 
         /// <summary>
-        /// Gets the height of the <see cref="Canvas"/>.
+        /// Gets or sets the height of the <see cref="Canvas"/> texture.
         /// </summary>
-        public int Height { get; private set; }
+        public int Height {
+            get => _height;
+            set {
+                if(value <= 0) throw new ArgumentException("Height must be greater than 0.");
+
+                _height = value;
+                Resize();
+            }
+        }
 
         /// <summary>
-        /// Initialization a new <see cref="Canvas"/>.
+        /// Sets the section of the <see cref="Canvas"/> that should be drawn. If the size values are set to 0, the
+        /// <see cref="Canvas"/> will fill as much of its containing object as possible.
         /// </summary>
-        /// <param name="width">The width of the <see cref="Canvas"/>.</param>
-        /// <param name="height">The height of the <see cref="Canvas"/>.</param>
-        internal Canvas(int width, int height) {
-            SetSize(width, height);
+        public Rectangle Clipping { get; set; }
+
+        /// <summary>
+        /// Initializes a new <see cref="Canvas"/>.
+        /// </summary>
+        /// <param name="textureWidth">The width of the <see cref="Canvas"/>.</param>
+        /// <param name="textureHeight">The height of the <see cref="Canvas"/>.</param>
+        internal Canvas(int textureWidth, int textureHeight) : this(textureWidth, textureHeight, new Rectangle(0, 0, textureWidth, textureHeight)) { }
+
+        /// <summary>
+        /// Initializes a new <see cref="Canvas"/>.
+        /// </summary>
+        /// <param name="textureWidth">The width of the <see cref="Canvas"/>.</param>
+        /// <param name="textureHeight">The height of the <see cref="Canvas"/>.</param>
+        /// <param name="clipping">The clipping <see cref="Rectangle"/> for the <see cref="Canvas"/>.</param>
+        internal Canvas(int textureWidth, int textureHeight, Rectangle clipping) {
+            _width = textureWidth;
+            _height = textureHeight;
+
+            Clipping = clipping;
+
+            Resize();
         }
 
         /// <summary>
@@ -51,12 +90,7 @@
         /// Resizes the <see cref="Canvas"/>. Please note that this will also clear the canvas of
         /// its existing contents.
         /// </summary>
-        /// <param name="width">The new width of the <see cref="Canvas"/>.</param>
-        /// <param name="height">The new height of the <see cref="Canvas"/>.</param>
-        internal void SetSize(int width, int height) {
-            Width = width;
-            Height = height;
-
+        protected void Resize() {
             Pixels = new Color[Width * Height];
         }
     }
