@@ -25,6 +25,21 @@ namespace DotSDL.Interop.Core {
         }
 
         /// <summary>
+        /// An enumeration of flags that can be used in the flip parameter for
+        /// <see cref="RenderCopyEx"/>.
+        /// </summary>
+        internal enum RendererFlip : uint {
+            /// <summary>Do not flip.</summary>
+            None,
+
+            /// <summary>Flip horizontally.</summary>
+            Horizontal,
+
+            /// <summary>Flip vertically.</summary>
+            Vertical
+        }
+
+        /// <summary>
         /// The access pattern allowed for a texture.
         /// </summary>
         internal enum TextureAccess : int {
@@ -82,8 +97,51 @@ namespace DotSDL.Interop.Core {
         /// <returns>0 on success, or -1 on error.</returns>
         [DllImport(Meta.CoreLib, EntryPoint = "SDL_RenderCopy", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int RenderCopy(IntPtr renderer, IntPtr texture, Rect.SdlRect srcRect, Rect.SdlRect dstRect);
+
+        /// <summary>
+        /// Copy a portion of the texture to the current rendering target.
+        /// </summary>
+        /// <param name="renderer">The renderer which should copy parts of a texture.</param>
+        /// <param name="texture">The source texture.</param>
+        /// <param name="srcRect">The source rectangle, or NULL for the entire texture.</param>
+        /// <param name="dstRect">The destination rectangle, or NULL For the entire rendering target.</param>
+        /// <returns>0 on success, or -1 on error.</returns>
         [DllImport(Meta.CoreLib, EntryPoint = "SDL_RenderCopy", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int RenderCopy(IntPtr renderer, IntPtr texture, IntPtr srcRect, IntPtr dstRect);
+
+        /// <summary>
+        /// Copy a portion of the texture to the current rendering target.
+        /// </summary>
+        /// <param name="renderer">The renderer which should copy parts of a texture.</param>
+        /// <param name="texture">The source texture.</param>
+        /// <param name="srcRect">The source rectangle, or NULL for the entire texture.</param>
+        /// <param name="dstRect">The destination rectangle, or NULL For the entire rendering target.</param>
+        /// <param name="angle">An angle, in degrees, that indicates the rotation that will be applied to <paramref name="dstRect"/>.</param>
+        /// <param name="center">An <see cref="Rect.SdlPoint"/> indicating the point around which <paramref name="dstRect"/> will be rotated
+        /// (if NULL, rotation will be done around dstRect.w/2, dstRect.h/2).</param>
+        /// <param name="flip">A <see cref="RendererFlip"/> value indicating which flipping actions should be performed.</param>
+        /// <returns>0 on success, or -1 on error.</returns>
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_RenderCopyEx", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int RenderCopyEx(
+            IntPtr renderer, IntPtr texture, Rect.SdlRect srcRect, Rect.SdlRect dstRect, double angle, Rect.SdlPoint center,
+            RendererFlip flip);
+
+        /// <summary>
+        /// Copy a portion of the texture to the current rendering target.
+        /// </summary>
+        /// <param name="renderer">The renderer which should copy parts of a texture.</param>
+        /// <param name="texture">The source texture.</param>
+        /// <param name="srcRect">The source rectangle, or NULL for the entire texture.</param>
+        /// <param name="dstRect">The destination rectangle, or NULL For the entire rendering target.</param>
+        /// <param name="angle">An angle, in degrees, that indicates the rotation that will be applied to <paramref name="dstRect"/>.</param>
+        /// <param name="center">An <see cref="Rect.SdlPoint"/> indicating the point around which <paramref name="dstRect"/> will be rotated
+        /// (if NULL, rotation will be done around dstRect.w/2, dstRect.h/2).</param>
+        /// <param name="flip">A <see cref="RendererFlip"/> value indicating which flipping actions should be performed.</param>
+        /// <returns>0 on success, or -1 on error.</returns>
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_RenderCopyEx", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int RenderCopyEx(
+            IntPtr renderer, IntPtr texture, IntPtr srcRect, IntPtr dstRect, double angle, Rect.SdlPoint center,
+            RendererFlip flip);
 
         /// <summary>
         /// Update the screen with the rendering performed.
