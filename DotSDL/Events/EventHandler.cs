@@ -9,8 +9,8 @@ namespace DotSDL.Events {
     internal static class EventHandler {
         /// <summary>
         /// An incredibly unsafe function that forcibly casts one type to
-        /// another. This is used to convert between SDL2 events, since C# has
-        /// no concept of union types.
+        /// another. This is used to convert between SDL2 events so that the
+        /// user doesn't have to pick the correct type.
         /// </summary>
         /// <typeparam name="T">The type to cast to.</typeparam>
         /// <param name="sdlEvent">The event that should be converted.</param>
