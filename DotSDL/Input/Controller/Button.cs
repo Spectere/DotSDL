@@ -1,86 +1,61 @@
 ﻿namespace DotSDL.Input.Controller {
     /// <summary>
-    /// The buttons that are supported by SDL2's game controller subsystem.
+    /// The buttons supported by game controllers.
     /// </summary>
-    public enum Button : sbyte {
-        /// <summary>
-        /// Invalid button.
-        /// </summary>
-        Invalid = -1,
+    public enum Button {
+        /// <summary>An invalid or unknown button.</summary>
+        Invalid = 0x00,
+
+        /// <summary>The A face button (X on PlayStation controllers).</summary>
+        A = 0x01,
+
+        /// <summary>The B face button (O on PlayStation controllers).</summary>
+        B = 0x02,
+
+        /// <summary>The X face button (Square on PlayStation controllers).</summary>
+        X = 0x03,
+
+        /// <summary>The Y face button (Triangle on PlayStation controllers).</summary>
+        Y = 0x04,
 
         /// <summary>
-        /// The controller's A button.
+        /// The back button (Select on older controllers, Share on the PS4 controller, and View on the
+        /// Xbox One controller).
         /// </summary>
-        A,
+        Back = 0x05,
 
         /// <summary>
-        /// The controller's B button.
+        /// The guide button (Xbox button on Xbox 360/One controllers or the PS button on PS3/PS4 controllers).
         /// </summary>
-        B,
+        Guide = 0x06,
 
         /// <summary>
-        /// The controller's X button.
+        /// The start button (Menu button on Xbox One controllers or Options on the PS4 controller).
         /// </summary>
-        X,
+        Start = 0x07,
 
-        /// <summary>
-        /// The controller's Y button.
-        /// </summary>
-        Y,
+        /// <summary>The left stick button (L3).</summary>
+        LeftStick = 0x08,
 
-        /// <summary>
-        /// The controller's back button (View on the Xbox One controller, Share on the DualShock 4).
-        /// </summary>
-        Back,
-        
-        /// <summary>
-        /// The controller's guide button (usually the Xbox or PlayStation logos).
-        /// </summary>
-        Guide,
+        /// <summary>The right stick button (R3).</summary>
+        RightStick = 0x09,
 
-        /// <summary>
-        /// The controller's start button (Menu on the Xbox One controller, Options on the DualShock 4).
-        /// </summary>
-        Start,
+        /// <summary>The left shoulder button (LB on Xbox 360/One, L1 on PS3/PS4).</summary>
+        LeftShoulder = 0x0A,
 
-        /// <summary>
-        /// The left stick button, also known as L3.
-        /// </summary>
-        LeftStick,
+        /// <summary>The right shoulder button (RB on Xbox 360/One, R1 on PS3/PS4).</summary>
+        RightShoulder = 0x0B,
 
-        /// <summary>
-        /// The right stick button, also known as R3.
-        /// </summary>
-        RightStick,
+        /// <summary>The up direction on the directional pad.</summary>
+        DpadUp = 0x0C,
 
-        /// <summary>
-        /// The left shoulder button, also known as LB.
-        /// </summary>
-        LeftShoulder,
+        /// <summary>The down direction on the directional pad.</summary>
+        DpadDown = 0x0D,
 
-        /// <summary>
-        /// The right shoulder button, also known as RB.
-        /// </summary>
-        RightShoulder,
+        /// <summary>The left direction on the directional pad.</summary>
+        DpadLeft = 0x0E,
 
-        /// <summary>
-        /// Up on the directional pad.
-        /// </summary>
-        Up,
-
-        /// <summary>
-        /// Down on the direction pad.
-        /// </summary>
-        Down,
-
-        /// <summary>
-        /// Left on the directional pad.
-        /// </summary>
-        Left,
-
-        /// <summary>
-        /// Right on the directional pad.
-        /// </summary>
-        Right
+        /// <summary>The right direction on the directional pad.</summary>
+        DpadRigh = 0x0F
     }
 }

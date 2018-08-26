@@ -1,26 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using DotSDL.Input.Joystick;
 
 namespace DotSDL.Interop.Core {
     /// Contains the necessary functions and imports from SDL_joystick.h.
     internal class Joystick {
-        /// <summary>
-        /// The direction that the hat was pressed in.
-        /// </summary>
-        [Flags]
-        internal enum HatDirection {
-            Center = 0x00,
-            Up = 0x01,
-            Right = 0x02,
-            Down = 0x04,
-            Left = 0x08,
-            
-            RightUp = Right | Up,
-            RightDown = Right | Down,
-            LeftUp = Left | Up,
-            LeftDown = Left | Down
-        }
-        
         /// <summary>
         /// The state that the device should be set to.
         /// </summary>
@@ -55,10 +39,7 @@ namespace DotSDL.Interop.Core {
             Full = 0x04,
             
             /// <summary>The controller is wired.</summary>
-            Wired = 0x05,
-            
-            /// <summary>The battery level is at max.</summary>
-            Max = 0x06
+            Wired = 0x05
         }
 
         /// <summary>
@@ -169,7 +150,7 @@ namespace DotSDL.Interop.Core {
         /// <param name="hat">The index of the hat to poll.</param>
         /// <returns>A <see cref="HatDirection"/> representing the direction that the stick is being pressed.</returns>
         [DllImport(Meta.CoreLib, EntryPoint = "SDL_JoystickGetHat", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern HatDirection GetHat(IntPtr joystick, int hat);
+        internal static extern HatPosition GetHat(IntPtr joystick, int hat);
 
         /// <summary>
         /// Gets the instance ID of an opened joystick.
@@ -177,7 +158,7 @@ namespace DotSDL.Interop.Core {
         /// <param name="joystick">The joystick object to query.</param>
         /// <returns>The instance ID of the specified joystick.</returns>
         [DllImport(Meta.CoreLib, EntryPoint = "SDL_JoystickInstanceID", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int InstanceId(IntPtr joystick);
+        internal static extern int GetInstanceId(IntPtr joystick);
 
         /// <summary>
         /// Gets the implementation-dependent name of the joystick.
@@ -185,7 +166,7 @@ namespace DotSDL.Interop.Core {
         /// <param name="joystick">The joystick object to manipulate.</param>
         /// <returns>The name of the selected joystick.</returns>
         [DllImport(Meta.CoreLib, EntryPoint = "SDL_JoystickName", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern string Name(IntPtr joystick);
+        internal static extern string GetName(IntPtr joystick);
 
         /// <summary>
         /// Gets the implementation-dependent name of the joystick.
@@ -193,7 +174,7 @@ namespace DotSDL.Interop.Core {
         /// <param name="deviceIndex">The device index to query.</param>
         /// <returns>The name of the selected joystick.</returns>
         [DllImport(Meta.CoreLib, EntryPoint = "SDL_JoystickNameForIndex", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern string NameForIndex(int deviceIndex);
+        internal static extern string GetNameForIndex(int deviceIndex);
 
         /// <summary>
         /// Gets the number of general axis controls on a joystick.
@@ -201,7 +182,7 @@ namespace DotSDL.Interop.Core {
         /// <param name="joystick">The joystick object to query.</param>
         /// <returns>The number of axis controls on a joystick or a negative error code on failure.</returns>
         [DllImport(Meta.CoreLib, EntryPoint = "SDL_JoystickNumAxes", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int NumAxes(IntPtr joystick);
+        internal static extern int GetNumAxes(IntPtr joystick);
 
         /// <summary>
         /// Gets the number of trackballs on a joystick.
@@ -209,7 +190,7 @@ namespace DotSDL.Interop.Core {
         /// <param name="joystick">The joystick object to query.</param>
         /// <returns>The number of trackballs or a negative error code on failure.</returns>
         [DllImport(Meta.CoreLib, EntryPoint = "SDL_JoystickNumBall", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int NumBalls(IntPtr joystick);
+        internal static extern int GetNumBalls(IntPtr joystick);
 
         /// <summary>
         /// Gets the number of buttons on a joystick.
@@ -217,7 +198,7 @@ namespace DotSDL.Interop.Core {
         /// <param name="joystick">The joystick object to query.</param>
         /// <returns>The number of buttons or a negative error code on failure.</returns>
         [DllImport(Meta.CoreLib, EntryPoint = "SDL_JoystickNumButtons", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int NumButtons(IntPtr joystick);
+        internal static extern int GetNumButtons(IntPtr joystick);
 
         /// <summary>
         /// Gets the number of POV hats on a joystick.
@@ -225,7 +206,14 @@ namespace DotSDL.Interop.Core {
         /// <param name="joystick">The joystick object to query.</param>
         /// <returns>The number of POV hats or a negative error code on failure.</returns>
         [DllImport(Meta.CoreLib, EntryPoint = "SDL_JoystickNumHats", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int NumHats(IntPtr joystick);
+        internal static extern int GetNumHats(IntPtr joystick);
+
+        /// <summary>
+        /// Counts the number of joysticks attached to the system.
+        /// </summary>
+        /// <returns></returns>
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_NumJoysticks", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int GetNumJoysticks();
 
         /// <summary>
         /// Opens a joystick for use.
@@ -240,12 +228,5 @@ namespace DotSDL.Interop.Core {
         /// </summary>
         [DllImport(Meta.CoreLib, EntryPoint = "SDL_JoystickUpdate", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void Update();
-
-        /// <summary>
-        /// Counts the number of joysticks attached to the system.
-        /// </summary>
-        /// <returns></returns>
-        [DllImport(Meta.CoreLib, EntryPoint = "SDL_NumJoysticks", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int NumJoysticks();
     }
 }

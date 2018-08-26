@@ -1,35 +1,27 @@
 ﻿namespace DotSDL.Input.Controller {
-    public enum Axis : sbyte {
-        Invalid = -1,
+    /// <summary>
+    /// The axes supported by game controllers.
+    /// </summary>
+    public enum Axis {
+        /// <summary>An invalid or unrecognized axis.</summary>
+        Invalid = 0x00,
 
-        /// <summary>
-        /// The X coordinate of the left stick.
-        /// </summary>
-        LeftX,
+        /// <summary>The X position on the left stick.</summary>
+        LeftX = 0x01,
 
-        /// <summary>
-        /// The Y coordinate of the left stick.
-        /// </summary>
-        LeftY,
+        /// <summary>The Y position on the left stick.</summary>
+        LeftY = 0x02,
 
-        /// <summary>
-        /// The X coordinate of the right stick.
-        /// </summary>
-        RightX,
+        /// <summary>The X position on the right stick.</summary>
+        RightX = 0x03,
 
-        /// <summary>
-        /// The Y coordinate of the right stick.
-        /// </summary>
-        RightY,
+        /// <summary>The Y position on the right stick.</summary>
+        RightY = 0x04,
 
-        /// <summary>
-        /// The left trigger.
-        /// </summary>
-        TriggerLeft,
+        /// <summary>The position of the left trigger.</summary>
+        TriggerLeft = 0x05,
 
-        /// <summary>
-        /// The right trigger.
-        /// </summary>
-        TriggerRight,
+        /// <summary>The position of the right trigger.</summary>
+        TriggerRigh = 0x06
     }
 }
