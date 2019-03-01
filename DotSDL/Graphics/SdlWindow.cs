@@ -24,7 +24,7 @@ namespace DotSDL.Graphics {
 
         /// <summary><c>true</c> if this <see cref="SdlWindow"/> instance has been destroyed, othersize <c>false</c>.</summary>
         public bool IsDestroyed { get; set; }
-        
+
         /// <summary><c>true</c> if this <see cref="SdlWindow"/> has been minimized, othersize <c>false</c>.</summary>
         public bool IsMinimized { get; set; }
 
@@ -98,7 +98,17 @@ namespace DotSDL.Graphics {
         /// <param name="position">A <see cref="Point"/> representing the starting position of the window. The X and Y coordinates of the Point can be set to <see cref="WindowPosUndefined"/> or <see cref="WindowPosCentered"/>.</param>
         /// <param name="windowWidth">The width of the window.</param>
         /// <param name="windowHeight">The height of the window.</param>
-        public SdlWindow(string title, Point position, int windowWidth, int windowHeight) : this(title, position, windowWidth, windowHeight, windowWidth, windowHeight) { }
+        public SdlWindow(string title, Point position, int windowWidth, int windowHeight) : this(title, position, windowWidth, windowHeight, windowWidth, windowHeight, ScalingQuality.Nearest) { }
+
+        /// <summary>
+        /// Creates a new <see cref="SdlWindow"/>.
+        /// </summary>
+        /// <param name="title">The text that is displayed on the window's title bar.</param>
+        /// <param name="position">A <see cref="Point"/> representing the starting position of the window. The X and Y coordinates of the Point can be set to <see cref="WindowPosUndefined"/> or <see cref="WindowPosCentered"/>.</param>
+        /// <param name="windowWidth">The width of the window.</param>
+        /// <param name="windowHeight">The height of the window.</param>
+        /// <param name="scalingQuality">The scaling (filtering) method to use for the background canvas texture.</param>
+        public SdlWindow(string title, Point position, int windowWidth, int windowHeight, ScalingQuality scalingQuality) : this(title, position, windowWidth, windowHeight, windowWidth, windowHeight, scalingQuality) { }
 
         /// <summary>
         /// Creates a new <see cref="SdlWindow"/>.
@@ -109,13 +119,28 @@ namespace DotSDL.Graphics {
         /// <param name="windowHeight">The height of the window.</param>
         /// <param name="textureWidth">The width of the window's texture.</param>
         /// <param name="textureHeight">The height of the window's texture.</param>
-        /// <param name="updateType">The method used to update the canvas.</param>
-        public SdlWindow(string title, Point position, int windowWidth, int windowHeight, int textureWidth, int textureHeight) {
+        public SdlWindow(string title, Point position, int windowWidth, int windowHeight, int textureWidth, int textureHeight) : this(title, position, windowWidth, windowHeight, textureWidth, textureHeight, ScalingQuality.Nearest) { }
+
+        /// <summary>
+        /// Creates a new <see cref="SdlWindow"/>.
+        /// </summary>
+        /// <param name="title">The text that is displayed on the window's title bar.</param>
+        /// <param name="position">A <see cref="Point"/> representing the starting position of the window. The X and Y coordinates of the Point can be set to <see cref="WindowPosUndefined"/> or <see cref="WindowPosCentered"/>.</param>
+        /// <param name="windowWidth">The width of the window.</param>
+        /// <param name="windowHeight">The height of the window.</param>
+        /// <param name="textureWidth">The width of the window's texture.</param>
+        /// <param name="textureHeight">The height of the window's texture.</param>
+        /// <param name="scalingQuality">The scaling (filtering) method to use for the background canvas texture.</param>
+        public SdlWindow(string title, Point position, int windowWidth, int windowHeight, int textureWidth, int textureHeight, ScalingQuality scalingQuality) {
             _sdlInit.InitSubsystem(Init.SubsystemFlags.Video);
 
             _window = Video.CreateWindow(title, position.X, position.Y, windowWidth, windowHeight, Video.WindowFlags.Hidden);
             _renderer = Render.CreateRenderer(_window, -1, Render.RendererFlags.Accelerated);
+
+            // Everything should be kept as nearest *except* for the target texture.
+            SetScalingQuality(scalingQuality);
             _texture = Render.CreateTexture(_renderer, Pixels.PixelFormatArgb8888, Render.TextureAccess.Streaming, textureWidth, textureHeight);
+            SetScalingQuality(ScalingQuality.Nearest);
 
             _canvas = new Canvas(textureWidth, textureHeight);
 
@@ -144,7 +169,7 @@ namespace DotSDL.Graphics {
         /// </summary>
         private void BaseDraw() {
             if(IsDestroyed || IsMinimized) return;
-            
+
             Render.UpdateTexture(_texture, IntPtr.Zero, GetCanvasPointer(), TextureWidth * 4);
             Render.RenderCopy(_renderer, _texture, IntPtr.Zero, IntPtr.Zero);
             Render.RenderPresent(_renderer);
@@ -279,7 +304,7 @@ namespace DotSDL.Graphics {
         /// </summary>
         /// <param name="canvas">The active canvas for the window.</param>
         protected virtual void OnDraw(ref Canvas canvas) { }
-        
+
         /// <summary>
         /// Called before the window is shown.
         /// </summary>
@@ -305,6 +330,15 @@ namespace DotSDL.Graphics {
         /// Called every time the application logic update runs.
         /// </summary>
         protected virtual void OnUpdate() { }
+
+        /// <summary>
+        /// Sets the scaling/filter quality. This is set globally within SDL, so
+        /// for correctness sake it should be called before every texture is created.
+        /// </summary>
+        /// <param name="quality"></param>
+        private void SetScalingQuality(ScalingQuality quality) {
+            Hints.SetHint(Hints.RenderScaleQuality, quality.ToString());
+        }
 
         /// <summary>
         /// Displays the window and begins executing code that's associated with it.
