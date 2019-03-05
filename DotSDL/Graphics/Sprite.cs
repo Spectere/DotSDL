@@ -8,7 +8,13 @@ namespace DotSDL.Graphics {
         /// <summary>
         /// The position on the screen where the <see cref="Sprite"/> should be drawn.
         /// </summary>
-        public Vector2 Position { get; set; }
+        public Point Position { get; set; }
+
+        /// <summary>
+        /// The angle that the sprite is drawn, in degrees. Incrementing this will rotate the
+        /// sprite clockwise.
+        /// </summary>
+        public float Rotation { get; set; }
 
         /// <summary>
         /// The scale of the <see cref="Sprite"/>. 1.0f is 100%.
@@ -16,15 +22,21 @@ namespace DotSDL.Graphics {
         public Vector2 Scale { get; set; }
 
         /// <summary>
-        /// The order in which the sprite is drawn. Lower numbered <see cref="Sprite"/> instances are drawn first
-        /// and will appear on the bottom.
+        /// Determines the method that will be used to scale this sprite when it is plotted to the
+        /// screen.
         /// </summary>
-        public int ZOrder { get; set; }
+        public ScalingQuality ScalingQuality { get; set; }
 
         /// <summary>
         /// <c>true</c> if the sprite should be drawn to the screen, otherwise <c>false</c>.
         /// </summary>
         public bool Shown { get; set; }
+
+        /// <summary>
+        /// The order in which the sprite is drawn. Lower numbered <see cref="Sprite"/> instances are drawn first
+        /// and will appear on the bottom.
+        /// </summary>
+        public int ZOrder { get; set; }
 
         /// <summary>
         /// Initializes a new <see cref="Sprite"/>.

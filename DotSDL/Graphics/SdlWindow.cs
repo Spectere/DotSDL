@@ -3,6 +3,7 @@ using DotSDL.Input;
 using DotSDL.Interop.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DotSDL.Graphics {
     /// <summary>
@@ -172,6 +173,7 @@ namespace DotSDL.Graphics {
 
             Render.UpdateTexture(_texture, IntPtr.Zero, GetCanvasPointer(), TextureWidth * 4);
             Render.RenderCopy(_renderer, _texture, IntPtr.Zero, IntPtr.Zero);
+            if(Sprites.Count > 0) DrawSprites();
             Render.RenderPresent(_renderer);
         }
 
@@ -202,10 +204,13 @@ namespace DotSDL.Graphics {
 
         /// <summary>
         /// Plots the sprites stored in <see cref="Sprites"/> to the screen. Please note that this method is called by
-        /// DotSDL's drawing routines and does not need to be called manually. You usually do not need to override this
-        /// method.
+        /// DotSDL's drawing routines and does not need to be called manually. Additionally, this method will not be
+        /// called if there are no sprites defined. You usually do not need to override this method.
         /// </summary>
         public virtual void DrawSprites() {
+            foreach(var sprite in Sprites.Where(e => e.Shown).OrderBy(e => e.ZOrder)) {
+                SetScalingQuality(sprite.ScalingQuality);
+            }
         }
 
         /// <summary>
