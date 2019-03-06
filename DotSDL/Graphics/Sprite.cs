@@ -14,7 +14,18 @@ namespace DotSDL.Graphics {
         /// The angle that the sprite is drawn, in degrees. Incrementing this will rotate the
         /// sprite clockwise.
         /// </summary>
-        public float Rotation { get; set; }
+        public double Rotation { get; set; }
+
+        /// <summary>
+        /// The point around which the sprite will be rotated. By default, this will be set to
+        /// the center of the sprite.
+        /// </summary>
+        public Point RotationCenter { get; set; }
+
+        /// <summary>
+        /// Indicates which axes this sprice should be flipped across, if any.
+        /// </summary>
+        public FlipDirection Flip { get; set; }
 
         /// <summary>
         /// The scale of the <see cref="Sprite"/>. 1.0f is 100%.
@@ -58,9 +69,9 @@ namespace DotSDL.Graphics {
         /// </summary>
         /// <param name="width">The width of the new <see cref="Sprite"/>.</param>
         /// <param name="height">The height of the new <see cref="Sprite"/>.</param>
-        /// <param name="zorder">A value indicating the order in which this <see cref="Sprite"/> is drawn. Higher numbered
+        /// <param name="zOrder">A value indicating the order in which this <see cref="Sprite"/> is drawn. Higher numbered
         /// sprites are drawn on top of other sprites and, thus, will appear above them.</param>
-        public Sprite(int width, int height, int zorder) : this(width, height, Point.Zero, Vector2.One, zorder) { }
+        public Sprite(int width, int height, int zOrder) : this(width, height, Point.Zero, Vector2.One, zOrder) { }
 
         /// <summary>
         /// Initializes a new <see cref="Sprite"/>.
@@ -77,9 +88,9 @@ namespace DotSDL.Graphics {
         /// <param name="width">The width of the new <see cref="Sprite"/>.</param>
         /// <param name="height">The height of the new <see cref="Sprite"/>.</param>
         /// <param name="position">A <see cref="Vector2"/> representing the initial position of the new <see cref="Sprite"/>.</param>
-        /// <param name="zorder">A value indicating the order in which this <see cref="Sprite"/> is drawn. Higher numbered
+        /// <param name="zOrder">A value indicating the order in which this <see cref="Sprite"/> is drawn. Higher numbered
         /// sprites are drawn on top of other sprites and, thus, will appear above them.</param>
-        public Sprite(int width, int height, Point position, int zorder) : this(width, height, position, Vector2.One, 0) { }
+        public Sprite(int width, int height, Point position, int zOrder) : this(width, height, position, Vector2.One, 0) { }
 
         /// <summary>
         /// Initializes a new <see cref="Sprite"/>.
@@ -88,13 +99,29 @@ namespace DotSDL.Graphics {
         /// <param name="height">The height of the new <see cref="Sprite"/>.</param>
         /// <param name="position">A <see cref="Vector2"/> representing the initial position of the new <see cref="Sprite"/>.</param>
         /// <param name="scale">A <see cref="Vector2"/> representing the initial scaling of the new <see cref="Sprite"/>.</param>
-        /// <param name="zorder">A value indicating the order in which this <see cref="Sprite"/> is drawn. Higher numbered
+        /// <param name="zOrder">A value indicating the order in which this <see cref="Sprite"/> is drawn. Higher numbered
         /// sprites are drawn on top of other sprites and, thus, will appear above them.</param>
-        public Sprite(int width, int height, Point position, Vector2 scale, int zorder) : base(width, height) {
+        public Sprite(int width, int height, Point position, Vector2 scale, int zOrder)
+            : this(width, height, position, new Rectangle(0, 0, width, height), scale, zOrder) { }
+
+        /// <summary>
+        /// Initializes a new <see cref="Sprite"/>.
+        /// </summary>
+        /// <param name="width">The width of the new <see cref="Sprite"/>.</param>
+        /// <param name="height">The height of the new <see cref="Sprite"/>.</param>
+        /// <param name="position">A <see cref="Vector2"/> representing the initial position of the new <see cref="Sprite"/>.</param>
+        /// <param name="scale">A <see cref="Vector2"/> representing the initial scaling of the new <see cref="Sprite"/>.</param>
+        /// <param name="clipping">A rectangle specifying which part of this <see cref="Sprite"/> should be drawn.</param>
+        /// <param name="zOrder">A value indicating the order in which this <see cref="Sprite"/> is drawn. Higher numbered
+        /// sprites are drawn on top of other sprites and, thus, will appear above them.</param>
+        public Sprite(int width, int height, Point position, Rectangle clipping, Vector2 scale, int zOrder) : base(width, height, clipping) {
             Position = position;
             Scale    = scale;
-            ZOrder   = zorder;
+            ZOrder   = zOrder;
             Shown    = false;
+
+            RotationCenter.X = clipping.Size.X / 2;
+            RotationCenter.Y = clipping.Size.Y / 2;
         }
     }
 }

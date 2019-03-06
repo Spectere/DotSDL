@@ -5,16 +5,19 @@ namespace DotSDL.Graphics {
     /// Represents a rectangle in 2D space.
     /// </summary>
     public class Rectangle {
-        private Rect.SdlRect _rect;
+        /// <summary>
+        /// The base <see cref="SdlRect"/> structure that this class wraps around.
+        /// </summary>
+        internal Rect.SdlRect SdlRect;
 
         /// <summary>
         /// A <see cref="Point"/> representing the position of the <see cref="Rectangle"/>.
         /// </summary>
         public Point Position {
-            get => new Point(_rect.X, _rect.Y);
+            get => new Point(SdlRect.X, SdlRect.Y);
             set {
-                _rect.X = value.X;
-                _rect.Y = value.Y;
+                SdlRect.X = value.X;
+                SdlRect.Y = value.Y;
             }
         }
 
@@ -22,10 +25,10 @@ namespace DotSDL.Graphics {
         /// A <see cref="Point"/> representing the size of the <see cref="Rectangle"/>.
         /// </summary>
         public Point Size {
-            get => new Point(_rect.W, _rect.H);
+            get => new Point(SdlRect.W, SdlRect.H);
             set {
-                _rect.W = value.X;
-                _rect.H = value.Y;
+                SdlRect.W = value.X;
+                SdlRect.H = value.Y;
             }
         }
 
@@ -44,7 +47,7 @@ namespace DotSDL.Graphics {
         /// <param name="width">The width of the new <see cref="Rectangle"/>.</param>
         /// <param name="height">The height of the new <see cref="Rectangle"/>.</param>
         public Rectangle(int x, int y, int width, int height) {
-            _rect = new Rect.SdlRect {
+            SdlRect = new Rect.SdlRect {
                 X = x,
                 Y = y,
                 W = width,

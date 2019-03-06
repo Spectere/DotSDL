@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using DotSDL.Graphics;
 
 namespace DotSDL.Interop.Core {
     /// <summary>
@@ -22,21 +23,6 @@ namespace DotSDL.Interop.Core {
 
             /// <summary>The renderer supports rendering to a texture.</summary>
             TargetTexture = 0x00000008
-        }
-
-        /// <summary>
-        /// An enumeration of flags that can be used in the flip parameter for
-        /// <see cref="RenderCopyEx"/>.
-        /// </summary>
-        internal enum RendererFlip : uint {
-            /// <summary>Do not flip.</summary>
-            None,
-
-            /// <summary>Flip horizontally.</summary>
-            Horizontal,
-
-            /// <summary>Flip vertically.</summary>
-            Vertical
         }
 
         /// <summary>
@@ -79,7 +65,7 @@ namespace DotSDL.Interop.Core {
 
         /// <summary>
         /// Clear the current rendering target with the drawing color.
-        /// 
+        ///
         /// This function clears the entire rendering target, ignoring the viewport and the clip rectangle.
         /// </summary>
         /// <param name="renderer">The renderer to clear.</param>
@@ -122,9 +108,7 @@ namespace DotSDL.Interop.Core {
         /// <param name="flip">A <see cref="RendererFlip"/> value indicating which flipping actions should be performed.</param>
         /// <returns>0 on success, or -1 on error.</returns>
         [DllImport(Meta.CoreLib, EntryPoint = "SDL_RenderCopyEx", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int RenderCopyEx(
-            IntPtr renderer, IntPtr texture, Rect.SdlRect srcRect, Rect.SdlRect dstRect, double angle, Rect.SdlPoint center,
-            RendererFlip flip);
+        internal static extern int RenderCopyEx(IntPtr renderer, IntPtr texture, Rect.SdlRect srcRect, Rect.SdlRect dstRect, double angle, Rect.SdlPoint center, FlipDirection flip);
 
         /// <summary>
         /// Copy a portion of the texture to the current rendering target.
@@ -139,9 +123,7 @@ namespace DotSDL.Interop.Core {
         /// <param name="flip">A <see cref="RendererFlip"/> value indicating which flipping actions should be performed.</param>
         /// <returns>0 on success, or -1 on error.</returns>
         [DllImport(Meta.CoreLib, EntryPoint = "SDL_RenderCopyEx", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int RenderCopyEx(
-            IntPtr renderer, IntPtr texture, IntPtr srcRect, IntPtr dstRect, double angle, Rect.SdlPoint center,
-            RendererFlip flip);
+        internal static extern int RenderCopyEx(IntPtr renderer, IntPtr texture, IntPtr srcRect, IntPtr dstRect, double angle, Rect.SdlPoint center, FlipDirection flip);
 
         /// <summary>
         /// Update the screen with the rendering performed.

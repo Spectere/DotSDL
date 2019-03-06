@@ -207,9 +207,29 @@ namespace DotSDL.Graphics {
         /// DotSDL's drawing routines and does not need to be called manually. Additionally, this method will not be
         /// called if there are no sprites defined. You usually do not need to override this method.
         /// </summary>
-        public virtual void DrawSprites() {
+        public virtual unsafe void DrawSprites() {
             foreach(var sprite in Sprites.Where(e => e.Shown).OrderBy(e => e.ZOrder)) {
                 SetScalingQuality(sprite.ScalingQuality);
+
+                var srcRect = sprite.Clipping.SdlRect;
+                var drawSize = new Point(
+                    (int)(srcRect.W * sprite.Scale.X),
+                    (int)(srcRect.H * sprite.Scale.Y)
+                );
+                var destRect = new Rectangle(sprite.Position, drawSize).SdlRect;
+
+                var srcRectPtr = new IntPtr(&srcRect);
+                var destRectPtr = new IntPtr(&destRect);
+
+                Render.RenderCopyEx(
+                    renderer: _renderer,
+                    texture: _texture,
+                    srcRect: srcRectPtr,
+                    dstRect: destRectPtr,
+                    angle: sprite.Rotation,
+                    center: sprite.Position.SdlPoint,
+                    flip: sprite.Flip
+                );
             }
         }
 

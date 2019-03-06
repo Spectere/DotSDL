@@ -1,5 +1,6 @@
 ﻿using DotSDL.Events;
 using DotSDL.Graphics;
+using DotSDL.Input.Keyboard;
 
 namespace Sample.Sprites {
     public class Window : SdlWindow {
@@ -11,15 +12,24 @@ namespace Sample.Sprites {
             KeyReleased += OnKeyReleased;
         }
 
+        private void GenerateBackground(ref Color[] pixels) {
+            for(var i = 0; i < pixels.Length; i++) {
+                pixels[i].R = 128;
+                pixels[i].G = 64;
+                pixels[i].B = 32;
+            }
+        }
+
         protected override void OnDraw(ref Canvas canvas) {
+            GenerateBackground(ref canvas.Pixels);
         }
 
         private void OnKeyPressed(object sender, KeyboardEvent e) {
-            throw new System.NotImplementedException();
+            if(e.Keycode == Keycode.Escape)
+                Stop();
         }
 
         private void OnKeyReleased(object sender, KeyboardEvent e) {
-            throw new System.NotImplementedException();
         }
 
         protected override void OnUpdate() {

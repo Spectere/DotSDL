@@ -50,7 +50,8 @@ namespace DotSDL.Graphics {
         /// </summary>
         /// <param name="textureWidth">The width of the <see cref="Canvas"/>.</param>
         /// <param name="textureHeight">The height of the <see cref="Canvas"/>.</param>
-        internal Canvas(int textureWidth, int textureHeight) : this(textureWidth, textureHeight, new Rectangle(0, 0, textureWidth, textureHeight)) { }
+        internal Canvas(int textureWidth, int textureHeight)
+            : this(textureWidth, textureHeight, new Rectangle(0, 0, textureWidth, textureHeight)) { }
 
         /// <summary>
         /// Initializes a new <see cref="Canvas"/>.
