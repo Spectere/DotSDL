@@ -23,6 +23,11 @@ namespace DotSDL.Events {
             return null;
         }
 
+        /// <summary>
+        /// Converts an <see cref="SdlEvents.SdlKeyboardEvent"/> to a <see cref="KeyboardEvent"/>.
+        /// </summary>
+        /// <param name="e">The <see cref="SdlEvents.SdlKeyboardEvent"/> to convert.</param>
+        /// <returns>The resulting <see cref="KeyboardEvent"/>.</returns>
         private static KeyboardEvent ConvertKeyboardEvent(SdlEvents.SdlKeyboardEvent e) {
             return new KeyboardEvent {
                 Timestamp = e.Timestamp,
@@ -36,10 +41,10 @@ namespace DotSDL.Events {
         }
 
         /// <summary>
-        /// 
+        /// Converts an <see cref="SdlEvents.SdlWindowEvent"/> to a <see cref="WindowEvent"/>.
         /// </summary>
-        /// <param name="e"></param>
-        /// <returns></returns>
+        /// <param name="e">The <see cref="SdlEvents.SdlWindowEvent"/> to convert.</param>
+        /// <returns>The resulting <see cref="WindowEvent"/>.</returns>
         private static WindowEvent ConvertWindowEvent(SdlEvents.SdlWindowEvent e) {
             return new WindowEvent {
                 Timestamp = e.Timestamp,
