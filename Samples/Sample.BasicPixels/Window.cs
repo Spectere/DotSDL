@@ -8,10 +8,11 @@ namespace Sample.BasicPixels {
             KeyPressed += Window_KeyPressed;
         }
 
-        private void DrawBackground(ref Color[] pixels) {
+        private void DrawBackground() {
             byte d = 0;
             var dec = false;
 
+            var pixels = Background.Pixels;
             for(var i = 0; i < pixels.Length; i++) {
                 pixels[i].A = 255;
                 pixels[i].R = 0;
@@ -44,20 +45,20 @@ namespace Sample.BasicPixels {
             }
         }
 
-        protected override void OnDraw(ref Canvas canvas) {
+        protected override void OnDraw() {
             const byte min = 128, max = 255;
             const int offsetX = 96, offsetY = 80;
 
-            DrawBackground(ref canvas.Pixels);
+            DrawBackground();
             var color = RandomColor(min, max);
 
             // D
-            Plotting.DrawLines(ref canvas, color,
+            Plotting.DrawLines(Background, color,
                 new Line { Start = new Point { X = offsetX, Y = offsetY + 96 }, End = new Point { X = offsetX, Y = offsetY } },
                 new Line { Start = new Point { X = offsetX, Y = offsetY }, End = new Point { X = offsetX + 10, Y = offsetY } },
                 new Line { Start = new Point { X = offsetX, Y = offsetY + 96 }, End = new Point { X = offsetX + 10, Y = offsetY + 96 } }
             );
-            Plotting.DrawBezier(ref canvas, color, 100,
+            Plotting.DrawBezier(Background, color, 100,
                 new Point { X = offsetX + 8, Y = offsetY },
                 new Point { X = offsetX + 48, Y = offsetY },
                 new Point { X = offsetX + 48, Y = offsetY + 96 },
@@ -65,16 +66,16 @@ namespace Sample.BasicPixels {
             );
 
             // o
-            Plotting.DrawEllipse(ref canvas, color, new Point { X = offsetX + 76, Y = offsetY + 72 }, 12, 24);
+            Plotting.DrawEllipse(Background, color, new Point { X = offsetX + 76, Y = offsetY + 72 }, 12, 24);
 
             // t
-            Plotting.DrawLines(ref canvas, color,
+            Plotting.DrawLines(Background, color,
                 new Line { Start = new Point { X = offsetX + 104 + 12, Y = offsetY + 24 }, End = new Point { X = offsetX + 104 + 12, Y = offsetY + 96 } },
                 new Line { Start = new Point { X = offsetX + 104, Y = offsetY + 48 }, End = new Point { X = offsetX + 104 + 24, Y = offsetY + 48 } }
             );
 
             // S
-            Plotting.DrawBezier(ref canvas, color, 100,
+            Plotting.DrawBezier(Background, color, 100,
                 new Point { X = offsetX + 144 + 48, Y = offsetY },
                 new Point { X = offsetX + 144 - 24, Y = offsetY },
                 new Point { X = offsetX + 144, Y = offsetY + 48 },
@@ -84,12 +85,12 @@ namespace Sample.BasicPixels {
             );
 
             // D
-            Plotting.DrawLines(ref canvas, color,
+            Plotting.DrawLines(Background, color,
                 new Line { Start = new Point { X = offsetX + 208, Y = offsetY + 96 }, End = new Point { X = offsetX + 208, Y = offsetY } },
                 new Line { Start = new Point { X = offsetX + 208, Y = offsetY }, End = new Point { X = offsetX + 208 + 10, Y = offsetY } },
                 new Line { Start = new Point { X = offsetX + 208, Y = offsetY + 96 }, End = new Point { X = offsetX + 208 + 10, Y = offsetY + 96 } }
             );
-            Plotting.DrawBezier(ref canvas, color, 100,
+            Plotting.DrawBezier(Background, color, 100,
                 new Point { X = offsetX + 208 + 8, Y = offsetY },
                 new Point { X = offsetX + 208 + 48, Y = offsetY },
                 new Point { X = offsetX + 208 + 48, Y = offsetY + 96 },
@@ -97,7 +98,7 @@ namespace Sample.BasicPixels {
             );
 
             // L
-            Plotting.DrawLines(ref canvas, color,
+            Plotting.DrawLines(Background, color,
                 new Line { Start = new Point { X = offsetX + 272, Y = offsetY }, End = new Point { X = offsetX + 272, Y = offsetY + 96 } },
                 new Line { Start = new Point { X = offsetX + 272, Y = offsetY + 96 }, End = new Point { X = offsetX + 272 + 48, Y = offsetY + 96 } }
             );

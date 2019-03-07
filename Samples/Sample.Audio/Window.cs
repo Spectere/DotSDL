@@ -54,7 +54,7 @@ namespace Sample.Audio {
                 e.Samples[Channel.Mono][i] = Math.Sin(_time++ * t);
         }
 
-        private void DrawGlyph(ref Canvas canvas, char ch, int xPos, Color c) {
+        private void DrawGlyph(Canvas canvas, char ch, int xPos, Color c) {
             var xPixel = DrawX + SpacingX * xPos;
             var glyph = Font.Glyph[ch];
 
@@ -68,44 +68,43 @@ namespace Sample.Audio {
             }
         }
 
-        protected override void OnDraw(ref Canvas canvas) {
+        protected override void OnDraw() {
             // Clear canvas.
-            for(var i = 0; i < canvas.Pixels.Length; i++)
-                canvas.Pixels[i].R = canvas.Pixels[i].G = canvas.Pixels[i].B = 0;
+            for(var i = 0; i < Background.Pixels.Length; i++)
+                Background.Pixels[i].R = Background.Pixels[i].G = Background.Pixels[i].B = 0;
 
             // hz Text
-            DrawGlyph(ref canvas, 'h', 5, _textColor);
-            DrawGlyph(ref canvas, 'z', 6, _textColor);
+            DrawGlyph(Background, 'h', 5, _textColor);
+            DrawGlyph(Background, 'z', 6, _textColor);
 
             // Number
             var freqText = _freq.ToString();
             var textPos = 5 - freqText.Length;
             for(var x = 0; x < freqText.Length; x++)
-                DrawGlyph(ref canvas, freqText[x], textPos + x, _textColor);
+                DrawGlyph(Background, freqText[x], textPos + x, _textColor);
 
             // Background/highlighting.
             var component = 0;
 
-            for(var i = 0; i < canvas.Pixels.Length; i++) {
-                canvas.Pixels[i].R += OffColor;
-                canvas.Pixels[i].G += OffColor;
-                canvas.Pixels[i].B += OffColor;
+            for(var i = 0; i < Background.Pixels.Length; i++) {
+                Background.Pixels[i].R += OffColor;
+                Background.Pixels[i].G += OffColor;
+                Background.Pixels[i].B += OffColor;
                 switch(component) {
                     default:
-                        canvas.Pixels[i].R += OnDelta;
+                        Background.Pixels[i].R += OnDelta;
                         break;
                     case 1:
-                        canvas.Pixels[i].G += OnDelta;
+                        Background.Pixels[i].G += OnDelta;
                         break;
                     case 2:
-                        canvas.Pixels[i].B += OnDelta;
+                        Background.Pixels[i].B += OnDelta;
                         break;
                 }
                 component = component >= 2 ? 0 : ++component;
             }
 
-
-            base.OnDraw(ref canvas);
+            base.OnDraw();
         }
 
         protected override void OnUpdate() {

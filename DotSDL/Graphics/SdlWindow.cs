@@ -17,7 +17,8 @@ namespace DotSDL.Graphics {
         private readonly IntPtr _renderer;
         private readonly IntPtr _texture;
 
-        private Canvas _canvas;
+        public readonly Canvas Background;
+
         private bool _running;
 
         private uint _nextVideoUpdate;
@@ -31,14 +32,14 @@ namespace DotSDL.Graphics {
 
         public ResourceType ResourceType => ResourceType.Window;
 
-        /// <summary>The width of the user window.</summary>
+        /// <summary>Gets the width of this <see cref="SdlWindow"/>.</summary>
         public int WindowWidth { get; }
-        /// <summary>The height of the user window.</summary>
+        /// <summary>Gets the height of this <see cref="SdlWindow"/>.</summary>
         public int WindowHeight { get; }
 
-        /// <summary>The width of the internal texture used by this <see cref="SdlWindow"/>.</summary>
+        /// <summary>Gets the width of the rendering target used by this <see cref="SdlWindow"/>.</summary>
         public int TextureWidth { get; }
-        /// <summary>The height of the internal texture used by this <see cref="SdlWindow"/>.</summary>
+        /// <summary>Gets the height of the rendering target used by this <see cref="SdlWindow"/>.</summary>
         public int TextureHeight { get; }
 
         /// <summary>The amount of time, in milliseconds, from when the application was started.</summary>
@@ -143,7 +144,7 @@ namespace DotSDL.Graphics {
             _texture = Render.CreateTexture(_renderer, Pixels.PixelFormatArgb8888, Render.TextureAccess.Streaming, textureWidth, textureHeight);
             SetScalingQuality(ScalingQuality.Nearest);
 
-            _canvas = new Canvas(textureWidth, textureHeight);
+            Background = new Canvas(textureWidth, textureHeight);
 
             WindowWidth = windowWidth;
             WindowHeight = windowHeight;
@@ -170,6 +171,8 @@ namespace DotSDL.Graphics {
         /// </summary>
         private void BaseDraw() {
             if(IsDestroyed || IsMinimized) return;
+
+            OnDraw();
 
             Render.UpdateTexture(_texture, IntPtr.Zero, GetCanvasPointer(), TextureWidth * 4);
             Render.RenderCopy(_renderer, _texture, IntPtr.Zero, IntPtr.Zero);
@@ -241,9 +244,7 @@ namespace DotSDL.Graphics {
         /// crash with a segmentation fault. When in doubt, override <see cref="OnDraw"/> instead!</remarks>
         /// <returns>An <see cref="IntPtr"/> containing the contents of the window's background.</returns>
         public unsafe virtual IntPtr GetCanvasPointer() {
-            OnDraw(ref _canvas); // Call the overridden Draw function.
-
-            fixed(void* pixelsPtr = _canvas.Pixels) {
+            fixed(void* pixelsPtr = Background.Pixels) {
                 return (IntPtr)pixelsPtr;
             }
         }
@@ -327,8 +328,7 @@ namespace DotSDL.Graphics {
         /// <summary>
         /// Called every time the window is drawn to.
         /// </summary>
-        /// <param name="canvas">The active canvas for the window.</param>
-        protected virtual void OnDraw(ref Canvas canvas) { }
+        protected virtual void OnDraw() { }
 
         /// <summary>
         /// Called before the window is shown.

@@ -10,18 +10,23 @@ namespace Sample.Sprites {
                                         256, 196) {
             KeyPressed += OnKeyPressed;
             KeyReleased += OnKeyReleased;
+
+            Background.Width = 1024;
+            Background.Height = 1024;
+
+            GenerateBackground();
         }
 
-        private void GenerateBackground(ref Color[] pixels) {
-            for(var i = 0; i < pixels.Length; i++) {
-                pixels[i].R = 128;
-                pixels[i].G = 64;
-                pixels[i].B = 32;
+        private void GenerateBackground() {
+            // Draw colored, diagonal strips across the entire background canvas.
+            for(var i = 0; i < Background.Width; i++) {
+                Background.Pixels[i].R = 128;
+                Background.Pixels[i].G = 64;
+                Background.Pixels[i].B = 32;
             }
         }
 
-        protected override void OnDraw(ref Canvas canvas) {
-            GenerateBackground(ref canvas.Pixels);
+        protected override void OnDraw() {
         }
 
         private void OnKeyPressed(object sender, KeyboardEvent e) {
