@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DotSDL.Interop.Core;
+using SdlPixels = DotSDL.Interop.Core.Pixels;
+using System;
 
 namespace DotSDL.Graphics {
     /// <summary>
@@ -7,6 +9,13 @@ namespace DotSDL.Graphics {
     /// </summary>
     public class Canvas {
         private int _width, _height;
+        private bool _hasTexture;
+
+        /// <summary>
+        /// The SDL_Texture that this <see cref="Canvas"/> maintains.
+        /// </summary>
+        internal IntPtr Renderer;
+        internal IntPtr Texture;
 
         /// <summary>
         /// The raw pixels in the <see cref="Canvas"/>.
@@ -69,6 +78,27 @@ namespace DotSDL.Graphics {
         }
 
         /// <summary>
+        /// Creates a texture or recreates it if it already exists.
+        /// </summary>
+        internal void CreateTexture() {
+            if(Renderer == IntPtr.Zero) return;
+
+            DestroyTexture();
+            Texture = Render.CreateTexture(Renderer, SdlPixels.PixelFormatArgb8888, Render.TextureAccess.Streaming, Width, Height);
+            _hasTexture = true;
+        }
+
+        /// <summary>
+        /// Destroys the texture associated with this <see cref="Sprite"/>.
+        /// </summary>
+        internal void DestroyTexture() {
+            if(!_hasTexture) return;
+
+            Render.DestroyTexture(Texture);
+            _hasTexture = false;
+        }
+
+        /// <summary>
         /// Retrieves an array index on the <see cref="Canvas"/>.
         /// </summary>
         /// <param name="x">The Y coordinate of the desired location on the <see cref="Canvas"/>.</param>
@@ -93,6 +123,9 @@ namespace DotSDL.Graphics {
         /// </summary>
         protected void Resize() {
             Pixels = new Color[Width * Height];
+
+            if(_hasTexture)
+                CreateTexture();
         }
     }
 }

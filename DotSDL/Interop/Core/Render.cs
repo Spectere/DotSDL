@@ -64,6 +64,20 @@ namespace DotSDL.Interop.Core {
         internal static extern IntPtr CreateTexture(IntPtr renderer, uint format, TextureAccess access, int w, int h);
 
         /// <summary>
+        /// Destroys a rendering context for a window and frees all associated textures.
+        /// </summary>
+        /// <param name="texture">The rendering context to destroy.</param>
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_DestroyRenderer", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void DestroyRenderer(IntPtr texture);
+
+        /// <summary>
+        /// Destroys a texture.
+        /// </summary>
+        /// <param name="texture">The texture to destroy.</param>
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_DestroyTexture", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void DestroyTexture(IntPtr texture);
+
+        /// <summary>
         /// Clear the current rendering target with the drawing color.
         ///
         /// This function clears the entire rendering target, ignoring the viewport and the clip rectangle.
@@ -131,6 +145,16 @@ namespace DotSDL.Interop.Core {
         /// <param name="renderer">The renderer to update.</param>
         [DllImport(Meta.CoreLib, EntryPoint = "SDL_RenderPresent", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void RenderPresent(IntPtr renderer);
+
+        /// <summary>
+        /// Sets a texture as the current rendering target.
+        /// </summary>
+        /// <param name="renderer">The rendering context.</param>
+        /// <param name="texture">The targeted texture, or <see cref="IntPtr.Zero"/> for the default render target.
+        /// If a texture is used, it must have been created with the <see cref="TextureAccess.Target"/> flag.</param>
+        /// <returns></returns>
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_SetRenderTarget", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int SetRenderTarget(IntPtr renderer, IntPtr texture);
 
         /// <summary>
         /// Update the given texture rectangle with new pixel data.
