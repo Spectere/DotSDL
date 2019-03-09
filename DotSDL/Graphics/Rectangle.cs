@@ -52,15 +52,8 @@ namespace DotSDL.Graphics {
         /// <param name="width">The width of the new <see cref="Rectangle"/>.</param>
         /// <param name="height">The height of the new <see cref="Rectangle"/>.</param>
         public Rectangle(int x, int y, int width, int height) {
-            _position = new Point {
-                X = x,
-                Y = y,
-            };
-
-            _size = new Point {
-                X = width,
-                Y = height
-            };
+            _position = new Point(x, y);
+            _size = new Point(width, height);
         }
     }
 }

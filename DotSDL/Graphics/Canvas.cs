@@ -16,6 +16,12 @@ namespace DotSDL.Graphics {
         protected bool HasTexture { get; set; }
 
         /// <summary>
+        /// The scaling type that should be used to draw this <see cref="Canvas"/>. This field should not be
+        /// manipulated directly--use <see cref="ScalingQuality"/> instead.
+        /// </summary>
+        protected ScalingQuality ScalingQualityValue;
+
+        /// <summary>
         /// The SDL_Texture that this <see cref="Canvas"/> maintains.
         /// </summary>
         internal IntPtr Renderer;
@@ -59,6 +65,20 @@ namespace DotSDL.Graphics {
 
                 _height = value;
                 Resize();
+            }
+        }
+
+        /// <summary>
+        /// Determines the method that will be used to scale this sprite when it is plotted to the
+        /// screen.
+        /// </summary>
+        public virtual ScalingQuality ScalingQuality {
+            get => ScalingQualityValue;
+            set {
+                ScalingQualityValue = value;
+
+                if(HasTexture)
+                    CreateTexture();
             }
         }
 
@@ -114,6 +134,7 @@ namespace DotSDL.Graphics {
             if(Renderer == IntPtr.Zero) return;
 
             DestroyTexture();
+            Hints.SetHint(Hints.RenderScaleQuality, ScalingQuality.ToString());
             Texture = Render.CreateTexture(Renderer, SdlPixels.PixelFormatArgb8888, textureAccess, Width, Height);
             HasTexture = true;
 

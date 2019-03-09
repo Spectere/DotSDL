@@ -2,6 +2,7 @@
 using DotSDL.Graphics;
 using DotSDL.Input.Keyboard;
 using System;
+using System.Numerics;
 
 namespace Sample.Sprites {
     public class Window : SdlWindow {
@@ -10,7 +11,7 @@ namespace Sample.Sprites {
         private Point _player1Delta, _player2Delta;
 
         public Window(int scale) : base("Sprites Test",
-                                        new Point { X = WindowPosUndefined, Y = WindowPosUndefined },
+                                        new Point(WindowPosUndefined, WindowPosUndefined),
                                         256 * scale, 196 * scale,
                                         256, 196) {
             KeyPressed += OnKeyPressed;
@@ -86,6 +87,11 @@ namespace Sample.Sprites {
             _player2.Position.X = 96;
             _player2.Position.Y = 24;
             _player2Delta = new Point();
+
+            _player1.Scale.X = 1.5f;
+
+            _player2.ScalingQuality = ScalingQuality.Linear;
+            _player2.Scale.Y = 2.0f;
 
             Sprites.Add(_player1);
             Sprites.Add(_player2);

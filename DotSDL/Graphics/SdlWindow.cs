@@ -2,9 +2,7 @@
 using DotSDL.Input;
 using DotSDL.Interop.Core;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace DotSDL.Graphics {
     /// <summary>
@@ -16,7 +14,8 @@ namespace DotSDL.Graphics {
 
         private readonly IntPtr _window;
         private readonly IntPtr _renderer;
-        private readonly IntPtr _texture;
+        private IntPtr _texture;
+        private bool _hasTexture;
 
         public readonly Canvas Background;
 
@@ -24,6 +23,8 @@ namespace DotSDL.Graphics {
 
         private uint _nextVideoUpdate;
         private uint _nextGameUpdate;
+
+        private ScalingQuality _scalingQuality = ScalingQuality.Nearest;
 
         /// <summary><c>true</c> if this <see cref="SdlWindow"/> instance has been destroyed, othersize <c>false</c>.</summary>
         public bool IsDestroyed { get; set; }
@@ -56,7 +57,7 @@ namespace DotSDL.Graphics {
         /// <summary>Indicates that the window manager should position the window. To place the window on a specific display, use the <see cref="WindowPosCenteredDisplay"/> function.</summary>
         public const int WindowPosUndefined = 0x1FFF0000;
 
-        /// <summary>Fired when the window's close button is clicked.</summary>
+        /// <summary>Fired when tboolhe window's close button is clicked.</summary>
         public event EventHandler<WindowEvent> Closed;
 
         /// <summary>Fired when a key is pressed.</summary>
@@ -70,6 +71,16 @@ namespace DotSDL.Graphics {
 
         /// <summary>Fired when the window is restored.</summary>
         public event EventHandler<WindowEvent> Restored;
+
+        public ScalingQuality ScalingQuality {
+            get => _scalingQuality;
+            set {
+                _scalingQuality = value;
+
+                if(_hasTexture)
+                    CreateTexture();
+            }
+        }
 
         /// <summary>
         /// Calculates a value that allows the window to be placed on a specific display, with its exact position determined by the window manager.
@@ -95,7 +106,7 @@ namespace DotSDL.Graphics {
         }
 
         /// <summary>
-        /// Creates a new <see cref="SdlWindow"/>.
+        /// Creates a new <see cref="SdlWindow"/>.readonly
         /// </summary>
         /// <param name="title">The text that is displayed on the window's title bar.</param>
         /// <param name="position">A <see cref="Point"/> representing the starting position of the window. The X and Y coordinates of the Point can be set to <see cref="WindowPosUndefined"/> or <see cref="WindowPosCentered"/>.</param>
@@ -140,19 +151,17 @@ namespace DotSDL.Graphics {
             _window = Video.CreateWindow(title, position.X, position.Y, windowWidth, windowHeight, Video.WindowFlags.Hidden);
             _renderer = Render.CreateRenderer(_window, -1, Render.RendererFlags.Accelerated);
 
-            // Everything should be kept as nearest *except* for the target texture.
-            SetScalingQuality(scalingQuality);
-            _texture = Render.CreateTexture(_renderer, Pixels.PixelFormatArgb8888, Render.TextureAccess.Target, textureWidth, textureHeight);
-            SetScalingQuality(ScalingQuality.Nearest);
-
-            Background = new Canvas(textureWidth, textureHeight) { Renderer = _renderer };
-            Background.CreateTexture();
-
             WindowWidth = windowWidth;
             WindowHeight = windowHeight;
 
             TextureWidth = textureWidth;
             TextureHeight = textureHeight;
+
+            ScalingQuality = scalingQuality;
+            CreateTexture();
+
+            Background = new Canvas(textureWidth, textureHeight) { Renderer = _renderer };
+            Background.CreateTexture();
 
             Sprites = new SpriteList(_renderer);
 
@@ -212,11 +221,31 @@ namespace DotSDL.Graphics {
         }
 
         /// <summary>
+        /// Creates the rendering target that all of the layers will be drawn to prior to rendering.
+        /// </summary>
+        private void CreateTexture() {
+            DestroyTexture();
+            Hints.SetHint(Hints.RenderScaleQuality, ScalingQuality.ToString());
+            _texture = Render.CreateTexture(_renderer, Pixels.PixelFormatArgb8888, Render.TextureAccess.Target, TextureWidth, TextureHeight);
+            _hasTexture = true;
+        }
+
+        /// <summary>
         /// Destroys this <see cref="SdlWindow"/>.
         /// </summary>
         public void DestroyObject() {
             Video.DestroyWindow(_window);
             IsDestroyed = true;
+        }
+
+        /// <summary>
+        /// Destroys the render target associated with this <see cref="SdlWindow"/>.
+        /// </summary>
+        private void DestroyTexture() {
+            if(!_hasTexture) return;
+
+            Render.DestroyTexture(_texture);
+            _hasTexture = false;
         }
 
         /// <summary>
@@ -227,8 +256,6 @@ namespace DotSDL.Graphics {
         public virtual void DrawSprites() {
             Render.SetRenderTarget(_renderer, _texture);
             foreach(var sprite in Sprites.Where(e => e.Shown).OrderBy(e => e.ZOrder)) {
-                SetScalingQuality(sprite.ScalingQuality);
-
                 var srcRect = sprite.Clipping.SdlRect;
                 var drawSize = new Point(
                     (int)(srcRect.W * sprite.Scale.X),
@@ -359,15 +386,6 @@ namespace DotSDL.Graphics {
         /// Called every time the application logic update runs.
         /// </summary>
         protected virtual void OnUpdate() { }
-
-        /// <summary>
-        /// Sets the scaling/filter quality. This is set globally within SDL, so
-        /// for correctness sake it should be called before every texture is created.
-        /// </summary>
-        /// <param name="quality"></param>
-        private void SetScalingQuality(ScalingQuality quality) {
-            Hints.SetHint(Hints.RenderScaleQuality, quality.ToString());
-        }
 
         /// <summary>
         /// Displays the window and begins executing code that's associated with it.
