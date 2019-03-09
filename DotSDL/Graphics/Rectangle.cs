@@ -5,19 +5,24 @@ namespace DotSDL.Graphics {
     /// Represents a rectangle in 2D space.
     /// </summary>
     public class Rectangle {
+        private readonly Point _position;
+        private readonly Point _size;
+
         /// <summary>
         /// The base <see cref="SdlRect"/> structure that this class wraps around.
         /// </summary>
-        internal Rect.SdlRect SdlRect;
+        internal Rect.SdlRect SdlRect => new Rect.SdlRect {
+                X = _position.X, Y = _position.Y, W = _size.X, H = _size.Y
+        };
 
         /// <summary>
         /// A <see cref="Point"/> representing the position of the <see cref="Rectangle"/>.
         /// </summary>
         public Point Position {
-            get => new Point(SdlRect.X, SdlRect.Y);
+            get => _position;
             set {
-                SdlRect.X = value.X;
-                SdlRect.Y = value.Y;
+                _position.X = value.X;
+                _position.Y = value.Y;
             }
         }
 
@@ -25,10 +30,10 @@ namespace DotSDL.Graphics {
         /// A <see cref="Point"/> representing the size of the <see cref="Rectangle"/>.
         /// </summary>
         public Point Size {
-            get => new Point(SdlRect.W, SdlRect.H);
+            get => _size;
             set {
-                SdlRect.W = value.X;
-                SdlRect.H = value.Y;
+                _size.X = value.X;
+                _size.Y = value.Y;
             }
         }
 
@@ -47,11 +52,14 @@ namespace DotSDL.Graphics {
         /// <param name="width">The width of the new <see cref="Rectangle"/>.</param>
         /// <param name="height">The height of the new <see cref="Rectangle"/>.</param>
         public Rectangle(int x, int y, int width, int height) {
-            SdlRect = new Rect.SdlRect {
+            _position = new Point {
                 X = x,
                 Y = y,
-                W = width,
-                H = height
+            };
+
+            _size = new Point {
+                X = width,
+                Y = height
             };
         }
     }
