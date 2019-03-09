@@ -1,4 +1,6 @@
-﻿using System.Numerics;
+﻿using DotSDL.Interop.Core;
+using SdlPixels = DotSDL.Interop.Core.Pixels;
+using System.Numerics;
 
 namespace DotSDL.Graphics {
     /// <summary>
@@ -120,8 +122,24 @@ namespace DotSDL.Graphics {
             ZOrder   = zOrder;
             Shown    = false;
 
-            RotationCenter.X = clipping.Size.X / 2;
-            RotationCenter.Y = clipping.Size.Y / 2;
+            RotationCenter = new Point(clipping.Size.X / 2, clipping.Size.Y / 2);
+        }
+
+        /// <summary>
+        /// Creates a texture or recreates it if it already exists.
+        /// </summary>
+        internal override void CreateTexture() {
+            CreateTexture(Render.TextureAccess.Static);
+        }
+
+        /// <summary>
+        /// Updates the texture associated with this <see cref="Sprite"/>. This function must be called when the
+        /// <see cref="Canvas.Pixels"/> array is changed after adding this sprite to the sprite list associated
+        /// with the application's <see cref="SdlWindow"/>.
+        /// </summary>
+        /// <returns><c>true</c> if the texture was successfully updated, otherwise <c>false</c>. This will return <c>false</c> if this <see cref="Sprite"/> hasn't been added to the sprite list.</returns>
+        public new bool UpdateTexture() {
+            return base.UpdateTexture();
         }
     }
 }

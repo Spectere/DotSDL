@@ -83,12 +83,13 @@ namespace DotSDL.Graphics {
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         /// <summary>
-        /// Creates a texture for a sprite prior to adding it to the list.
+        /// Creates a texture for a <see cref="Sprite"/> prior to adding it to the list.
         /// </summary>
-        /// <param name="sprite"></param>
+        /// <param name="sprite">The <see cref="Sprite"/> that needs to be initialized.</param>
         private void InitializeSprite(Canvas sprite) {
-            sprite.Texture = Render.CreateTexture(_renderer, Pixels.PixelFormatArgb8888, Render.TextureAccess.Static,
-                                                   sprite.Width, sprite.Height);
+            sprite.Renderer = _renderer;
+            sprite.CreateTexture();
+            sprite.UpdateTexture();
         }
 
         /// <summary>
