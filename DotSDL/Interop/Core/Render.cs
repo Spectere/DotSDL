@@ -152,9 +152,18 @@ namespace DotSDL.Interop.Core {
         /// <param name="renderer">The rendering context.</param>
         /// <param name="texture">The targeted texture, or <see cref="IntPtr.Zero"/> for the default render target.
         /// If a texture is used, it must have been created with the <see cref="TextureAccess.Target"/> flag.</param>
-        /// <returns></returns>
+        /// <returns>Returns 0 on success or a negative error code on failure.</returns>
         [DllImport(Meta.CoreLib, EntryPoint = "SDL_SetRenderTarget", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int SetRenderTarget(IntPtr renderer, IntPtr texture);
+
+        /// <summary>
+        /// Sets the blend mode for a texture, used by <see cref="RenderCopy(System.IntPtr,System.IntPtr,DotSDL.Interop.Core.Rect.SdlRect,DotSDL.Interop.Core.Rect.SdlRect)"/>.
+        /// </summary>
+        /// <param name="texture">The texture to update.</param>
+        /// <param name="blendMode">The <see cref="BlendMode"/> to use for texture blending.</param>
+        /// <returns>Returns 0 on success or a negative error code on failure.</returns>
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_SetTextureBlendMode", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int SetTextureBlendMode(IntPtr texture, BlendMode blendMode);
 
         /// <summary>
         /// Update the given texture rectangle with new pixel data.

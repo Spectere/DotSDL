@@ -9,6 +9,8 @@ namespace Sample.Sprites {
         private int _speed;
 
         public Player(Color color, int speed, int playerId) : base(Size, Size, playerId) {
+            const int baseAlpha = 128;
+
             _color = color;
             _speed = speed;
 
@@ -35,7 +37,10 @@ namespace Sample.Sprites {
                     }
                 }
 
-                // Increase the brightness as we move further inside.
+                // Increase the brightness and alpha as we move further inside.
+                _color.A = (byte)(baseAlpha + ((float)Radius - x + 1) / Radius * (255 - baseAlpha));
+                System.Console.WriteLine(_color.A);
+
                 var newR = (short)(_color.R * 1.1);
                 _color.R = (byte)(newR > 255 ? 255 : newR);
 
@@ -48,7 +53,7 @@ namespace Sample.Sprites {
 
             // Plot a little line so that we can show rotation.
             for(var y = Radius; y >= 0; y--) {
-                Pixels[GetIndex(Radius, y)] = new Color { R = 64, G = 255, B = 64 };
+                Pixels[GetIndex(Radius, y)] = new Color { R = 64, G = 255, B = 64, A = 255 };
             }
         }
 

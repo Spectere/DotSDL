@@ -2,7 +2,6 @@
 using DotSDL.Graphics;
 using DotSDL.Input.Keyboard;
 using System;
-using System.Numerics;
 
 namespace Sample.Sprites {
     public class Window : SdlWindow {
@@ -40,7 +39,7 @@ namespace Sample.Sprites {
                 }
             }
 
-            // Darken every other layer, because why not. :)
+            // Darken every other line, because why not. :)
             for(var y = 2; y < Background.Height; y += 2) {
                 for(var x = 0; x < Background.Width; x++) {
                     var pix = Background.Width * y + x;
@@ -89,6 +88,7 @@ namespace Sample.Sprites {
             _player2Delta = new Point();
 
             _player1.Scale.X = 1.5f;
+            _player1.BlendMode = BlendMode.Additive;
 
             _player2.ScalingQuality = ScalingQuality.Linear;
             _player2.Scale.Y = 2.0f;
