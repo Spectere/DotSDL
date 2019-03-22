@@ -11,6 +11,7 @@ namespace DotSDL.Graphics {
     public class SdlWindow : IResourceObject {
         private readonly SdlInit _sdlInit = SdlInit.Instance;
         private readonly ResourceManager _resources = ResourceManager.Instance;
+        private string _windowTitle;
 
         private readonly IntPtr _window;
         private readonly IntPtr _renderer;
@@ -38,6 +39,15 @@ namespace DotSDL.Graphics {
         public int WindowWidth { get; }
         /// <summary>Gets the height of this <see cref="SdlWindow"/>.</summary>
         public int WindowHeight { get; }
+
+        /// <summary>Gets or sets the title of this <see cref="SdlWindow"/>.</summary>
+        public string WindowTitle {
+            get => _windowTitle;
+            set {
+                _windowTitle = value;
+                Video.SetWindowTitle(_window, _windowTitle);
+            }
+        }
 
         /// <summary>Gets the width of the rendering target used by this <see cref="SdlWindow"/>.</summary>
         public int TextureWidth { get; }
@@ -148,6 +158,7 @@ namespace DotSDL.Graphics {
         public SdlWindow(string title, Point position, int windowWidth, int windowHeight, int textureWidth, int textureHeight, ScalingQuality scalingQuality) {
             _sdlInit.InitSubsystem(Init.SubsystemFlags.Video);
 
+            _windowTitle = title;
             _window = Video.CreateWindow(title, position.X, position.Y, windowWidth, windowHeight, Video.WindowFlags.Hidden);
             _renderer = Render.CreateRenderer(_window, -1, Render.RendererFlags.Accelerated);
 

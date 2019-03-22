@@ -104,6 +104,14 @@ namespace DotSDL.Interop.Core {
         internal static extern uint GetWindowId(IntPtr window);
 
         /// <summary>
+        /// Sets the title of an SDL window.
+        /// </summary>
+        /// <param name="window">The window to set the title of.</param>
+        /// <param name="title">The string to set the window title to.</param>
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_SetWindowTitle", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void SetWindowTitle(IntPtr window, string title);
+
+        /// <summary>
         /// Shows an SDL window.
         /// </summary>
         /// <param name="window">The window to show.</param>

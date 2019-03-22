@@ -39,7 +39,6 @@ namespace Sample.Sprites {
 
                 // Increase the brightness and alpha as we move further inside.
                 _color.A = (byte)(baseAlpha + ((float)Radius - x + 1) / Radius * (255 - baseAlpha));
-                System.Console.WriteLine(_color.A);
 
                 var newR = (short)(_color.R * 1.1);
                 _color.R = (byte)(newR > 255 ? 255 : newR);
