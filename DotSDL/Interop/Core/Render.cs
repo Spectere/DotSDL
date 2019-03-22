@@ -147,6 +147,26 @@ namespace DotSDL.Interop.Core {
         internal static extern void RenderPresent(IntPtr renderer);
 
         /// <summary>
+        /// Sets an additional alpha value that will be multiplied into render copy operations.
+        /// </summary>
+        /// <param name="texture">The texture to update.</param>
+        /// <param name="alpha">The source alpha value multiplied into copy operations.</param>
+        /// <returns>0 on success or a negative error code on failure.</returns>
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_SetTextureAlphaMod", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int SetTextureAlphaMod(IntPtr texture, byte alpha);
+
+        /// <summary>
+        /// Modulates the color of a texture when it is used in a render copy operation.
+        /// </summary>
+        /// <param name="texture">The texture to update.</param>
+        /// <param name="r">The red color value multiplied into copy operations.</param>
+        /// <param name="g">The green color value multiplied into copy operations.</param>
+        /// <param name="b">The blue color value multiplied into copy operations.</param>
+        /// <returns>0 on success or a negative error code on failure.</returns>
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_SetTextureColorMod", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int SetTextureColorMod(IntPtr texture, byte r, byte g, byte b);
+
+        /// <summary>
         /// Sets a texture as the current rendering target.
         /// </summary>
         /// <param name="renderer">The rendering context.</param>

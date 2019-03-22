@@ -5,16 +5,17 @@ namespace Sample.Sprites {
         private const int Radius = 15;
         private const int Size = 32;
 
-        private Color _color;
         private int _speed;
 
         public Player(Color color, int speed, int playerId) : base(Size, Size, playerId) {
-            const int baseAlpha = 128;
+            const byte baseAlpha = 128;
 
-            _color = color;
+            ColorMod = color;
             _speed = speed;
 
             Shown = true;
+
+            var gray = (byte)192;
 
             // Draw some really rough yet strangely lovable circles.
             for(var x = Radius; x > 1; x--) {
@@ -22,9 +23,10 @@ namespace Sample.Sprites {
                 var rY = 0;
                 var err = 0;
 
+                var alpha = (byte)(baseAlpha + ((float)Radius - x + 1) / Radius * (255 - baseAlpha));
                 while(rX >= rY) {
-                    PlotMirroredPoints(rX, rY);
-                    PlotMirroredPoints(rY, rX);
+                    PlotMirroredPoints(rX, rY, gray, alpha);
+                    PlotMirroredPoints(rY, rX, gray, alpha);
 
                     rY += 1;
                     if(err <= 0) {
@@ -37,22 +39,14 @@ namespace Sample.Sprites {
                     }
                 }
 
-                // Increase the brightness and alpha as we move further inside.
-                _color.A = (byte)(baseAlpha + ((float)Radius - x + 1) / Radius * (255 - baseAlpha));
-
-                var newR = (short)(_color.R * 1.1);
-                _color.R = (byte)(newR > 255 ? 255 : newR);
-
-                var newG = (short)(_color.G * 1.1);
-                _color.G = (byte)(newG > 255 ? 255 : newG);
-
-                var newB = (short)(_color.B * 1.1);
-                _color.B = (byte)(newB > 255 ? 255 : newB);
+                // Increase the brightness as we move further inside.
+                var newGray = (short)(gray * 1.025);
+                gray = (byte)(newGray > 255 ? 255 : newGray);
             }
 
             // Plot a little line so that we can show rotation.
             for(var y = Radius; y >= 0; y--) {
-                Pixels[GetIndex(Radius, y)] = new Color { R = 64, G = 255, B = 64, A = 255 };
+                Pixels[GetIndex(Radius, y)] = new Color { R = 64, G = 64, B = 64, A = 128 };
             }
         }
 
@@ -62,11 +56,12 @@ namespace Sample.Sprites {
             Position.Y += delta.Y * _speed;
         }
 
-        private void PlotMirroredPoints(int x, int y) {
-            Pixels[GetIndex(Radius + x, Radius + y)] = _color;
-            Pixels[GetIndex(Radius + x, Radius - y)] = _color;
-            Pixels[GetIndex(Radius - x, Radius + y)] = _color;
-            Pixels[GetIndex(Radius - x, Radius - y)] = _color;
+        private void PlotMirroredPoints(int x, int y, byte gray, byte alpha) {
+            var color = new Color { R = gray, G = gray, B = gray, A = alpha };
+            Pixels[GetIndex(Radius + x, Radius + y)] = color;
+            Pixels[GetIndex(Radius + x, Radius - y)] = color;
+            Pixels[GetIndex(Radius - x, Radius + y)] = color;
+            Pixels[GetIndex(Radius - x, Radius - y)] = color;
         }
     }
 }

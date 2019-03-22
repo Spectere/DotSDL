@@ -81,10 +81,12 @@ namespace Sample.Sprites {
 
             _player1.Position.X = 24;
             _player1.Position.Y = 24;
+            _player1.Opacity = 128;
             _player1Delta = new Point();
 
             _player2.Position.X = 96;
             _player2.Position.Y = 24;
+            _player2.Opacity = 196;
             _player2Delta = new Point();
 
             _player1.Scale.X = 1.5f;

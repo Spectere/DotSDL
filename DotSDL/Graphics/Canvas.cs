@@ -9,6 +9,8 @@ namespace DotSDL.Graphics {
     /// </summary>
     public class Canvas {
         private int _width, _height;
+        private Color _colorMod = new Color { R = 255, G = 255, B = 255, A = 255 };
+        private byte _opacity = 255;
 
         /// <summary>
         /// <c>true</c> if this <see cref="Canvas"/> has an SDL texture associated with it, otherwise <c>false</c>.
@@ -78,6 +80,9 @@ namespace DotSDL.Graphics {
             }
         }
 
+        /// <summary>
+        /// Sets the blending mode that should be used for this <see cref="Canvas"/>.
+        /// </summary>
         public BlendMode BlendMode {
             get => BlendModeValue;
             set {
@@ -85,6 +90,52 @@ namespace DotSDL.Graphics {
 
                 if(HasTexture)
                     Render.SetTextureBlendMode(Texture, BlendModeValue);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the color modulation that should be used for this <see cref="Canvas"/>.
+        /// </summary>
+        /// <remarks>
+        /// <para>Each pixel of this <see cref="Canvas"/> will be multiplied by the
+        /// <see cref="Color"/> set here. This can be used to change the color of any
+        /// individual element without having to manually draw multiplie textures with
+        /// different palettes.</para>
+        ///
+        /// <para>Alpha values will not affect the object in any way. In order to adjust
+        /// the object's translucency, use the <see cref="Opacity"/> property instead.</para>
+        ///
+        /// <para>Please note that setting this will impact the entire object. No options
+        /// for masking are provided.</para>
+        /// </remarks>
+        public Color ColorMod {
+            get => _colorMod;
+            set {
+                _colorMod = value;
+
+                if(HasTexture)
+                    Render.SetTextureColorMod(Texture, _colorMod.R, _colorMod.G, _colorMod.B);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the opacity of this <see cref="Canvas"/>.
+        /// </summary>
+        /// <remarks>
+        /// <para>The alpha value of each pixel of this <see cref="Canvas"/> will be
+        /// multiplied by the value set here. This can be used to fade an entire object
+        /// in and out.</para>
+        ///
+        /// <para>Please note that this setting will impact the entire object. No options
+        /// for masking are provided.</para>
+        /// </remarks>
+        public byte Opacity {
+            get => _opacity;
+            set {
+                _opacity = value;
+
+                if(HasTexture)
+                    Render.SetTextureAlphaMod(Texture, _opacity);
             }
         }
 
@@ -128,14 +179,7 @@ namespace DotSDL.Graphics {
 
             Clipping = clipping;
 
-            GetCanvasPointer = () => {
-                unsafe {
-                    fixed(void* pixelPtr = Pixels) {
-                        return (IntPtr)pixelPtr;
-                    }
-                }
-            };
-
+            ResetGetCanvasPointer();
             Resize();
         }
 
@@ -158,7 +202,9 @@ namespace DotSDL.Graphics {
             Texture = Render.CreateTexture(Renderer, SdlPixels.PixelFormatArgb8888, textureAccess, Width, Height);
             HasTexture = true;
 
+            Render.SetTextureAlphaMod(Texture, _opacity);
             Render.SetTextureBlendMode(Texture, BlendModeValue);
+            Render.SetTextureColorMod(Texture, _colorMod.R, _colorMod.G, _colorMod.B);
         }
 
         /// <summary>
@@ -188,6 +234,21 @@ namespace DotSDL.Graphics {
         /// <returns>The array index for the given point.</returns>
         public int GetIndex(Point point) {
             return (Width * point.Y) + point.X;
+        }
+
+        /// <summary>
+        /// Restores the the <see cref="GetCanvasPointer"/> function pointer back to its normal
+        /// value. This should be called if the application wishes to give control of the pixel
+        /// array back to this <see cref="Canvas"/> after previously handling it.
+        /// </summary>
+        public void ResetGetCanvasPointer() {
+            GetCanvasPointer = () => {
+                unsafe {
+                    fixed(void* pixelPtr = Pixels) {
+                        return (IntPtr)pixelPtr;
+                    }
+                }
+            };
         }
 
         /// <summary>
