@@ -171,7 +171,7 @@ namespace DotSDL.Graphics {
             ScalingQuality = scalingQuality;
             CreateTexture();
 
-            Background = new Canvas(textureWidth, textureHeight) {
+            Background = new Background(textureWidth, textureHeight) {
                 Renderer = _renderer,
                 BlendMode = BlendMode.None
             };

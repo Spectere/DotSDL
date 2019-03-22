@@ -28,7 +28,7 @@ namespace DotSDL.Interop.Core {
         /// <summary>
         /// The access pattern allowed for a texture.
         /// </summary>
-        internal enum TextureAccess : int {
+        internal enum TextureAccess {
             /// <summary>Changes rarely, not lockable.</summary>
             Static,
 
@@ -78,6 +78,28 @@ namespace DotSDL.Interop.Core {
         internal static extern void DestroyTexture(IntPtr texture);
 
         /// <summary>
+        /// Locks a portion of a texture for write-only pixel access.
+        /// </summary>
+        /// <param name="texture">The texture to lock for access. This texture must have been created with <see cref="TextureAccess.Streaming"/>.</param>
+        /// <param name="rect">An <see cref="Rect.SdlRect"/> structure representing the area to lock for access, or <see cref="IntPtr.Zero"/> to lock the entire texture.</param>
+        /// <param name="pixels">A pointer to the locked pixels, offset by the locked area.</param>
+        /// <param name="pitch">The pitch of the locked pixels. The pitch is the length of one row in bytes.</param>
+        /// <returns>0 on success or a negative error code if the texture is not valid or was not created with <see cref="TextureAccess.Streaming"/>.</returns>
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_LockTexture", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern unsafe int LockTexture(IntPtr texture, IntPtr rect, out void* pixels, out int pitch);
+
+        /// <summary>
+        /// Locks a portion of a texture for write-only pixel access.
+        /// </summary>
+        /// <param name="texture">The texture to lock for access. This texture must have been created with <see cref="TextureAccess.Streaming"/>.</param>
+        /// <param name="rect">An <see cref="Rect.SdlRect"/> structure representing the area to lock for access, or <see cref="IntPtr.Zero"/> to lock the entire texture.</param>
+        /// <param name="pixels">A pointer to the locked pixels, offset by the locked area.</param>
+        /// <param name="pitch">The pitch of the locked pixels. The pitch is the length of one row in bytes.</param>
+        /// <returns>0 on success or a negative error code if the texture is not valid or was not created with <see cref="TextureAccess.Streaming"/>.</returns>
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_LockTexture", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern unsafe int LockTexture(IntPtr texture, Rect.SdlRect rect, out void* pixels, out int pitch);
+
+        /// <summary>
         /// Clear the current rendering target with the drawing color.
         ///
         /// This function clears the entire rendering target, ignoring the viewport and the clip rectangle.
@@ -119,7 +141,7 @@ namespace DotSDL.Interop.Core {
         /// <param name="angle">An angle, in degrees, that indicates the rotation that will be applied to <paramref name="dstRect"/>.</param>
         /// <param name="center">An <see cref="Rect.SdlPoint"/> indicating the point around which <paramref name="dstRect"/> will be rotated
         /// (if NULL, rotation will be done around dstRect.w/2, dstRect.h/2).</param>
-        /// <param name="flip">A <see cref="RendererFlip"/> value indicating which flipping actions should be performed.</param>
+        /// <param name="flip">A <see cref="FlipDirection"/> value indicating which flipping actions should be performed.</param>
         /// <returns>0 on success, or -1 on error.</returns>
         [DllImport(Meta.CoreLib, EntryPoint = "SDL_RenderCopyEx", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int RenderCopyEx(IntPtr renderer, IntPtr texture, Rect.SdlRect srcRect, Rect.SdlRect dstRect, double angle, Rect.SdlPoint center, FlipDirection flip);
@@ -134,7 +156,7 @@ namespace DotSDL.Interop.Core {
         /// <param name="angle">An angle, in degrees, that indicates the rotation that will be applied to <paramref name="dstRect"/>.</param>
         /// <param name="center">An <see cref="Rect.SdlPoint"/> indicating the point around which <paramref name="dstRect"/> will be rotated
         /// (if NULL, rotation will be done around dstRect.w/2, dstRect.h/2).</param>
-        /// <param name="flip">A <see cref="RendererFlip"/> value indicating which flipping actions should be performed.</param>
+        /// <param name="flip">A <see cref="FlipDirection"/> value indicating which flipping actions should be performed.</param>
         /// <returns>0 on success, or -1 on error.</returns>
         [DllImport(Meta.CoreLib, EntryPoint = "SDL_RenderCopyEx", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int RenderCopyEx(IntPtr renderer, IntPtr texture, IntPtr srcRect, IntPtr dstRect, double angle, Rect.SdlPoint center, FlipDirection flip);
@@ -184,6 +206,13 @@ namespace DotSDL.Interop.Core {
         /// <returns>Returns 0 on success or a negative error code on failure.</returns>
         [DllImport(Meta.CoreLib, EntryPoint = "SDL_SetTextureBlendMode", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int SetTextureBlendMode(IntPtr texture, BlendMode blendMode);
+
+        /// <summary>
+        /// Unlocks a texture, uploading the changes to video memory if needed.
+        /// </summary>
+        /// <param name="texture">A locked texture.</param>
+        [DllImport(Meta.CoreLib, EntryPoint = "SDL_UnlockTexture", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void UnlockTexture(IntPtr texture);
 
         /// <summary>
         /// Update the given texture rectangle with new pixel data.

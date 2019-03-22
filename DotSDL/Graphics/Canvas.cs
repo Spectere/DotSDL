@@ -7,7 +7,7 @@ namespace DotSDL.Graphics {
     /// A representation of the contents of the SDL window, with a number of
     /// helper routines.
     /// </summary>
-    public class Canvas {
+    public abstract class Canvas {
         private int _width, _height;
         private Color _colorMod = new Color { R = 255, G = 255, B = 255, A = 255 };
         private byte _opacity = 255;
@@ -186,9 +186,7 @@ namespace DotSDL.Graphics {
         /// <summary>
         /// Creates a texture or recreates it if it already exists.
         /// </summary>
-        internal virtual void CreateTexture() {
-            CreateTexture(Render.TextureAccess.Streaming);
-        }
+        internal abstract void CreateTexture();
 
         /// <summary>
         /// Creates a texture or recreates it if it already exists.
@@ -210,7 +208,7 @@ namespace DotSDL.Graphics {
         /// <summary>
         /// Destroys the texture associated with this <see cref="Sprite"/>.
         /// </summary>
-        internal void DestroyTexture() {
+        private void DestroyTexture() {
             if(!HasTexture) return;
 
             Render.DestroyTexture(Texture);
@@ -267,7 +265,7 @@ namespace DotSDL.Graphics {
         /// <see cref="Canvas.Pixels"/> array is changed.
         /// </summary>
         /// <returns><c>true</c> if the texture was successfully updated, otherwise <c>false</c>. This will return <c>false</c> if this <see cref="Sprite"/> hasn't been added to the sprite list.</returns>
-        internal bool UpdateTexture() {
+        internal virtual bool UpdateTexture() {
             if(!HasTexture) return false;
             Render.UpdateTexture(Texture, IntPtr.Zero, GetCanvasPointer(), Width * 4);
             return true;

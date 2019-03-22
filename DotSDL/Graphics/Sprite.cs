@@ -132,9 +132,7 @@ namespace DotSDL.Graphics {
             RotationCenter = new Point(clipping.Size.X / 2, clipping.Size.Y / 2);
         }
 
-        /// <summary>
-        /// Creates a texture or recreates it if it already exists.
-        /// </summary>
+        /// <inheritdoc/>
         internal override void CreateTexture() {
             CreateTexture(Render.TextureAccess.Static);
         }
