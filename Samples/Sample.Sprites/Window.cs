@@ -155,7 +155,7 @@ namespace Sample.Sprites {
             }
         }
 
-        protected override void OnUpdate() {
+        protected override void OnUpdate(float delta) {
             _player1.Move(_player1Delta);
             _player2.Move(_player2Delta);
 
