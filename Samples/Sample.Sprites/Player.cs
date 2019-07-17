@@ -1,17 +1,20 @@
-﻿using DotSDL.Graphics;
+﻿using System;
+using DotSDL.Graphics;
 
 namespace Sample.Sprites {
     public class Player : Sprite {
         private const int Radius = 15;
         private const int Size = 32;
 
-        private int _speed;
+        private readonly int _speed;
+        private readonly Point _limit;
 
-        public Player(Color color, int speed, int playerId) : base(Size, Size, playerId) {
+        public Player(Color color, int speed, int playerId, Point limit) : base(Size, Size, playerId) {
             const byte baseAlpha = 128;
 
             ColorMod = color;
             _speed = speed;
+            _limit = limit;
 
             Shown = true;
 
@@ -51,9 +54,11 @@ namespace Sample.Sprites {
         }
 
         public void Move(Point delta) {
-            // TODO: Support some basic vector arithmetic for points.
             Position.X += delta.X * _speed;
             Position.Y += delta.Y * _speed;
+
+            Position.X = Math.Clamp(Position.X, 0, (int)(_limit.X - (Size * Scale.X)));
+            Position.Y = Math.Clamp(Position.Y, 0, (int)(_limit.Y - (Size * Scale.Y)));
         }
 
         private void PlotMirroredPoints(int x, int y, byte gray, byte alpha) {

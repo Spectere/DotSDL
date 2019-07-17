@@ -61,6 +61,9 @@ namespace DotSDL.Graphics {
         /// <summary>Gets or sets the amount of time, in milliseconds, between game (logic) updates.</summary>
         public uint GameUpdateTicks { get; set; }
 
+        /// <summary>Gets a <see cref="Rectangle"/> that can be manipulated to modify how much of the scene is displayed.</summary>
+        public Rectangle CameraView { get; }
+
         /// <summary>The list of active <see cref="Sprite"/> objects.</summary>
         public SpriteList Sprites { get; }
 
@@ -177,6 +180,11 @@ namespace DotSDL.Graphics {
             };
             Background.CreateTexture();
 
+            CameraView = new Rectangle(
+                new Point(0, 0),
+                new Point(WindowWidth, WindowHeight)
+            );
+
             Sprites = new SpriteList(_renderer);
 
             IsDestroyed = false;
@@ -202,6 +210,8 @@ namespace DotSDL.Graphics {
             Render.SetRenderTarget(_renderer, _texture);
 
             // Blit the Canvas to the target texture.
+            Background.Clipping.Position = CameraView.Position;
+            Background.Clipping.Size = CameraView.Size;
             Background.UpdateTexture();
             unsafe {
                 var canvasClippingRect = Background.Clipping.SdlRect;
@@ -271,11 +281,30 @@ namespace DotSDL.Graphics {
             Render.SetRenderTarget(_renderer, _texture);
             foreach(var sprite in Sprites.Where(e => e.Shown).OrderBy(e => e.ZOrder)) {
                 var srcRect = sprite.Clipping.SdlRect;
-                var drawSize = new Point(
-                    (int)(srcRect.W * sprite.Scale.X),
-                    (int)(srcRect.H * sprite.Scale.Y)
-                );
-                var destRect = new Rectangle(sprite.Position, drawSize).SdlRect;
+                var drawSize = sprite.DrawSize;
+
+                Rectangle dest;
+                if(sprite.CoordinateSystem == CoordinateSystem.ScreenSpace) {
+                    dest = new Rectangle(sprite.Position, drawSize);
+                } else {
+                    // Create a set of world coordinates based on the position of the camera
+                    // and this sprite.
+                    var relPosition = new Point(sprite.Position - CameraView.Position);
+                    var screenPosition = new Point(
+                        (int)((float)relPosition.X / CameraView.Size.X * TextureWidth),
+                        (int)((float)relPosition.Y / CameraView.Size.Y * TextureHeight)
+                    );
+                    var scaleFactorX = (float)TextureWidth / CameraView.Size.X;
+                    var scaleFactorY = (float)TextureHeight / CameraView.Size.Y;
+                    var size = new Point(
+                        (int)(drawSize.X * scaleFactorX),
+                        (int)(drawSize.Y * scaleFactorY)
+                    );
+
+                    dest = new Rectangle(screenPosition, size);
+                }
+
+                var destRect = dest.SdlRect;
 
                 unsafe {
                     var srcRectPtr = new IntPtr(&srcRect);

@@ -5,10 +5,13 @@
     <AssemblyVersion>0.0.1.0</AssemblyVersion>
     <FileVersion>0.0.1.0</FileVersion>
     <Description>A framework for .NET designed to interoperate with SDL2.</Description>
-    <Copyright>(c) 2017 Ian Burgmyer</Copyright>
+    <Copyright>(c) 2019 Ian Burgmyer</Copyright>
     <Authors>Ian Burgmyer</Authors>
     <Company>The DotSDL Team</Company>
     <LangVersion>7.2</LangVersion>
+    <Title>DotSDL</Title>
+    <PackageProjectUrl>https://github.com/Spectere/DotSDL</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/Spectere/DotSDL/blob/master/LICENSE.txt</PackageLicenseUrl>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -16,4 +19,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+  </ItemGroup>
 </Project>

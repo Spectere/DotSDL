@@ -7,6 +7,9 @@ namespace DotSDL.Graphics {
     /// Represents a graphical, two-dimensional object in a program.
     /// </summary>
     public class Sprite : Canvas {
+        private Point _effectiveSize = new Point();
+        private Vector2<float> _scale;
+
         /// <summary>
         /// The position on the screen where the <see cref="Sprite"/> should be drawn.
         /// </summary>
@@ -32,7 +35,14 @@ namespace DotSDL.Graphics {
         /// <summary>
         /// The scale of the <see cref="Sprite"/>. 1.0f is 100%.
         /// </summary>
-        public Vector2<float> Scale { get; set; }
+        public Vector2<float> Scale {
+            get => _scale;
+            set {
+                _scale = value;
+                _effectiveSize.X = (int)(Width * _scale.X);
+                _effectiveSize.Y = (int)(Height * _scale.Y);
+            }
+        }
 
         /// <inheritdoc/>
         public override ScalingQuality ScalingQuality {
@@ -46,6 +56,32 @@ namespace DotSDL.Graphics {
                 }
             }
         }
+
+        /// <summary>
+        /// Gets the size of the sprite as it would be drawn to the screen, in pixels, taking
+        /// both scaling and clipping into account.
+        /// </summary>
+        /// <remarks>
+        /// This value is calculated every time it's called. If you plan to the results of this
+        /// in a loop, be sure to save the results to a variable and perform operations on that
+        /// instead of calling this multiple times.
+        /// </remarks>
+        public Point DrawSize => new Point(
+            (int)(Clipping.Size.X * Scale.X),
+            (int)(Clipping.Size.Y * Scale.Y)
+        );
+
+        /// <summary>
+        /// Gets the effective size of the sprite. This is the size of the sprite, in pixels,
+        /// after taking scaling into account.
+        /// </summary>
+        public Point EffectiveSize => _effectiveSize;
+
+        /// <summary>
+        /// Defines the coordinate system that this sprite should use. This defaults to
+        /// <see cref="CoordinateSystem.WorldSpace"/>.
+        /// </summary>
+        public CoordinateSystem CoordinateSystem { get; set; } = CoordinateSystem.WorldSpace;
 
         /// <summary>
         /// <c>true</c> if the sprite should be drawn to the screen, otherwise <c>false</c>.

@@ -73,6 +73,57 @@ namespace DotSDL.Math.Vector {
             return !(left == right);
         }
 
+        /// <summary>
+        /// Adds two <see cref="Vector2{T}"/> objects together.
+        /// </summary>
+        /// <param name="left">The <see cref="Vector2{T}"/> to use as the operator.</param>
+        /// <param name="right">The <see cref="Vector2{T}"/> to use as the operand.</param>
+        /// <returns>A <see cref="Vector2{T}"/> containing the result.</returns>
+        public static Vector2<T> operator +(Vector2<T> left, Vector2<T> right) =>
+            new Vector2<T>(
+                (dynamic)left.X + (dynamic)right.X,
+                (dynamic)left.Y + (dynamic)right.Y
+            );
+
+        /// <summary>
+        /// Adds a <see cref="Vector2{T}"/> object with a scalar value.
+        /// </summary>
+        /// <param name="vec">The <see cref="Vector2{T}"/> to use as the operator.</param>
+        /// <param name="scalar">The <see cref="T"/> to use as the operand.</param>
+        /// <returns>A <see cref="Vector2{T}"/> containing the result.</returns>
+        public static Vector2<T> operator +(Vector2<T> vec, T scalar) =>
+            new Vector2<T>((dynamic)vec.X + scalar, (dynamic)vec.Y + scalar);
+
+        /// <summary>
+        /// Subtracts two <see cref="Vector2{T}"/> objects.
+        /// </summary>
+        /// <param name="left">The <see cref="Vector2{T}"/> to use as the operator.</param>
+        /// <param name="right">The <see cref="Vector2{T}"/> to use as the operand.</param>
+        /// <returns>A <see cref="Vector2{T}"/> containing the result.</returns>
+        public static Vector2<T> operator -(Vector2<T> left, Vector2<T> right) =>
+            new Vector2<T>(
+                (dynamic)left.X - (dynamic)right.X,
+                (dynamic)left.Y - (dynamic)right.Y
+            );
+
+        /// <summary>
+        /// Multiples a <see cref="Vector2{T}"/> by a scalar value.
+        /// </summary>
+        /// <param name="vec">The <see cref="Vector2{T}"/> to use as the operator.</param>
+        /// <param name="scalar">The <see cref="T"/> to use as the operand.</param>
+        /// <returns>A <see cref="Vector2{T}"/> containing the result.</returns>
+        public static Vector2<T> operator *(Vector2<T> vec, T scalar) =>
+            new Vector2<T>((dynamic)vec.X * scalar, (dynamic)vec.Y + scalar);
+
+        /// <summary>
+        /// Subtracts a scalar value from a <see cref="Vector2{T}"/>.
+        /// </summary>
+        /// <param name="vec">The <see cref="Vector2{T}"/> to use as the operator.</param>
+        /// <param name="scalar">The <see cref="T"/> to use as the operand.</param>
+        /// <returns>A <see cref="Vector2{T}"/> containing the result.</returns>
+        public static Vector2<T> operator -(Vector2<T> vec, T scalar) =>
+            new Vector2<T>((dynamic)vec.X - scalar, (dynamic)vec.Y - scalar);
+
         /// <summary>Returns a new <see cref="Vector2{T}"/> with both X and Y set to 1.</summary>
         public static Vector2<T> One => new Vector2<T>(VectorBase<T>.GetOne());
 
@@ -84,6 +135,15 @@ namespace DotSDL.Math.Vector {
 
         /// <summary>Returns a new <see cref="Vector2{T}"/> with both X and Y set to 0.</summary>
         public static Vector2<T> Zero => new Vector2<T>(VectorBase<T>.GetZero());
+
+        /// <summary>
+        /// Calculates the dot product of two <see cref="Vector2{T}"/> objects.
+        /// </summary>
+        /// <param name="left">The <see cref="Vector2{T}"/> to use as the operator.</param>
+        /// <param name="right">The <see cref="Vector2{T}"/> to use as the operand.</param>
+        /// <returns>A <see cref="T"/> containing the result.</returns>
+        public T Dot(Vector2<T> left, Vector2<T> right) =>
+            (dynamic)left.X * (dynamic)right.X + (dynamic)left.Y + (dynamic)right.Y;
 
         /// <inheritdoc/>
         public bool Equals(Vector2<T> other) {
@@ -108,5 +168,7 @@ namespace DotSDL.Math.Vector {
                 return (EqualityComparer<T>.Default.GetHashCode(X) * 397) ^ EqualityComparer<T>.Default.GetHashCode(Y);
             }
         }
+
+        public override string ToString() => $"{X}, {Y}";
     }
 }

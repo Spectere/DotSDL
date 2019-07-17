@@ -5,9 +5,10 @@ using System;
 
 namespace Sample.Sprites {
     public class Window : SdlWindow {
-        //private int _camX = 0, _camY = 0, _deltaX = 2, _deltaY = 1;
         private Player _player1, _player2;
         private Point _player1Delta, _player2Delta;
+
+        private const int ViewMargin = 16;
 
         public Window(int scale) : base("Sprites Test",
                                         new Point(WindowPosUndefined, WindowPosUndefined),
@@ -76,8 +77,9 @@ namespace Sample.Sprites {
         }
 
         private void GeneratePlayers() {
-            _player1 = new Player(new Color { R = 255, G = 64, B = 64 }, 2, 1);
-            _player2 = new Player(new Color { R = 64, G = 64, B = 255 }, 3, 2);
+            var limit = new Point(1024, 1024);
+            _player1 = new Player(new Color { R = 255, G = 64, B = 64 }, 2, 1, limit);
+            _player2 = new Player(new Color { R = 64, G = 64, B = 255 }, 3, 2, limit);
 
             _player1.Position.X = 24;
             _player1.Position.Y = 24;
@@ -157,41 +159,33 @@ namespace Sample.Sprites {
             _player1.Move(_player1Delta);
             _player2.Move(_player2Delta);
 
-            var x1 = _player1.Position.X <= _player2.Position.X
-                         ? _player1.Position.X - (_player1.Width * _player1.Scale.X)
-                         : _player2.Position.X - (_player2.Width * _player2.Scale.X);
-            var x2 = _player1.Position.X >= _player2.Position.X
-                         ? _player1.Position.X + (_player1.Width * _player1.Scale.X)
-                         : _player2.Position.X + (_player2.Width * _player2.Scale.X);
-            var y1 = _player1.Position.Y <= _player2.Position.Y
-                         ? _player1.Position.Y - (_player1.Height * _player1.Scale.Y)
-                         : _player2.Position.Y - (_player2.Height * _player2.Scale.Y);
-            var y2 = _player1.Position.Y >= _player2.Position.Y
-                         ? _player1.Position.Y + (_player1.Height * _player1.Scale.Y)
-                         : _player2.Position.Y + (_player2.Height * _player2.Scale.Y);
+            var p1End = _player1.Position + _player1.DrawSize;
+            var p2End = _player2.Position + _player2.DrawSize;
 
-            x1 = x1 < 0 ? 0 : x1;
-            x2 = x2 >= Background.Width ? Background.Width : x2;
-            y1 = y1 < 0 ? 0 : y1;
-            y2 = y2 >= Background.Height ? Background.Height : y2;
+            var x1 = (_player1.Position.X <= _player2.Position.X
+                          ? _player1.Position.X
+                          : _player2.Position.X) - ViewMargin;
 
-            Background.Clipping.Position.X = (int)x1;
-            Background.Clipping.Position.Y = (int)y1;
-            Background.Clipping.Size.X = (int)(x2 - x1);
-            Background.Clipping.Size.Y = (int)(y2 - y1);
+            var x2 = (p1End.X >= p2End.X ? p1End.X : p2End.X) + ViewMargin;
 
-            WindowTitle = $"({(int)x1} {(int)y2}), ({(int)(x2 - x1)}, {(int)(y2 - y1)}) / ({Background.Width}, {Background.Height})";
+            var y1 = (_player1.Position.Y <= _player2.Position.Y
+                          ? _player1.Position.Y
+                          : _player2.Position.Y) - ViewMargin;
 
-            /*_camX += _deltaX;
-            _camY += _deltaY;
+            var y2 = (p1End.Y >= p2End.Y ? p1End.Y : p2End.Y) + ViewMargin;
 
-            if(_camX + Background.Clipping.Size.X >= Background.Width || _camX <= 0)
-                _deltaX = -_deltaX;
-            if(_camY + Background.Clipping.Size.Y >= Background.Height || _camY <= 0)
-                _deltaY = -_deltaY;
+            x1 = Math.Clamp(x1, 0, Background.Width - ViewMargin);
+            x2 = Math.Clamp(x2, ViewMargin, Background.Width);
+            y1 = Math.Clamp(y1, 0, Background.Height - ViewMargin);
+            y2 = Math.Clamp(y2, ViewMargin, Background.Height);
 
-            Background.Clipping.Position.X = _camX;
-            Background.Clipping.Position.Y = _camY;*/
+            CameraView.Position.X = x1;
+            CameraView.Position.Y = y1;
+            CameraView.Size.X = x2 - x1;
+            CameraView.Size.Y = y2 - y1;
+
+            WindowTitle = $"({x1} {y2}), ({x2 - x1}, {y2 - y1})" +
+                $" | P1: {_player1.Position} | P2: {_player2.Position}";
         }
     }
 }
