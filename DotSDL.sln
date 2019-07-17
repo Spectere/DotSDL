@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Power", "Samples\Sam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Sprites", "Samples\Sample.Sprites\Sample.Sprites.csproj", "{305585D5-BD22-400D-80AA-459E05A9E243}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Layers", "Samples\Sample.Layers\Sample.Layers.csproj", "{23D3396E-6B46-4177-ACBB-CEE66910F05B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -69,6 +71,14 @@ Global
 		{305585D5-BD22-400D-80AA-459E05A9E243}.Release|x64.Build.0 = Release|Any CPU
 		{305585D5-BD22-400D-80AA-459E05A9E243}.Release|x86.ActiveCfg = Release|Any CPU
 		{305585D5-BD22-400D-80AA-459E05A9E243}.Release|x86.Build.0 = Release|Any CPU
+		{23D3396E-6B46-4177-ACBB-CEE66910F05B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{23D3396E-6B46-4177-ACBB-CEE66910F05B}.Debug|x64.Build.0 = Debug|Any CPU
+		{23D3396E-6B46-4177-ACBB-CEE66910F05B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{23D3396E-6B46-4177-ACBB-CEE66910F05B}.Debug|x86.Build.0 = Debug|Any CPU
+		{23D3396E-6B46-4177-ACBB-CEE66910F05B}.Release|x64.ActiveCfg = Release|Any CPU
+		{23D3396E-6B46-4177-ACBB-CEE66910F05B}.Release|x64.Build.0 = Release|Any CPU
+		{23D3396E-6B46-4177-ACBB-CEE66910F05B}.Release|x86.ActiveCfg = Release|Any CPU
+		{23D3396E-6B46-4177-ACBB-CEE66910F05B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,5 +90,6 @@ Global
 		{B71D69F1-3BB1-4CC8-AB6A-2A0F2DAE9FE5} = {70DA3135-B76E-421D-B9CF-E49CD6440B0A}
 		{45E8AA1C-97DC-4889-B64E-2874BCAC6D40} = {70DA3135-B76E-421D-B9CF-E49CD6440B0A}
 		{305585D5-BD22-400D-80AA-459E05A9E243} = {70DA3135-B76E-421D-B9CF-E49CD6440B0A}
+		{23D3396E-6B46-4177-ACBB-CEE66910F05B} = {70DA3135-B76E-421D-B9CF-E49CD6440B0A}
 	EndGlobalSection
 EndGlobal

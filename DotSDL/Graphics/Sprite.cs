@@ -7,7 +7,7 @@ namespace DotSDL.Graphics {
     /// Represents a graphical, two-dimensional object in a program.
     /// </summary>
     public class Sprite : Canvas {
-        private Point _effectiveSize = new Point();
+        private readonly Point _effectiveSize = new Point();
         private Vector2<float> _scale;
 
         /// <summary>

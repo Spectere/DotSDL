@@ -2,6 +2,7 @@
 using DotSDL.Input;
 using DotSDL.Interop.Core;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DotSDL.Graphics {
@@ -18,14 +19,24 @@ namespace DotSDL.Graphics {
         private IntPtr _texture;
         private bool _hasTexture;
 
-        public readonly Canvas Background;
-
         private bool _running;
 
         private uint _nextVideoUpdate;
         private uint _nextGameUpdate;
 
         private ScalingQuality _scalingQuality = ScalingQuality.Nearest;
+
+        /// <summary>Gets the background layer of this window. This is equivalent to accessing Layers[0].</summary>
+        public Canvas Background => Layers[0];
+
+        /// <summary>Gets the list of background layers for this window.</summary>
+        public List<Canvas> Layers { get; }
+
+        /// <summary>
+        /// Gets the number of background layers for this windows. This number will always be greater
+        /// than or equal to 1.
+        /// </summary>
+        public int LayerCount => Layers.Count;
 
         /// <summary><c>true</c> if this <see cref="SdlWindow"/> instance has been destroyed, othersize <c>false</c>.</summary>
         public bool IsDestroyed { get; set; }
@@ -50,9 +61,9 @@ namespace DotSDL.Graphics {
         }
 
         /// <summary>Gets the width of the rendering target used by this <see cref="SdlWindow"/>.</summary>
-        public int TextureWidth { get; }
+        public int RenderWidth { get; }
         /// <summary>Gets the height of the rendering target used by this <see cref="SdlWindow"/>.</summary>
-        public int TextureHeight { get; }
+        public int RenderHeight { get; }
 
         /// <summary>The amount of time, in milliseconds, from when the application was started.</summary>
         public uint TicksElapsed => Timer.GetTicks();
@@ -144,9 +155,9 @@ namespace DotSDL.Graphics {
         /// <param name="position">A <see cref="Point"/> representing the starting position of the window. The X and Y coordinates of the Point can be set to <see cref="WindowPosUndefined"/> or <see cref="WindowPosCentered"/>.</param>
         /// <param name="windowWidth">The width of the window.</param>
         /// <param name="windowHeight">The height of the window.</param>
-        /// <param name="textureWidth">The width of the window's texture.</param>
-        /// <param name="textureHeight">The height of the window's texture.</param>
-        public SdlWindow(string title, Point position, int windowWidth, int windowHeight, int textureWidth, int textureHeight) : this(title, position, windowWidth, windowHeight, textureWidth, textureHeight, ScalingQuality.Nearest) { }
+        /// <param name="renderWidth">The width of the rendering target.</param>
+        /// <param name="renderHeight">The height of the rendering target.</param>
+        public SdlWindow(string title, Point position, int windowWidth, int windowHeight, int renderWidth, int renderHeight) : this(title, position, windowWidth, windowHeight, renderWidth, renderHeight, ScalingQuality.Nearest) { }
 
         /// <summary>
         /// Creates a new <see cref="SdlWindow"/>.
@@ -155,10 +166,10 @@ namespace DotSDL.Graphics {
         /// <param name="position">A <see cref="Point"/> representing the starting position of the window. The X and Y coordinates of the Point can be set to <see cref="WindowPosUndefined"/> or <see cref="WindowPosCentered"/>.</param>
         /// <param name="windowWidth">The width of the window.</param>
         /// <param name="windowHeight">The height of the window.</param>
-        /// <param name="textureWidth">The width of the window's texture.</param>
-        /// <param name="textureHeight">The height of the window's texture.</param>
+        /// <param name="renderWidth">The width of the rendering target.</param>
+        /// <param name="renderHeight">The height of the rendering target.</param>
         /// <param name="scalingQuality">The scaling (filtering) method to use for the background canvas texture.</param>
-        public SdlWindow(string title, Point position, int windowWidth, int windowHeight, int textureWidth, int textureHeight, ScalingQuality scalingQuality) {
+        public SdlWindow(string title, Point position, int windowWidth, int windowHeight, int renderWidth, int renderHeight, ScalingQuality scalingQuality) {
             _sdlInit.InitSubsystem(Init.SubsystemFlags.Video);
 
             _windowTitle = title;
@@ -168,15 +179,17 @@ namespace DotSDL.Graphics {
             WindowWidth = windowWidth;
             WindowHeight = windowHeight;
 
-            TextureWidth = textureWidth;
-            TextureHeight = textureHeight;
+            RenderWidth = renderWidth;
+            RenderHeight = renderHeight;
 
             ScalingQuality = scalingQuality;
             CreateTexture();
 
-            Background = new Background(textureWidth, textureHeight) {
-                Renderer = _renderer,
-                BlendMode = BlendMode.None
+            Layers = new List<Canvas> {
+                new Background(renderWidth, renderHeight) {
+                    Renderer = _renderer,
+                    BlendMode = BlendMode.None
+                }
             };
             Background.CreateTexture();
 
@@ -200,6 +213,24 @@ namespace DotSDL.Graphics {
         }
 
         /// <summary>
+        /// Adds a background layer to the top of the layer stack.
+        /// </summary>
+        /// <param name="width">The width of the new layer's texture.</param>
+        /// <param name="height">The height of the new layer's texture.</param>
+        /// <param name="blendMode">The blending mode of the new layer.</param>
+        /// <returns>An integer identifying the new layer.</returns>
+        public int AddLayer(int width, int height, BlendMode blendMode = BlendMode.Alpha) {
+            var layer = new Background(width, height) {
+                Renderer = _renderer,
+                BlendMode = blendMode
+            };
+            layer.CreateTexture();
+            Layers.Add(layer);
+
+            return Layers.Count - 1;
+        }
+
+        /// <summary>
         /// Handles calling the user draw function and passing the CLR objects to SDL2.
         /// </summary>
         private void BaseDraw() {
@@ -209,13 +240,15 @@ namespace DotSDL.Graphics {
 
             Render.SetRenderTarget(_renderer, _texture);
 
-            // Blit the Canvas to the target texture.
-            Background.Clipping.Position = CameraView.Position;
-            Background.Clipping.Size = CameraView.Size;
-            Background.UpdateTexture();
-            unsafe {
-                var canvasClippingRect = Background.Clipping.SdlRect;
-                Render.RenderCopy(_renderer, Background.Texture, new IntPtr(&canvasClippingRect), IntPtr.Zero);
+            // Blit the background canvases to the target texture.
+            foreach(var canvas in Layers) {
+                canvas.Clipping.Position = CameraView.Position;
+                canvas.Clipping.Size = CameraView.Size;
+                canvas.UpdateTexture();
+                unsafe {
+                    var canvasClippingRect = canvas.Clipping.SdlRect;
+                    Render.RenderCopy(_renderer, canvas.Texture, new IntPtr(&canvasClippingRect), IntPtr.Zero);
+                }
             }
 
             // Plot sprites on top of the background layer.
@@ -250,7 +283,7 @@ namespace DotSDL.Graphics {
         private void CreateTexture() {
             DestroyTexture();
             Hints.SetHint(Hints.RenderScaleQuality, ScalingQuality.ToString());
-            _texture = Render.CreateTexture(_renderer, Pixels.PixelFormatArgb8888, Render.TextureAccess.Target, TextureWidth, TextureHeight);
+            _texture = Render.CreateTexture(_renderer, Pixels.PixelFormatArgb8888, Render.TextureAccess.Target, RenderWidth, RenderHeight);
             _hasTexture = true;
         }
 
@@ -291,11 +324,11 @@ namespace DotSDL.Graphics {
                     // and this sprite.
                     var relPosition = new Point(sprite.Position - CameraView.Position);
                     var screenPosition = new Point(
-                        (int)((float)relPosition.X / CameraView.Size.X * TextureWidth),
-                        (int)((float)relPosition.Y / CameraView.Size.Y * TextureHeight)
+                        (int)((float)relPosition.X / CameraView.Size.X * RenderWidth),
+                        (int)((float)relPosition.Y / CameraView.Size.Y * RenderHeight)
                     );
-                    var scaleFactorX = (float)TextureWidth / CameraView.Size.X;
-                    var scaleFactorY = (float)TextureHeight / CameraView.Size.Y;
+                    var scaleFactorX = (float)RenderWidth / CameraView.Size.X;
+                    var scaleFactorY = (float)RenderHeight / CameraView.Size.Y;
                     var size = new Point(
                         (int)(drawSize.X * scaleFactorX),
                         (int)(drawSize.Y * scaleFactorY)
@@ -429,6 +462,18 @@ namespace DotSDL.Graphics {
         /// Called every time the application logic update runs.
         /// </summary>
         protected virtual void OnUpdate() { }
+
+        /// <summary>
+        /// Removes a layer from the layer stack.
+        /// </summary>
+        /// <param name="id">The unique identifier of the layer to remove.</param>
+        /// <remarks>The background layer (layer 0) cannot be deleted.</remarks>
+        /// <exception cref="ArgumentOutOfRangeException"><c>id</c> is less than 0.</exception>
+        /// /// <exception cref="ArgumentOutOfRangeException"><c>id</c> is equal to or greater than <see cref="LayerCount"/>.</exception>
+        public void RemoveLayer(int id) {
+            if(id == 0) throw new ArgumentOutOfRangeException(nameof(id), "The background object (layer 0) cannot be deleted.");
+            Layers.RemoveAt(id);
+        }
 
         /// <summary>
         /// Displays the window and begins executing code that's associated with it.
