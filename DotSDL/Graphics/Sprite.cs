@@ -19,7 +19,7 @@ namespace DotSDL.Graphics {
         /// The angle that the sprite is drawn, in degrees. Incrementing this will rotate the
         /// sprite clockwise.
         /// </summary>
-        public float Rotation { get; set; }
+        public double Rotation { get; set; }
 
         /// <summary>
         /// The point around which the sprite will be rotated. By default, this will be set to
@@ -167,6 +167,12 @@ namespace DotSDL.Graphics {
 
             RotationCenter = new Point(clipping.Size.X / 2, clipping.Size.Y / 2);
         }
+
+        /// <inheritdoc/>
+        public override Point Center => new Point(
+            (int)(Clipping.Size.X * _scale.X / 2),
+            (int)(Clipping.Size.Y * _scale.Y / 2)
+        );
 
         /// <inheritdoc/>
         internal override void CreateTexture() {

@@ -139,12 +139,12 @@ namespace DotSDL.Interop.Core {
         /// <param name="srcRect">The source rectangle, or NULL for the entire texture.</param>
         /// <param name="dstRect">The destination rectangle, or NULL For the entire rendering target.</param>
         /// <param name="angle">An angle, in degrees, that indicates the rotation that will be applied to <paramref name="dstRect"/>.</param>
-        /// <param name="center">An <see cref="Rect.SdlPoint"/> indicating the point around which <paramref name="dstRect"/> will be rotated
-        /// (if NULL, rotation will be done around dstRect.w/2, dstRect.h/2).</param>
+        /// <param name="center">An <see cref="IntPtr"/> referencing an <see cref="Rect.SdlPoint"/> around which <paramref name="dstRect"/>
+        /// will be rotated (if NULL, rotation will be done around dstRect.w/2, dstRect.h/2).</param>
         /// <param name="flip">A <see cref="FlipDirection"/> value indicating which flipping actions should be performed.</param>
         /// <returns>0 on success, or -1 on error.</returns>
         [DllImport(Meta.CoreLib, EntryPoint = "SDL_RenderCopyEx", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int RenderCopyEx(IntPtr renderer, IntPtr texture, Rect.SdlRect srcRect, Rect.SdlRect dstRect, double angle, Rect.SdlPoint center, FlipDirection flip);
+        internal static extern int RenderCopyEx(IntPtr renderer, IntPtr texture, Rect.SdlRect srcRect, Rect.SdlRect dstRect, double angle, IntPtr center, FlipDirection flip);
 
         /// <summary>
         /// Copy a portion of the texture to the current rendering target.
@@ -154,12 +154,12 @@ namespace DotSDL.Interop.Core {
         /// <param name="srcRect">The source rectangle, or NULL for the entire texture.</param>
         /// <param name="dstRect">The destination rectangle, or NULL For the entire rendering target.</param>
         /// <param name="angle">An angle, in degrees, that indicates the rotation that will be applied to <paramref name="dstRect"/>.</param>
-        /// <param name="center">An <see cref="Rect.SdlPoint"/> indicating the point around which <paramref name="dstRect"/> will be rotated
-        /// (if NULL, rotation will be done around dstRect.w/2, dstRect.h/2).</param>
+        /// <param name="center">An <see cref="IntPtr"/> referencing an <see cref="Rect.SdlPoint"/> around which <paramref name="dstRect"/>
+        /// will be rotated (if NULL, rotation will be done around dstRect.w/2, dstRect.h/2).</param>
         /// <param name="flip">A <see cref="FlipDirection"/> value indicating which flipping actions should be performed.</param>
         /// <returns>0 on success, or -1 on error.</returns>
         [DllImport(Meta.CoreLib, EntryPoint = "SDL_RenderCopyEx", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int RenderCopyEx(IntPtr renderer, IntPtr texture, IntPtr srcRect, IntPtr dstRect, double angle, Rect.SdlPoint center, FlipDirection flip);
+        internal static extern int RenderCopyEx(IntPtr renderer, IntPtr texture, IntPtr srcRect, IntPtr dstRect, double angle, IntPtr center, FlipDirection flip);
 
         /// <summary>
         /// Update the screen with the rendering performed.

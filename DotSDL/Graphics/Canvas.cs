@@ -184,6 +184,11 @@ namespace DotSDL.Graphics {
         }
 
         /// <summary>
+        /// Returns a new <see cref="Point"/> containing the center position of this <see cref="Canvas"/>.
+        /// </summary>
+        public virtual Point Center => new Point(Clipping.Size.X / 2, Clipping.Size.Y / 2);
+
+        /// <summary>
         /// Creates a texture or recreates it if it already exists.
         /// </summary>
         internal abstract void CreateTexture();

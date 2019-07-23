@@ -7,6 +7,7 @@ namespace Sample.Sprites {
     public class Window : SdlWindow {
         private Player _player1, _player2;
         private Point _player1Delta, _player2Delta;
+        private double _player1Rotation, _player2Rotation;
 
         private const int ViewMargin = 16;
 
@@ -97,67 +98,66 @@ namespace Sample.Sprites {
             _player2.ScalingQuality = ScalingQuality.Linear;
             _player2.Scale.Y = 2.0f;
 
+            _player1.RotationCenter = _player1.Center;
+            _player2.RotationCenter = _player2.Center;
+
             Sprites.Add(_player1);
             Sprites.Add(_player2);
         }
 
         private void OnKeyPressed(object sender, KeyboardEvent e) {
-            switch(e.Keycode) {
-                case Keycode.Escape:
-                    Stop();
-                    break;
-                case Keycode.W:
-                    _player1Delta.Y = -1;
-                    break;
-                case Keycode.S:
-                    _player1Delta.Y = 1;
-                    break;
-                case Keycode.A:
-                    _player1Delta.X = -1;
-                    break;
-                case Keycode.D:
-                    _player1Delta.X = 1;
-                    break;
-                case Keycode.Up:
-                    _player2Delta.Y = -1;
-                    break;
-                case Keycode.Down:
-                    _player2Delta.Y = 1;
-                    break;
-                case Keycode.Left:
-                    _player2Delta.X = -1;
-                    break;
-                case Keycode.Right:
-                    _player2Delta.X = 1;
-                    break;
-            }
+            if(e.Keycode == Keycode.Escape)
+                Stop();
+
+            if(e.Keycode == Keycode.W)
+                _player1Delta.Y = -1;
+            if(e.Keycode == Keycode.S)
+                _player1Delta.Y = 1;
+            if(e.Keycode == Keycode.A)
+                _player1Delta.X = -1;
+            if(e.Keycode == Keycode.D)
+                _player1Delta.X = 1;
+            if(e.Keycode == Keycode.Q)
+                _player1Rotation = -1;
+            if(e.Keycode == Keycode.E)
+                _player1Rotation = 1;
+
+            if(e.Keycode == Keycode.Up)
+                _player2Delta.Y = -1;
+            if(e.Keycode == Keycode.Down)
+                _player2Delta.Y = 1;
+            if(e.Keycode == Keycode.Left)
+                _player2Delta.X = -1;
+            if(e.Keycode == Keycode.Right)
+                _player2Delta.X = 1;
+            if(e.Keycode == Keycode.Delete)
+                _player2Rotation = -1;
+            if(e.Keycode == Keycode.PageDown)
+                _player2Rotation = 1;
         }
 
         private void OnKeyReleased(object sender, KeyboardEvent e) {
-            switch(e.Keycode) {
-                case Keycode.W:
-                case Keycode.S:
-                    _player1Delta.Y = 0;
-                    break;
-                case Keycode.A:
-                case Keycode.D:
-                    _player1Delta.X = 0;
-                    break;
-                case Keycode.Up:
-                case Keycode.Down:
-                    _player2Delta.Y = 0;
-                    break;
-                case Keycode.Left:
-                case Keycode.Right:
-                    _player2Delta.X = 0;
-                    break;
+            if(e.Keycode == Keycode.W || e.Keycode == Keycode.S)
+                _player1Delta.Y = 0;
+            if(e.Keycode == Keycode.A || e.Keycode == Keycode.D)
+                _player1Delta.X = 0;
+            if(e.Keycode == Keycode.Q || e.Keycode == Keycode.E)
+                _player1Rotation = 0;
 
-            }
+            if(e.Keycode == Keycode.Up || e.Keycode == Keycode.Down)
+                _player2Delta.Y = 0;
+            if(e.Keycode == Keycode.Left || e.Keycode == Keycode.Right)
+                _player2Delta.X = 0;
+            if(e.Keycode == Keycode.Delete || e.Keycode == Keycode.PageDown)
+                _player2Rotation = 0;
         }
 
         protected override void OnUpdate() {
             _player1.Move(_player1Delta);
+            _player1.Rotate(_player1Rotation);
+
             _player2.Move(_player2Delta);
+            _player2.Rotate(_player2Rotation);
 
             var p1End = _player1.Position + _player1.DrawSize;
             var p2End = _player2.Position + _player2.DrawSize;
@@ -185,7 +185,8 @@ namespace Sample.Sprites {
             CameraView.Size.Y = y2 - y1;
 
             WindowTitle = $"({x1} {y2}), ({x2 - x1}, {y2 - y1})" +
-                $" | P1: {_player1.Position} | P2: {_player2.Position}";
+                          $" | P1: {_player1.Position}: {_player1.Rotation:F2}"
+                        + $" | P2: {_player2.Position}: {_player2.Rotation:F2}";
         }
     }
 }

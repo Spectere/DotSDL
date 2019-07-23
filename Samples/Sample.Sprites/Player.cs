@@ -68,5 +68,7 @@ namespace Sample.Sprites {
             Pixels[GetIndex(Radius - x, Radius + y)] = color;
             Pixels[GetIndex(Radius - x, Radius - y)] = color;
         }
+
+        public void Rotate(double delta) => Rotation += delta * _speed;
     }
 }

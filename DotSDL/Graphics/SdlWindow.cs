@@ -317,8 +317,10 @@ namespace DotSDL.Graphics {
                 var drawSize = sprite.DrawSize;
 
                 Rectangle dest;
+                Point rotationCenter;
                 if(sprite.CoordinateSystem == CoordinateSystem.ScreenSpace) {
                     dest = new Rectangle(sprite.Position, drawSize);
+                    rotationCenter = sprite.RotationCenter;
                 } else {
                     // Create a set of world coordinates based on the position of the camera
                     // and this sprite.
@@ -335,13 +337,19 @@ namespace DotSDL.Graphics {
                     );
 
                     dest = new Rectangle(screenPosition, size);
+                    rotationCenter = new Point(
+                        (int)(sprite.RotationCenter.X * scaleFactorX),
+                        (int)(sprite.RotationCenter.Y * scaleFactorY)
+                    );
                 }
 
                 var destRect = dest.SdlRect;
+                var rotationCenterPoint = rotationCenter.SdlPoint;
 
                 unsafe {
                     var srcRectPtr = new IntPtr(&srcRect);
                     var destRectPtr = new IntPtr(&destRect);
+                    var rotationCenterPtr = new IntPtr(&rotationCenterPoint);
 
                     Render.RenderCopyEx(
                         renderer: _renderer,
@@ -349,7 +357,7 @@ namespace DotSDL.Graphics {
                         srcRect: srcRectPtr,
                         dstRect: destRectPtr,
                         angle: sprite.Rotation,
-                        center: sprite.RotationCenter.SdlPoint,
+                        center: rotationCenterPtr,
                         flip: sprite.Flip
                     );
                 }
