@@ -31,6 +31,8 @@ namespace DotSDL.Graphics {
         private float _nextGameUpdate;
         private float _updateDelta;
 
+        private List<Canvas> _drawList = new List<Canvas>();
+
         private ScalingQuality _scalingQuality = ScalingQuality.Nearest;
 
         /// <summary>
@@ -228,6 +230,7 @@ namespace DotSDL.Graphics {
                     BlendMode = BlendMode.None
                 }
             };
+            Background.ZOrder = int.MinValue;
             Background.CreateTexture();
 
             CameraView = new Rectangle(
@@ -277,19 +280,28 @@ namespace DotSDL.Graphics {
 
             Render.SetRenderTarget(_renderer, _texture);
 
-            // Blit the background canvases to the target texture.
-            foreach(var canvas in Layers) {
-                canvas.Clipping.Position = CameraView.Position;
-                canvas.Clipping.Size = CameraView.Size;
-                canvas.UpdateTexture();
-                unsafe {
-                    var canvasClippingRect = canvas.Clipping.SdlRect;
-                    Render.RenderCopy(_renderer, canvas.Texture, new IntPtr(&canvasClippingRect), IntPtr.Zero);
+            // Sort all of the canvases, then draw them.
+            _drawList.Clear();
+            _drawList.AddRange(Layers.Where(l => l.Shown).ToArray());
+            _drawList.AddRange(Sprites.Where(s => s.Shown).ToArray());
+
+            foreach(var canvas in _drawList.OrderBy(layer => layer.ZOrder)) {
+                switch(canvas) {
+                    case Sprite sprite:
+                        DrawSprite(sprite);
+                        break;
+                    default:
+                        canvas.Clipping.Position = CameraView.Position;
+                        canvas.Clipping.Size = CameraView.Size;
+                        canvas.UpdateTexture();
+                        unsafe {
+                            var canvasClippingRect = canvas.Clipping.SdlRect;
+                            Render.RenderCopy(_renderer, canvas.Texture, new IntPtr(&canvasClippingRect), IntPtr.Zero);
+                        }
+
+                        break;
                 }
             }
-
-            // Plot sprites on top of the background layer.
-            if(Sprites.Count > 0) DrawSprites();
 
             Render.SetRenderTarget(_renderer, IntPtr.Zero);
             Render.RenderCopy(_renderer, _texture, IntPtr.Zero, IntPtr.Zero);
@@ -343,61 +355,58 @@ namespace DotSDL.Graphics {
         }
 
         /// <summary>
-        /// Plots the sprites stored in <see cref="Sprites"/> to the screen. Please note that this method is called by
-        /// DotSDL's drawing routines and does not need to be called manually. Additionally, this method will not be
-        /// called if there are no sprites defined. You usually do not need to override this method.
+        /// Plots a sprite to the screen. Please note that this method is called by DotSDL's drawing
+        /// routines and does not need to be called manually. Additionally, this method will never be
+        /// called if there are no active sprites. You usually do not need to override this method.
         /// </summary>
-        public virtual void DrawSprites() {
-            Render.SetRenderTarget(_renderer, _texture);
-            foreach(var sprite in Sprites.Where(e => e.Shown).OrderBy(e => e.ZOrder)) {
-                var srcRect = sprite.Clipping.SdlRect;
-                var drawSize = sprite.DrawSize;
+        public virtual void DrawSprite(Sprite sprite) {
+            var srcRect = sprite.Clipping.SdlRect;
+            var drawSize = sprite.DrawSize;
 
-                Rectangle dest;
-                Point rotationCenter;
-                if(sprite.CoordinateSystem == CoordinateSystem.ScreenSpace) {
-                    dest = new Rectangle(sprite.Position, drawSize);
-                    rotationCenter = sprite.RotationCenter;
-                } else {
-                    // Create a set of world coordinates based on the position of the camera
-                    // and this sprite.
-                    var relPosition = new Point(sprite.Position - CameraView.Position);
-                    var screenPosition = new Point(
-                        (int)((float)relPosition.X / CameraView.Size.X * RenderWidth),
-                        (int)((float)relPosition.Y / CameraView.Size.Y * RenderHeight)
-                    );
-                    var scaleFactorX = (float)RenderWidth / CameraView.Size.X;
-                    var scaleFactorY = (float)RenderHeight / CameraView.Size.Y;
-                    var size = new Point(
-                        (int)(drawSize.X * scaleFactorX),
-                        (int)(drawSize.Y * scaleFactorY)
-                    );
+            Rectangle dest;
+            Point rotationCenter;
+            if(sprite.CoordinateSystem == CoordinateSystem.ScreenSpace) {
+                dest = new Rectangle(sprite.Position, drawSize);
+                rotationCenter = sprite.RotationCenter;
+            } else {
+                // Create a set of world coordinates based on the position of the camera
+                // and this sprite.
+                var relPosition = new Point(sprite.Position - CameraView.Position);
+                var screenPosition = new Point(
+                    (int)((float)relPosition.X / CameraView.Size.X * RenderWidth),
+                    (int)((float)relPosition.Y / CameraView.Size.Y * RenderHeight)
+                );
+                var scaleFactorX = (float)RenderWidth / CameraView.Size.X;
+                var scaleFactorY = (float)RenderHeight / CameraView.Size.Y;
+                var size = new Point(
+                    (int)(drawSize.X * scaleFactorX),
+                    (int)(drawSize.Y * scaleFactorY)
+                );
 
-                    dest = new Rectangle(screenPosition, size);
-                    rotationCenter = new Point(
-                        (int)(sprite.RotationCenter.X * scaleFactorX),
-                        (int)(sprite.RotationCenter.Y * scaleFactorY)
-                    );
-                }
+                dest = new Rectangle(screenPosition, size);
+                rotationCenter = new Point(
+                    (int)(sprite.RotationCenter.X * scaleFactorX),
+                    (int)(sprite.RotationCenter.Y * scaleFactorY)
+                );
+            }
 
-                var destRect = dest.SdlRect;
-                var rotationCenterPoint = rotationCenter.SdlPoint;
+            var destRect = dest.SdlRect;
+            var rotationCenterPoint = rotationCenter.SdlPoint;
 
-                unsafe {
-                    var srcRectPtr = new IntPtr(&srcRect);
-                    var destRectPtr = new IntPtr(&destRect);
-                    var rotationCenterPtr = new IntPtr(&rotationCenterPoint);
+            unsafe {
+                var srcRectPtr = new IntPtr(&srcRect);
+                var destRectPtr = new IntPtr(&destRect);
+                var rotationCenterPtr = new IntPtr(&rotationCenterPoint);
 
-                    Render.RenderCopyEx(
-                        renderer: _renderer,
-                        texture: sprite.Texture,
-                        srcRect: srcRectPtr,
-                        dstRect: destRectPtr,
-                        angle: sprite.Rotation,
-                        center: rotationCenterPtr,
-                        flip: sprite.Flip
-                    );
-                }
+                Render.RenderCopyEx(
+                    renderer: _renderer,
+                    texture: sprite.Texture,
+                    srcRect: srcRectPtr,
+                    dstRect: destRectPtr,
+                    angle: sprite.Rotation,
+                    center: rotationCenterPtr,
+                    flip: sprite.Flip
+                );
             }
         }
 
@@ -537,17 +546,13 @@ namespace DotSDL.Graphics {
         /// <summary>
         /// Displays the window and begins executing code that's associated with it.
         /// </summary>
-        public void Start() {
-            Start(0, 0);
-        }
+        public void Start() => Start(0, 0);
 
         /// <summary>
         /// Displays the window and begins executing code that's associated with it.
         /// </summary>
         /// <param name="updateRate">The desired number of video and game logic updates per second. 0 causes the display and game to be updated as quickly as possible.</param>
-        public void Start(float updateRate) {
-            Start(updateRate, updateRate);
-        }
+        public void Start(float updateRate) => Start(updateRate, updateRate);
 
         /// <summary>
         /// Displays the window and begins executing code that's associated with it.
