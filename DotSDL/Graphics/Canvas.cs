@@ -154,6 +154,17 @@ namespace DotSDL.Graphics {
         }
 
         /// <summary>
+        /// <c>true</c> if the <see cref="Canvas"/> should be drawn to the screen, otherwise <c>false</c>.
+        /// </summary>
+        public bool Shown { get; set; } = true;
+
+        /// <summary>
+        /// The order in which the canvas is drawn. Lower numbered <see cref="Canvas"/> instances are drawn first
+        /// and will appear on the bottom. This number can be negative.
+        /// </summary>
+        public int ZOrder { get; set; }
+
+        /// <summary>
         /// Sets the section of the <see cref="Canvas"/> that should be drawn. If the size values are set to 0, the
         /// <see cref="Canvas"/> will fill as much of its containing object as possible.
         /// </summary>

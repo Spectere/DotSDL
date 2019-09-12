@@ -30,7 +30,7 @@ namespace DotSDL.Graphics {
             // TODO: Might be able to make this faster by leveraging memcpy(). Need to benchmark it.
             unsafe {
                 var copySize = Width * Height * 4;  // Width x Height at 4 bytes per pixel.
-                Render.LockTexture(Texture, IntPtr.Zero, out var pixels, out var _);
+                Render.LockTexture(Texture, IntPtr.Zero, out var pixels, out _);
                 Buffer.MemoryCopy(GetCanvasPointer().ToPointer(), pixels, copySize, copySize);
                 Render.UnlockTexture(Texture);
             }
