@@ -9,6 +9,8 @@ namespace DotSDL.Graphics {
     public class Sprite : Canvas {
         private readonly Point _effectiveSize = new Point();
         private Vector2<float> _scale;
+        private bool _collisionBoxSet;
+        private Rectangle _collisionBox;
 
         /// <summary>
         /// The position on the screen where the <see cref="Sprite"/> should be drawn.
@@ -41,6 +43,9 @@ namespace DotSDL.Graphics {
                 _scale = value;
                 _effectiveSize.X = (int)(Width * _scale.X);
                 _effectiveSize.Y = (int)(Height * _scale.Y);
+
+                if(!_collisionBoxSet)
+                    _collisionBox = new Rectangle(new Point(0, 0), _effectiveSize);
             }
         }
 
@@ -84,15 +89,20 @@ namespace DotSDL.Graphics {
         public CoordinateSystem CoordinateSystem { get; set; } = CoordinateSystem.WorldSpace;
 
         /// <summary>
-        /// <c>true</c> if the sprite should be drawn to the screen, otherwise <c>false</c>.
+        /// Gets or sets the size and position of the collision box for this <see cref="Sprite"/>.
         /// </summary>
-        public bool Shown { get; set; }
+        public Rectangle CollisionBox {
+            get => _collisionBox;
+            set {
+                _collisionBox = value;
+                _collisionBoxSet = true;
+            }
+        }
 
         /// <summary>
-        /// The order in which the sprite is drawn. Lower numbered <see cref="Sprite"/> instances are drawn first
-        /// and will appear on the bottom.
+        /// Gets or sets whether or not collision calculations are performed on this <see cref="Sprite"/>.
         /// </summary>
-        public int ZOrder { get; set; }
+        public bool HasCollision { get; set; }
 
         /// <summary>
         /// Initializes a new <see cref="Sprite"/>.
@@ -174,6 +184,35 @@ namespace DotSDL.Graphics {
             (int)(Clipping.Size.Y * _scale.Y / 2)
         );
 
+        /// <summary>
+        /// Determines whether or not a given point collides with this <see cref="Sprite"/>. By default
+        /// this will test the point against the sprite's <see cref="CollisionBox"/>, but this method
+        /// can be overridden.
+        /// </summary>
+        /// <param name="point">The <see cref="Point"/> to check.</param>
+        /// <returns><c>true</c> if this object's collision is enabled and this sprite's collision
+        /// routine determines that the given pixel collides with the sprite, otherwise <c>false</c>.</returns>
+        public virtual bool CheckCollision(Point point) {
+            if(!HasCollision) return false;
+
+            return point.X >= CollisionBox.Position.X + Position.X
+                && point.X <= CollisionBox.Position.X + CollisionBox.Size.X + Position.X
+                && point.Y >= CollisionBox.Position.Y + Position.Y
+                && point.Y <= CollisionBox.Position.Y + CollisionBox.Size.Y + Position.Y;
+        }
+
+        /// <summary>
+        /// Determines whether or not a given point collides with this <see cref="Sprite"/>. By default
+        /// this will test the point against the sprite's <see cref="CollisionBox"/>. If you wish to
+        /// override this sprite's collision routine, override the <see cref="CheckCollision(DotSDL.Graphics.Point)"/>
+        /// method instead.
+        /// </summary>
+        /// <param name="x">The X coordinate of the point to check.</param>
+        /// <param name="y">The Y coordinate of the point to check.</param>
+        /// <returns><c>true</c> if this object's collision is enabled and this sprite's collision
+        /// routine determines that the given pixel collides with the sprite, otherwise <c>false</c>.</returns>
+        public bool CheckCollision(int x, int y) => CheckCollision(new Point(x, y));
+
         /// <inheritdoc/>
         internal override void CreateTexture() {
             CreateTexture(Render.TextureAccess.Static);
@@ -184,7 +223,8 @@ namespace DotSDL.Graphics {
         /// <see cref="Canvas.Pixels"/> array is changed after adding this sprite to the sprite list associated
         /// with the application's <see cref="SdlWindow"/>.
         /// </summary>
-        /// <returns><c>true</c> if the texture was successfully updated, otherwise <c>false</c>. This will return <c>false</c> if this <see cref="Sprite"/> hasn't been added to the sprite list.</returns>
+        /// <returns><c>true</c> if the texture was successfully updated, otherwise <c>false</c>. This will return
+        /// <c>false</c> if this <see cref="Sprite"/> hasn't been added to the sprite list.</returns>
         public new bool UpdateTexture() {
             return base.UpdateTexture();
         }
