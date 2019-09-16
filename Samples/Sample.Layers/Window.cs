@@ -82,7 +82,7 @@ namespace Sample.Layers {
                 Stop();
         }
 
-        protected override void OnUpdate() {
+        protected override void OnUpdate(float delta) {
             _redPhase += RedSpeed;
             _greenPhase += GreenSpeed;
             _bluePhase += BlueSpeed;

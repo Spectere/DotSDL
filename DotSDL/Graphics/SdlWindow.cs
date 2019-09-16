@@ -1,8 +1,10 @@
 ﻿using DotSDL.Events;
 using DotSDL.Input;
 using DotSDL.Interop.Core;
+using DotSDL.Platform;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace DotSDL.Graphics {
@@ -19,12 +21,23 @@ namespace DotSDL.Graphics {
         private IntPtr _texture;
         private bool _hasTexture;
 
+        private float _videoUpdateRate, _gameUpdateRate;
+        private float _videoUpdateMs, _gameUpdateMs;
+        private bool _videoUpdateUncapped, _gameUpdateUncapped;
+
         private bool _running;
 
-        private uint _nextVideoUpdate;
-        private uint _nextGameUpdate;
+        private float _nextVideoUpdate;
+        private float _nextGameUpdate;
+        private float _updateDelta;
 
         private ScalingQuality _scalingQuality = ScalingQuality.Nearest;
+
+        /// <summary>
+        /// An <see cref="IPlatform"/> that contains native functions appropriate to
+        /// the platform that this application is running on.
+        /// </summary>
+        protected IPlatform Platform { get; } = PlatformFactory.GetPlatform();
 
         /// <summary>Gets the background layer of this window. This is equivalent to accessing Layers[0].</summary>
         public Canvas Background => Layers[0];
@@ -66,11 +79,35 @@ namespace DotSDL.Graphics {
         public int RenderHeight { get; }
 
         /// <summary>The amount of time, in milliseconds, from when the application was started.</summary>
-        public uint TicksElapsed => Timer.GetTicks();
-        /// <summary>Gets or sets the amount of time, in milliseconds, between video updates.</summary>
-        public uint VideoUpdateTicks { get; set; }
-        /// <summary>Gets or sets the amount of time, in milliseconds, between game (logic) updates.</summary>
-        public uint GameUpdateTicks { get; set; }
+        public float MillisecondsElapsed { get; private set; } = 0.0f;
+
+        /// <summary>Gets or sets the rate, in hertz, between video updates.</summary>
+        public float VideoUpdateRate {
+            get => _videoUpdateUncapped ? 0 : _videoUpdateRate;
+            set {
+                _videoUpdateRate = value;
+                if(System.Math.Abs(_videoUpdateRate) < 1.0f) {
+                    _videoUpdateUncapped = true;
+                } else {
+                    _videoUpdateUncapped = false;
+                    _videoUpdateMs = 1000 / _videoUpdateRate;
+                }
+            }
+        }
+
+        /// <summary>Gets or sets the rate, in hertz, between game (logic) updates.</summary>
+        public float GameUpdateRate {
+            get => _gameUpdateUncapped ? 0 : _gameUpdateRate;
+            set {
+                _gameUpdateRate = value;
+                if(System.Math.Abs(_gameUpdateRate) < 1.0f) {
+                    _gameUpdateUncapped = true;
+                } else {
+                    _gameUpdateUncapped = false;
+                    _gameUpdateMs = 1000 / _gameUpdateRate;
+                }
+            }
+        }
 
         /// <summary>Gets a <see cref="Rectangle"/> that can be manipulated to modify how much of the scene is displayed.</summary>
         public Rectangle CameraView { get; }
@@ -270,11 +307,11 @@ namespace DotSDL.Graphics {
         /// <summary>
         /// Handles updating the application logic for the <see cref="SdlWindow"/>.
         /// </summary>
-        private void BaseUpdate() {
+        private void BaseUpdate(float delta) {
             if(IsDestroyed) return;
 
             Events.EventHandler.ProcessEvents();
-            OnUpdate();  // Call the overridden Update function.
+            OnUpdate(delta);  // Call the overridden Update function.
         }
 
         /// <summary>
@@ -409,26 +446,40 @@ namespace DotSDL.Graphics {
         /// A game loop that calls the <see cref="SdlWindow"/> update and draw functions.
         /// </summary>
         private void Loop() {
+            long MsToNs(float ms) => (long)(ms * 1000000);
+
+            var sw = new Stopwatch();
             _running = true;
 
             while(_running) {
-                var ticks = TicksElapsed;
+                sw.Restart();
 
-                if(ticks > _nextGameUpdate || GameUpdateTicks == 0) {
-                    _nextGameUpdate = ticks + GameUpdateTicks;
-                    BaseUpdate();
+                if(_nextGameUpdate <= 0 || _gameUpdateUncapped) {
+                    BaseUpdate(_updateDelta);
+                    _updateDelta = 0;
+                    _nextGameUpdate += _gameUpdateMs;
                 }
 
-                if(ticks > _nextVideoUpdate || VideoUpdateTicks == 0) {
-                    _nextVideoUpdate = ticks + VideoUpdateTicks;
+                if(_nextVideoUpdate <= 0 || _videoUpdateUncapped) {
                     BaseDraw();
+                    _nextVideoUpdate += _videoUpdateMs;
                 }
 
-                if(VideoUpdateTicks <= 0 && GameUpdateTicks <= 0) continue;  // Cook the CPU!
+                var cycleElapsed = (float)sw.Elapsed.TotalMilliseconds;
+                MillisecondsElapsed += cycleElapsed;
+                _nextGameUpdate -= cycleElapsed;
+                _nextVideoUpdate -= cycleElapsed;
+                _updateDelta += cycleElapsed;
 
-                var updateTicks = (long)(_nextGameUpdate > _nextVideoUpdate ? _nextVideoUpdate : _nextGameUpdate) - TicksElapsed;
-                if(updateTicks > 0)
-                    Timer.Delay((uint)updateTicks);
+                if(!_videoUpdateUncapped && !_gameUpdateUncapped) {
+                    var waitMs = _nextGameUpdate > _nextVideoUpdate ? _nextVideoUpdate : _nextGameUpdate;
+                    if(waitMs > 0)
+                        Platform.Nanosleep(MsToNs(waitMs));
+
+                    _updateDelta += waitMs;
+                    _nextGameUpdate -= waitMs;
+                    _nextVideoUpdate -= waitMs;
+                }
             }
         }
 
@@ -469,7 +520,7 @@ namespace DotSDL.Graphics {
         /// <summary>
         /// Called every time the application logic update runs.
         /// </summary>
-        protected virtual void OnUpdate() { }
+        protected virtual void OnUpdate(float delta) { }
 
         /// <summary>
         /// Removes a layer from the layer stack.
@@ -493,19 +544,19 @@ namespace DotSDL.Graphics {
         /// <summary>
         /// Displays the window and begins executing code that's associated with it.
         /// </summary>
-        /// <param name="updateRate">The desired number of milliseconds between frames and game logic updates. 0 causes the display and game to be continuously updated.</param>
-        public void Start(uint updateRate) {
+        /// <param name="updateRate">The desired number of video and game logic updates per second. 0 causes the display and game to be updated as quickly as possible.</param>
+        public void Start(float updateRate) {
             Start(updateRate, updateRate);
         }
 
         /// <summary>
         /// Displays the window and begins executing code that's associated with it.
         /// </summary>
-        /// <param name="drawRate">The desired number of milliseconds between draw calls. 0 causes the display to be continuously updated.</param>
-        /// <param name="updateRate">The desired number of milliseconds between game logic updates. 0 causes the game to be continuously updated.</param>
-        public void Start(uint drawRate, uint updateRate) {
-            VideoUpdateTicks = drawRate;
-            GameUpdateTicks = updateRate;
+        /// <param name="drawRate">The desired number of draw calls per second. 0 causes the display to be updated as quickly as possible.</param>
+        /// <param name="updateRate">The desired number of game logic updates per second. 0 causes the game to be updated as quickly as possible.</param>
+        public void Start(float drawRate, float updateRate) {
+            VideoUpdateRate = drawRate;
+            GameUpdateRate = updateRate;
 
             BaseLoad();
             Video.ShowWindow(_window);

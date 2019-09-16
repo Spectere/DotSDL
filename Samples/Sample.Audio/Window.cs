@@ -107,7 +107,7 @@ namespace Sample.Audio {
             base.OnDraw();
         }
 
-        protected override void OnUpdate() {
+        protected override void OnUpdate(float _) {
             var delta = Fast ? 10 : 1;
             if(UpPressed)
                 _freq += delta;
@@ -117,7 +117,7 @@ namespace Sample.Audio {
             if(_freq > _maxFreq) _freq = _maxFreq;
             if(_freq < _minFreq) _freq = _minFreq;
 
-            base.OnUpdate();
+            base.OnUpdate(delta);
         }
 
         private void Window_KeyPressed(object sender, DotSDL.Events.KeyboardEvent e) {

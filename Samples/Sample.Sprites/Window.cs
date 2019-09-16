@@ -152,7 +152,7 @@ namespace Sample.Sprites {
                 _player2Rotation = 0;
         }
 
-        protected override void OnUpdate() {
+        protected override void OnUpdate(float delta) {
             _player1.Move(_player1Delta);
             _player1.Rotate(_player1Rotation);
 
