@@ -19,9 +19,11 @@ At this time, DotSDL supports the following features:
   * Keyboard input.
   * Window events.
 * Graphics
-  * A single 32-bit ARGB background canvas (useful for pixel plotting).
+  * An arbitrary number of 32-bit ARGB background canvases (useful for pixel
+    plotting and backgrounds).
   * Sprite drawing, with support for alpha blending, world and screen space
-    rendering, and scaling.
+    rendering, rotation, flipping, and scaling.
+  * Configurable Z-order for all sprites and background layers.
 * Power
   * Battery state.
 
