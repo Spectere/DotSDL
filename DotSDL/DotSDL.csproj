@@ -11,7 +11,8 @@
     <LangVersion>7.2</LangVersion>
     <Title>DotSDL</Title>
     <PackageProjectUrl>https://github.com/Spectere/DotSDL</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/Spectere/DotSDL/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageLicenseExpression>Zlib</PackageLicenseExpression>
+    <PackageTags>SDL; graphics; audio; input</PackageTags>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>

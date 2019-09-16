@@ -84,17 +84,6 @@ namespace DotSDL.Graphics {
         public CoordinateSystem CoordinateSystem { get; set; } = CoordinateSystem.WorldSpace;
 
         /// <summary>
-        /// <c>true</c> if the sprite should be drawn to the screen, otherwise <c>false</c>.
-        /// </summary>
-        public bool Shown { get; set; }
-
-        /// <summary>
-        /// The order in which the sprite is drawn. Lower numbered <see cref="Sprite"/> instances are drawn first
-        /// and will appear on the bottom.
-        /// </summary>
-        public int ZOrder { get; set; }
-
-        /// <summary>
         /// Initializes a new <see cref="Sprite"/>.
         /// </summary>
         /// <param name="width">The width of the new <see cref="Sprite"/>.</param>
