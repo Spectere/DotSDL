@@ -8,7 +8,7 @@
     <Copyright>(c) 2019 Ian Burgmyer</Copyright>
     <Authors>Ian Burgmyer</Authors>
     <Company>The DotSDL Team</Company>
-    <LangVersion>7.2</LangVersion>
+    <LangVersion>7.3</LangVersion>
     <Title>DotSDL</Title>
     <PackageProjectUrl>https://github.com/Spectere/DotSDL</PackageProjectUrl>
     <PackageLicenseExpression>Zlib</PackageLicenseExpression>
